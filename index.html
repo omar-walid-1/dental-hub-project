@@ -17,14 +17,15 @@
   --shadow:0 10px 40px rgba(0,0,0,.5);--glow:0 0 30px rgba(0,180,216,.15);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;max-width:100vw}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--teal2);border-radius:3px}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;max-width:100vw;width:100%}
 
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:200;background:rgba(3,28,45,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px}
-.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.nav{position:sticky;top:0;z-index:200;background:rgba(3,28,45,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;width:100%;max-width:100vw;overflow:hidden}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;min-width:0}
 .nav-brand .ico{font-size:24px;filter:drop-shadow(0 0 8px rgba(0,180,216,.5))}
-.nav-brand .txt{display:flex;flex-direction:column;line-height:1.15}
+.nav-brand .txt{display:flex;flex-direction:column;line-height:1.15;min-width:0}
 .nav-brand .name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--white);letter-spacing:-.3px;white-space:nowrap}
 .nav-brand .name em{color:var(--teal);font-style:normal}
 .nav-brand .by{font-size:9px;color:var(--muted);letter-spacing:.3px;white-space:nowrap}
@@ -274,13 +275,70 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 @media(max-width:768px){
   .stats,.adm-stats{grid-template-columns:repeat(2,1fr)}
   .subjs{grid-template-columns:1fr}
-  .tab-wrap{padding:20px}
+  .tab-wrap{padding:12px 10px}
   .shdr{padding:14px 18px}
-  .mode-tabs,.sub-tabs{padding:0 14px}
-  .dash{padding:20px 14px}
-  .nav{padding:0 14px}
+  .mode-tabs,.sub-tabs{padding:0 10px}
+  .dash{padding:20px 12px}
   .feats{flex-wrap:wrap}
   .feat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}
+
+  /* ── NAV mobile fix (ROOT CAUSE of the shift) ── */
+  .nav{padding:0 10px;gap:6px;height:56px}
+  .nav-mid{display:none}                          /* hide social icons */
+  .nav-brand .name{font-size:14px}
+  .nav-brand .ico{font-size:20px}
+  .nav-right{gap:5px}
+  .nav-right .btn{padding:5px 9px;font-size:11px}
+  .nav-user{padding:3px 8px 3px 3px;gap:5px}
+  .nav-uname{font-size:11px;max-width:60px;overflow:hidden;text-overflow:ellipsis}
+  .nav-av{width:24px;height:24px;font-size:10px}
+
+  /* ── Chapter content mobile fixes ── */
+  .ch-head h3{font-size:12.5px !important}
+  .ch-card{margin-bottom:10px}
+
+  /* ALL tables scroll horizontally */
+  .ch-body table,.lblock table{
+    display:block !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+    white-space:nowrap;
+    width:100% !important;
+    max-width:calc(100vw - 40px) !important;
+  }
+  .ch-body table th,.ch-body table td,
+  .lblock table th,.lblock table td{
+    padding:6px 9px !important;
+    font-size:11px !important;
+    white-space:nowrap;
+  }
+
+  /* exp-block */
+  .exp-block{padding:12px 10px}
+  .exp-eng{font-size:13px !important;line-height:1.8 !important}
+  .exp-ar{font-size:13px !important;line-height:1.9 !important}
+
+  /* Inline grid → column on mobile */
+  .ch-body [style*="display:grid"]{display:flex !important;flex-direction:column !important}
+  .lblock [style*="display:grid"]{display:flex !important;flex-direction:column !important}
+
+  /* Normal values grid → 2 cols */
+  .lblock [style*="repeat(auto-fill"]{
+    display:grid !important;
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:8px !important;
+  }
+
+  /* Prevent overflow from any child */
+  .ch-body,.lblock{overflow-x:hidden}
+  .ch-body *,.lblock *{box-sizing:border-box;max-width:100%}
+
+  /* Pathway/flowchart boxes — allow horizontal scroll */
+  .ch-body [style*="font-family:'Cairo'"]{
+    font-size:12px !important;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
 }
 
 /* ═══════════ HISTOLOGY PRACTICAL ═══════════ */
@@ -875,7 +933,66 @@ const QS = {
     {id:'a2',starred:false,text:'Which muscle is the primary elevator of the mandible?',options:['Digastric','Mylohyoid','Masseter','Buccinator'],answer:2,explanation:'الـ Masseter هو المسؤول عن إغلاق الفم. أقوى عضلة بالنسبة لحجمها في الجسم!'}
   ],
   biochemistry:[
-    {id:'b1',starred:true, text:'Fluoride inhibits caries primarily by:',options:['Killing bacteria','Converting hydroxyapatite to fluorapatite','Increasing saliva','Reducing sugar'],answer:1,explanation:'الفلورايد بيحول Hydroxyapatite → Fluorapatite اللي أقل ذوبان في الحمض. زي طلاء مقاوم للصدأ على الأسنان!'}
+    /* ══ LIPID METABOLISM — DIGESTION & TRANSPORT ══ */
+    {id:'lip1',starred:true, text:'What is the main lipid in diet and for storage in our body?',options:['Cholesterol','Triacyl glycerol (TAG)','Phospholipids','Cholesteryl ester'],answer:1,explanation:'TAG (Triacylglycerol) هو الدهن الرئيسي في الأكل وكمان في خلايا الدهون (Adipose tissue). هو المخزن الأساسي للطاقة في جسمنا!'},
+    {id:'lip2',starred:true, text:'Which of the following helps in emulsifying fat to decrease surface tension?',options:['Pancreatic Lipase','Bile Salts','Colipase','Insulin'],answer:1,explanation:'أملاح الصفراء (Bile Salts) هي اللي بتستحلب الدهون — بتقلل الـ Surface Tension وتزود الـ Surface Area عشان الإنزيمات تشتغل. هم زي الـ "Fairy liquid" للدهون!'},
+    {id:'lip3',starred:true, text:'Deficiency of lipase or colipase leads to a condition called:',options:['Anemia','Steatorrhea','Ketosis','Diabetes'],answer:1,explanation:'لو Lipase أو Colipase ناقصين → مش هتتهضم الدهون → هتتطرح مع البراز → Steatorrhea (براز دهني أبيض مائي). الدواء المستخدم في علاج السمنة (Orlistat) بيشتغل بنفس المبدأ!'},
+    {id:'lip4',starred:true, text:'Which lipoprotein transports absorbed dietary lipids (TAG) from the intestine?',options:['VLDL','LDL','HDL','Chylomicrons'],answer:3,explanation:'Chylomicrons هي ناقلات الدهون الغذائية من الأمعاء. بتتكون في خلايا الأمعاء وبتمشي عبر الـ Lymphatics → Thoracic duct → Blood.'},
+    {id:'lip5',starred:true, text:'LDL is known as "Bad cholesterol" because it transports cholesterol from:',options:['Tissues to Liver','Liver to Peripheral tissues','Intestine to Liver','Kidney to Liver'],answer:1,explanation:'LDL = الكوليسترول "الوحش" لأنه بيشيل الكوليسترول من الكبد للأنسجة الطرفية → بيترسب في جدار الأوعية → Atherosclerosis. الـ HDL هو العكس "الكويس".'},
+    {id:'lip6',starred:true, text:'Which lipoprotein is responsible for the removal of cholesterol from tissues back to the liver?',options:['Chylomicrons','VLDL','LDL','HDL'],answer:3,explanation:'HDL = الكوليسترول "الكويس". بيشيل الكوليسترول الزيادة من الأنسجة يرجعه للكبد. الكبد بيحوله لـ Bile Salts ويطرحه. ده بيحمي من أمراض القلب!'},
+    {id:'lip7',starred:false, text:'Which medication is used for the treatment of obesity by inhibiting lipase?',options:['Aspirin','Orlistat','Metformin','Statins'],answer:1,explanation:'Orlistat (الأورليستات) بيثبط الـ Pancreatic Lipase → مش بيتهضم الدهون → تطرح مع البراز. ومن مضاعفاته Steatorrhea!'},
+    {id:'lip8',starred:true, text:'Pancreatic lipase is specific for which positions of TAG?',options:['Positions 1 and 2','Positions 2 and 3','Positions 1 and 3','All positions'],answer:2,explanation:'Pancreatic Lipase خاص بمواضع 1 و 3 من الـ TAG. النتيجة: 2 Free Fatty Acids + 1 Monoacylglycerol (2-MAG). الموضع رقم 2 بيفضل معه.'},
+    {id:'lip9',starred:true, text:'Which lipoprotein is produced in the liver to carry TAG synthesized in the liver to peripheral tissues?',options:['Chylomicrons','VLDL','LDL','HDL'],answer:1,explanation:'VLDL (Very Low Density Lipoprotein) بيتصنع في الكبد ويشيل الـ TAG المصنوع فيه للأنسجة الطرفية. بيتحول بعدين لـ LDL بعد ما يطرح الـ TAG.'},
+    /* ══ β-OXIDATION ══ */
+    {id:'lip10',starred:true, text:'Lipolysis is the hydrolysis of TAG in adipose tissue by:',options:['Pancreatic Lipase','Hormone Sensitive Lipase','HMG-CoA Reductase','Thiokinase'],answer:1,explanation:'Hormone Sensitive Lipase (HSL) هو إنزيم الـ Lipolysis في الأنسجة الدهنية. بيتنشط بالـ Epinephrine. النتيجة: 3 Fatty Acids + 1 Glycerol.'},
+    {id:'lip11',starred:true, text:'Where does β-Oxidation of fatty acids occur?',options:['Cytosol','Mitochondrial matrix','Endoplasmic reticulum','Golgi apparatus'],answer:1,explanation:'الـ β-Oxidation بيحصل في الـ Mitochondrial Matrix. هو عملية هوائية (aerobic) — محتاج O₂. الأحماض الدهنية تتأكسد هناك لـ Acetyl-CoA.'},
+    {id:'lip12',starred:true, text:'Long-chain fatty acids (≥ 12 carbons) require which shuttle to enter the mitochondria?',options:['Glucose shuttle','Carnitine shuttle','Citrate shuttle','Malate shuttle'],answer:1,explanation:'الأحماض الدهنية طويلة السلسلة (≥12C) مش قادرة تعدي الغشاء الداخلي للميتوكوندريا لوحدها. محتاجة الـ Carnitine Shuttle! الكارنيتين موجود في العضلات وبيربط بالـ Acyl-CoA يعديه.'},
+    {id:'lip13',starred:true, text:'In each cycle of β-Oxidation, the fatty acid chain is shortened by:',options:['1 Carbon','2 Carbons','3 Carbons','4 Carbons'],answer:1,explanation:'كل دورة في الـ β-Oxidation بتقصر السلسلة بـ 2 Carbons وتطلع 1 Acetyl-CoA + 1 FADH₂ + 1 NADH. لو الحمض الدهني 16C → 8 Acetyl-CoA بعد 7 دورات.'},
+    {id:'lip14',starred:true, text:'The energy yield from one active acetate (Acetyl-CoA) in TCA cycle is:',options:['5 ATP','12 ATP','2 ATP','38 ATP'],answer:1,explanation:'كل Acetyl-CoA في دورة كربس (TCA cycle) + سلسلة نقل الإلكترونات ينتج 12 ATP. دي القاعدة الأساسية في حسابات الطاقة!'},
+    {id:'lip15',starred:true, text:'Which hormone stimulates hormone-sensitive lipase in adipose tissue?',options:['Insulin','Glucagon','Epinephrine','Thyroxine'],answer:2,explanation:'Epinephrine (الأدرينالين) هو المنشط الرئيسي لـ Hormone Sensitive Lipase. وقت الإجهاد أو التمرين، الأدرينالين بيحلل الدهون لطاقة سريعة.'},
+    {id:'lip16',starred:false, text:'Fatty acids are activated to acyl-CoA in the cytosol by which enzyme?',options:['Fatty acid synthase','Thiokinase (Acyl-CoA synthetase)','Lipoprotein lipase','HMG-CoA lyase'],answer:1,explanation:'Thiokinase (اسمه Acyl-CoA Synthetase) هو اللي بيفعّل الحمض الدهني في الـ Cytosol. بيستهلك ATP (بيتحول لـ AMP + PPi = يعادل 2 ATP).'},
+    {id:'lip17',starred:false, text:'How many ATP equivalents are utilized during the initial activation of a fatty acid before oxidation?',options:['2 ATP equivalents','4 ATP','5 ATP','12 ATP'],answer:0,explanation:'التفعيل بيستهلك ATP → AMP + PPi. الـ PPi بيتهدم لـ 2 Pi. ده يعادل استهلاك 2 ATP. ولذلك في حسابات الطاقة بنطرح 2 من الإجمالي.'},
+    /* ══ KETONES & CHOLESTEROL ══ */
+    {id:'lip18',starred:true, text:'Ketone bodies are synthesized mainly in the:',options:['Brain','Liver','Muscle','Kidney'],answer:1,explanation:'أجسام الكيتون بتتصنع في الـ Mitochondria of the LIVER. ليه الكبد تحديداً؟ لأن فيه HMG-CoA Synthase و HMG-CoA Lyase بكميات كبيرة.'},
+    {id:'lip19',starred:true, text:'Which organ cannot utilize ketone bodies for energy due to a deficiency in CoA transferase?',options:['Brain','Heart','Liver','Skeletal muscle'],answer:2,explanation:'الـ LIVER نفسه مش قادر يستخدم الـ Ketone bodies اللي بيصنعها! لأنه ناقصه Thiophorase (CoA Transferase). بتتصنع في الكبد ولكن بتتأكسد في الأنسجة الخارجية (extrahepatic).'},
+    /* ══ FATTY ACID SYNTHESIS & FATTY LIVER ══ */
+    {id:'lip27',starred:true, text:'Fatty liver occurs due to accumulation of:',options:['Cholesterol','TAG (Triacyl glycerol)','Phospholipids','Glycogen'],answer:1,explanation:'Fatty Liver = تراكم TAG في الكبد بسبب اختلال التوازن بين تكونه وتصديره. لو زاد يعمل Steatosis → Fibrosis → Cirrhosis → Hepatic Failure.'},
+    {id:'lip28',starred:true, text:'The end product of fatty acid synthesis is:',options:['Acetic acid','Palmitic acid','Oleic acid','Stearic acid'],answer:1,explanation:'Palmitic acid (C16:0) هو الناتج النهائي لتخليق الأحماض الدهنية في الـ Cytosol. إنزيم Fatty Acid Synthase (FAS) بيصنعه. الجسم بعدين يقدر يمد السلسلة أكتر.'},
+    {id:'lip29',starred:true, text:'Where does fatty acid synthesis primarily occur within the cell?',options:['Mitochondrial matrix','Nucleus','Endoplasmic reticulum','Cytosol'],answer:3,explanation:'تخليق الأحماض الدهنية بيحصل في الـ CYTOSOL — عكس الـ β-Oxidation اللي بيحصل في الـ Mitochondrial Matrix! دي نقطة مهمة جداً.'},
+    /* ══ IMPORTANT LIPID QUESTIONS ══ */
+    {id:'lip30',starred:true, text:'Which is the transport form of cholesterol from the liver to the extrahepatic tissues?',options:['Chylomicrons','VLDL','LDL','HDL'],answer:2,explanation:'LDL هو ناقل الكوليسترول من الكبد للأنسجة الطرفية (Bad Cholesterol). اتكوّن من VLDL بعد ما الـ TAG يتطرح منه.'},
+    {id:'lip31',starred:true, text:'Which one of the following lipoproteins can protect against cardiovascular diseases?',options:['Chylomicrons','HDL','VLDL','LDL'],answer:1,explanation:'HDL هو الكوليسترول الحامي من أمراض القلب. بيأخد الكوليسترول الزيادة من الأنسجة يرجعه للكبد يتحول لـ Bile Salts ويتطرح.'},
+    {id:'lip32',starred:true, text:'Which is an activator for pancreatic lipase?',options:['K⁺','Ca²⁺','Na⁺','Cl⁻'],answer:1,explanation:'Ca²⁺ (الكالسيوم) و Bile Salts هم أبرز المنشطين للـ Pancreatic Lipase. تذكر: الكالسيوم مهم لكتير من إنزيمات الهضم.'},
+    {id:'lip33',starred:true, text:'Which enzyme is responsible for lipolysis in adipose tissue?',options:['Pancreatic lipase','Hormone sensitive lipase','Lipoprotein lipase','Lingual lipase'],answer:1,explanation:'Hormone Sensitive Lipase (HSL) في الأنسجة الدهنية هو المسؤول عن الـ Lipolysis. بيتنشط بالأدرينالين وقت الجوع والتمرين.'},
+    {id:'lip34',starred:true, text:'Steatorrhea is due to the deficiency of which one of the following enzymes?',options:['Pancreatic lipase','Hormone sensitive lipase','Lingual lipase','Lipoprotein lipase'],answer:0,explanation:'نقص Pancreatic Lipase (أو Colipase) → الدهون مش بتتهضم → تطرح في البراز → Steatorrhea. Orlistat بيعمل نفس التأثير عمداً لعلاج السمنة.'},
+    {id:'lip35',starred:true, text:'Which is an example for ketone bodies?',options:['Acetyl CoA','Hydroxymethyl glutaryl CoA','Acetoacetate','Propionate'],answer:2,explanation:'Acetoacetate (أو Acetoacetic acid) هو كيتون جسم. الثلاثة هم: Acetoacetate + β-Hydroxybutyrate + Acetone. Acetyl-CoA مش كيتون جسم — هو مادة خام لتصنيعهم.'},
+    {id:'lip36',starred:true, text:'Ketosis may occur due to:',options:['High CHO diet','Low CHO diet','High protein diet','Low protein diet'],answer:1,explanation:'نظام Low CHO → مش في جلوكوز كافي → الجسم يحرق دهون بشكل مكثف → تراكم كيتونات = Ketosis. ده أساس الـ Keto Diet!'},
+    {id:'lip37',starred:true, text:'The predominant ketone body in our blood is:',options:['Acetyl CoA','Acetoacetate','Acetone','Beta hydroxy butyrate'],answer:3,explanation:'β-Hydroxybutyrate هو الكيتون الأكثر تواجداً في الدم والبول وقت الكيتوسيس. Acetone يطلع في الزفير. تذكر: β-OH Butyrate هو الأغلب والأهم.'},
+    {id:'lip38',starred:true, text:'Which enzyme is the key enzyme for ketogenesis?',options:['Succinate dehydrogenase','Acetyl CoA carboxylase','HMG-CoA reductase','HMG-CoA synthase'],answer:3,explanation:'HMG-CoA Synthase هو الإنزيم المحوري في Ketogenesis. بيصنع HMG-CoA من Acetoacetyl-CoA + Acetyl-CoA. HMG-CoA Lyase بعدين يكسره لـ Acetoacetate + Acetyl-CoA.'},
+    {id:'lip39',starred:true, text:'Which TCA cycle intermediate is required for ketolysis?',options:['Oxaloacetate','Alpha ketoglutarate','Citrate','Succinyl CoA'],answer:3,explanation:'Succinyl-CoA مطلوب لـ Ketolysis (تكسير الكيتونات في الأنسجة). الإنزيم Thiophorase (CoA transferase) بيحول Succinyl-CoA + Acetoacetate → Succinate + Acetoacetyl-CoA.'},
+    {id:'lip40',starred:true, text:'The transport of long chain acyl-CoA into the mitochondria requires:',options:['Choline','Citrate','Carnitine','Serine'],answer:2,explanation:'Carnitine هو الناقل الضروري لدخول Acyl-CoA طويل السلسلة للميتوكوندريا. Carnitine-Palmitoyl Transferase I و II هم الإنزيمات المسؤولة.'},
+    {id:'lip41',starred:false, text:'The activation of the long chain fatty acid into acyl-CoA requires how many ATP equivalents?',options:['1 ATP','2 ATP equivalent','3 ATP','4 ATP'],answer:1,explanation:'التفعيل ATP → AMP + 2Pi = يعادل 2 ATP. لذلك في حساب الطاقة الصافي بنطرح 2 من الإجمالي.'},
+    {id:'lip42',starred:true, text:'β-oxidation of stearic acid (C18) yields how many ATP?',options:['140 ATP','142 ATP','144 ATP','146 ATP'],answer:3,explanation:'حساب Stearic acid C18: Cycles = (18/2)-1 = 8 cycles → 8 FADH₂ + 8 NADH. Active acetate = 18/2 = 9. ATP = (8×5) + (9×12) - 2 = 40 + 108 - 2 = 146 ATP!'},
+    {id:'lip43',starred:true, text:'Which enzyme is the key enzyme for cholesterol synthesis?',options:['HMG-CoA synthase','HMG-CoA reductase','Carnitine palmitoyl transferase 1','Carnitine palmitoyl transferase 2'],answer:1,explanation:'HMG-CoA Reductase هو الإنزيم المحوري والمُنظِّم لتخليق الكوليسترول! هو هدف أدوية الـ Statins. Active form = Dephosphorylated.'},
+    {id:'lip44',starred:true, text:'Which hormone stimulates cholesterol synthesis?',options:['Glucagon','Insulin','Glucocorticoid','Growth hormone'],answer:1,explanation:'Insulin محفز (Inducer) لـ HMG-CoA Reductase → زيادة تخليق الكوليسترول. Glucagon هو الـ Repressor. Thyroid hormones أيضاً inducers.'},
+    {id:'lip45',starred:true, text:'Which is the source of all carbon atoms in cholesterol?',options:['Malonyl CoA','Hydroxy methyl glutaryl CoA','Acetyl CoA','Succinyl CoA'],answer:2,explanation:'Acetyl-CoA هو المصدر لكل ذرات الكربون في الكوليسترول! كل الـ 27 كربون في جزيئة الكوليسترول بتيجي من Acetyl-CoA.'},
+    {id:'lip46',starred:true, text:'Which vitamin is synthesized from cholesterol?',options:['Vitamin A','Vitamin B1','Vitamin C','Vitamin D3'],answer:3,explanation:'Vitamin D3 يتصنع من الكوليسترول! الكوليسترول → 7-Dehydrocholesterol → Vitamin D3 بتأثير الأشعة فوق البنفسجية على الجلد.'},
+    {id:'lip47',starred:false, text:'The end product of fatty acid synthesis in the cytosol is:',options:['Stearic acid','Propionic acid','Palmitic acid','Acetic acid'],answer:2,explanation:'Palmitic acid (C16) هو الناتج النهائي. إنزيم Fatty Acid Synthase يصنعه في الـ Cytosol. NADPH وATP وBiotin وHCO3 كلهم مطلوبين في العملية.'},
+    {id:'lip48',starred:true, text:'Which coenzyme is required for fatty acid synthesis?',options:['Ca²⁺','NADH+H⁺','FADH₂','NADPH+H⁺'],answer:3,explanation:'NADPH هو المانح للهيدروجين (Reducing agent) في تخليق الأحماض الدهنية. عكس الـ β-Oxidation اللي بينتج FADH₂ وNADH. NADPH من الـ HMP shunt.'},
+    {id:'lip49',starred:true, text:'Fatty liver is defined as accumulation of ……… in the liver:',options:['Cholesterol','Phospholipids','TAG','Fatty acids'],answer:2,explanation:'Fatty Liver = تراكم TAG (Triacylglycerol) في الكبد. Imbalance بين معدل تكوين TAG وتصديره. لو مزمن → Steatosis → Fibrosis → Cirrhosis.'},
+    /* ══ AMINO ACID METABOLISM (user-provided questions) ══ */
+    {id:'aa1',starred:false,ai:true, text:'Sulphur-containing amino acids are:',options:['Cysteine and methionine','Methionine and threonine','Cysteine and threonine','Cysteine and serine'],answer:0,explanation:'الأحماض الأمينية اللي فيها كبريت (S) هما فقط: Cysteine و Methionine. تذكر: Cys+Met = Sulfur Set! الفرق: Cysteine غير أساسي، Methionine أساسي.'},
+    {id:'aa2',starred:false,ai:true, text:'Aromatic amino acids include:',options:['Phenylalanine, tyrosine and tryptophan','Phenylalanine, serine and tryptophan','Threonine, tyrosine and tryptophan','Asparagine, tyrosine and tryptophan'],answer:0,explanation:'الثلاثة العطرية: PHE + TYR + TRP (فنيل ألانين + تيروسين + تريبتوفان). كلهم فيهم حلقة بنزين أو حلقة غير متجانسة. دايماً الثلاثة مع بعض.'},
+    {id:'aa3',starred:false,ai:true, text:'Which of the following is an aromatic amino acid?',options:['Phenylalanine','Serine','Arginine','Glutamic acid'],answer:0,explanation:'Phenylalanine حمض أميني عطري (Aromatic) لأنه فيه حلقة البنزين. Serine وArginine وGlutamic acid ليسوا عطريين.'},
+    {id:'aa4',starred:false,ai:true, text:'Which of the following is an essential amino acid?',options:['Glycine','Phenylalanine','Cysteine','Serine'],answer:1,explanation:'Phenylalanine (الفينيل ألانين) حمض أميني أساسي لازم تاخده من الأكل. الجلايسين والسيستين والسيرين كلهم غير أساسيين — الجسم يقدر يصنعهم.'},
+    {id:'aa5',starred:false,ai:true, text:'Which amino acid gives both glucose and ketone bodies?',options:['Serine','Glycine','Tyrosine','Proline'],answer:2,explanation:'Tyrosine (التيروسين) من الأحماض الأمينية Gluco-Ketogenic — بيدي جلوكوز وكيتونات مع بعض. كمان Phenylalanine وTryptophan نفس الكلام.'},
+    {id:'aa6',starred:false,ai:true, text:'The hydrolytic products of glutathione are:',options:['Glutamic acid, cysteine and serine','Glutamic acid, cysteine and glycine','Glutamine, cysteine and glycine','Taurine, cysteine and glycine'],answer:1,explanation:'الجلوتاثيون tripeptide مكوّن من: Glutamic acid + Cysteine + Glycine. تذكر الاختصار: GCG. هو أهم مضاد أكسدة في الجسم وبيحمي كريات الدم الحمرا.'},
+    {id:'aa7',starred:false,ai:true, text:'A nonessential amino acid containing sulfur is:',options:['Methionine','Threonine','Valine','Cysteine'],answer:3,explanation:'Cysteine = غير أساسي + فيه كبريت (SH group). Methionine = أساسي + فيه كبريت. الفرق ده بييجي في امتحانات كتير! Threonine وValine ليس فيهم كبريت.'},
+    {id:'aa8',starred:false,ai:true, text:'Sulfhydryl (-SH) group is present in:',options:['Cysteine','Serine','Phenylalanine','Histidine'],answer:0,explanation:'Cysteine هو الحمض الأميني اللي فيه مجموعة السلفهيدريل (-SH). ده اللي بيسمح بتكوين روابط ثاني كبريتيد (-S-S-) في الكيراتين والجلوتاثيون.'},
+    {id:'aa9',starred:false,ai:true, text:'All of the following amino acids are essential amino acids EXCEPT:',options:['Isoleucine','Leucine','Tyrosine','Phenylalanine'],answer:2,explanation:'Tyrosine (التيروسين) غير أساسي — الجسم يصنعه من Phenylalanine. الـ Isoleucine وLeucine وPhenylalanine كلهم أساسيين.'},
+    {id:'aa10',starred:false,ai:true, text:'Which of the following amino acids is abundantly found in collagen?',options:['Glycine','Serine','Alanine','Tryptophan'],answer:0,explanation:'Glycine (الجلايسين) أكثر حمض أميني في الكولاجين! يتكرر في تسلسل Gly-X-Y كل ثلاث أحماض أمينية. ده بيخلي اللولب الثلاثي (Triple Helix) يتكون. مهم جداً لطب الأسنان!'},
+    {id:'aa11',starred:false,ai:true, text:'Which of the following is an essential amino acid containing sulfur?',options:['Cysteine','Asparagine','Valine','Methionine'],answer:3,explanation:'Methionine هو الحمض الأميني الكبريتي الأساسي! السيستين كبريتي لكن غير أساسي. تذكر: Methionine أساسي (Essential) + كبريتي. Cysteine غير أساسي + كبريتي.'},
+    {id:'aa12',starred:false,ai:true, text:'An aromatic and essential amino acid is:',options:['Tyrosine','Phenylalanine','Proline','Arginine'],answer:1,explanation:'Phenylalanine = عطري (Aromatic) + أساسي (Essential). التيروسين عطري لكن غير أساسي. التريبتوفان عطري وأساسي لكن مكانوش في الخيارات. Proline وArginine مش عطريين.'}
   ],
   dentition:[
     {id:'d1',starred:true, text:'How many teeth are in primary dentition?',options:['16','20','24','32'],answer:1,explanation:'أسنان اللبن = 20 سنة. كل ربع فيه 5: 2 قاطعة + 1 ناب + 2 ضرس × 4 = 20.'},
@@ -913,7 +1030,197 @@ const SUMM = {
   histology:`<div class="lblock"><h3>🔬 Key Points — Histology</h3><p style="font-family:'Cairo',sans-serif;font-size:14px;line-height:1.9;margin-bottom:10px">الأنسجة الأربعة: Epithelial, Connective, Muscular, Nervous.</p><div class="hint">Stratified Squamous = يتحمل الاحتكاك — Hard palate & Gingiva (keratinized).</div><div class="espot">الفرق بين Keratinized و Non-keratinized سؤال متكرر جداً في الامتحانات!</div><div class="hint">Fibroblasts = صانع الكولاجين. Macrophages = محارب البكتريا.</div><div class="espot">Periodontal Ligament: Sharpey's fibers (Collagen) — تربط السنة بالعظم.</div></div>`,
   physiology:`<div class="lblock"><h3>❤️ Key Points — Physiology</h3><p style="font-family:'Cairo',sans-serif;font-size:14px;line-height:1.9;margin-bottom:10px">Resting Potential = -70mV. Threshold = -55mV.</p><div class="hint">Na⁺ يدخل = Depolarization (+30mV). K⁺ يطلع = Repolarization (-70mV).</div><div class="espot">All-or-Nothing Principle: السيال العصبي إما كامل أو مش بيحصل!</div></div>`,
   anatomy:`<div class="lblock"><h3>🦴 Key Points — Anatomy</h3><p style="font-family:'Cairo',sans-serif;font-size:14px;line-height:1.9;margin-bottom:10px">CN V (Trigeminal): أهم عصب في طب الأسنان.</p><div class="hint">V1=عين, V2=فك علوي, V3=فك سفلي + عضلات المضغ.</div><div class="espot">Inferior Alveolar Nerve Block = بنج الفك السفلي — V3.</div><div class="hint">الغدد اللعابية: Parotid + Submandibular + Sublingual.</div></div>`,
-  biochemistry:`<div class="lblock"><h3>🧬 Key Points — Biochemistry</h3><p style="font-family:'Cairo',sans-serif;font-size:14px;line-height:1.9;margin-bottom:10px">المينا: Hydroxyapatite — أصلب مادة في الجسم.</p><div class="hint">Fluoride: Hydroxyapatite → Fluorapatite (أقل ذوبان).</div><div class="espot">Critical pH = 5.5 (Stephan's Curve) — عند النقطة دي المينا بتتآكل!</div></div>`,
+  biochemistry:`
+<div class="lblock">
+<h3>🧬 ملخص — Lipid & Amino Acid Metabolism</h3>
+
+<!-- ══ LIPID TYPES ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--teal);margin:16px 0 8px">🧪 Types of Lipids</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:var(--teal-dim)">
+    <th style="padding:9px 12px;text-align:left;color:var(--teal);border-bottom:1px solid var(--border)">Type</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Key Feature</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--orange)">TAG (Triacylglycerol)</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Main dietary lipid + main storage form in adipose tissue</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Membranes, hormones, Vit D₃, bile acids</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Cholesteryl Ester</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cholesterol + Fatty acid</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Phospholipids</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cell membrane structure</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ LIPOPROTEINS COMPARISON ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--orange);margin:16px 0 8px">🚗 Lipoproteins — Quick Comparison</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:rgba(244,162,97,.2)">
+    <th style="padding:9px 12px;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Lipoprotein</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Origin</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Cargo</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Direction</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Label</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:#f4a261">Chylomicrons</td><td style="padding:8px 12px;text-align:center">Intestine</td><td style="padding:8px 12px;text-align:center">Dietary TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gut → Lymph → Blood</td><td style="padding:8px 12px;text-align:center">—</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--teal)">VLDL</td><td style="padding:8px 12px;text-align:center">Liver</td><td style="padding:8px 12px;text-align:center">Liver TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center">Pre-β</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--danger)">LDL</td><td style="padding:8px 12px;text-align:center">From VLDL</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center;color:var(--danger);font-weight:700">❌ Bad</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--green)">HDL</td><td style="padding:8px 12px;text-align:center">Liver/Intestine</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Tissues → Liver</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅ Good</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ β-OXIDATION PATHWAY ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--green);margin:16px 0 8px">⚡ β-Oxidation — Pathway Summary</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;font-family:'Cairo',sans-serif;font-size:13px;line-height:2.2">
+  <div style="color:var(--orange);font-weight:700">Stage I — Activation (Cytosol)</div>
+  <div>FFA + CoA-SH + ATP <span style="color:var(--teal)">→(Thiokinase)→</span> Acyl-CoA + AMP + PPi &nbsp;<span style="color:var(--muted)">[Cost: 2 ATP]</span></div>
+  <div style="color:var(--orange);font-weight:700;margin-top:8px">Stage II — Transport (Carnitine Shuttle)</div>
+  <div>Acyl-CoA <span style="color:var(--teal)">→(CPT-I)→</span> Acyl-Carnitine <span style="color:var(--teal)">→ crosses inner membrane →</span> Acyl-CoA (inside matrix)</div>
+  <div style="color:var(--orange);font-weight:700;margin-top:8px">Stage III — Oxidation Cycles (Mitochondrial Matrix)</div>
+  <div>Acyl-CoA <span style="color:var(--teal)">→(×n cycles)→</span> n Acetyl-CoA + n FADH₂ + n NADH <span style="color:var(--teal)">→ TCA + ETC →</span> ATP</div>
+  <div style="margin-top:10px;background:rgba(0,180,216,.07);border-radius:8px;padding:10px">
+    <strong style="color:var(--teal)">Palmitic Acid (C16) Example:</strong><br>
+    7 cycles → 7 FADH₂ (×5=35 ATP) + 8 Acetyl-CoA (×12=96 ATP) − 2 (activation) = <strong style="color:#ffd60a">129 ATP</strong>
+  </div>
+</div>
+
+<!-- ══ KETONE BODIES ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--danger);margin:16px 0 8px">🔥 Ketone Bodies — Quick Facts</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
+  <div style="background:var(--card2);border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:14px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--danger);margin-bottom:8px">Ketogenesis</div>
+    <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:12px;color:var(--text);line-height:2">
+      <li>📍 Site: Liver mitochondria</li>
+      <li>🧱 Building unit: Acetyl-CoA</li>
+      <li>🔑 Key enzyme: HMG-CoA Synthase</li>
+      <li>📋 3 bodies: Acetoacetate, β-OH Butyrate, Acetone</li>
+    </ul>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.2);border-radius:12px;padding:14px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--green);margin-bottom:8px">Ketolysis</div>
+    <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:12px;color:var(--text);line-height:2">
+      <li>📍 Site: Extrahepatic tissues</li>
+      <li>❌ Liver CANNOT do ketolysis!</li>
+      <li>🔑 Requires: Succinyl-CoA (TCA)</li>
+      <li>🔑 Enzyme: Thiophorase (CoA Transferase)</li>
+    </ul>
+  </div>
+</div>
+<div class="espot">Ketosis causes: Uncontrolled DM, Starvation, Low CHO diet, High fat diet, Renal glucosuria. Predominant ketone in blood/urine = β-Hydroxybutyrate. Acetone = breath.</div>
+
+<!-- ══ CHOLESTEROL ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#ffd60a;margin:16px 0 8px">💛 Cholesterol — Key Points</p>
+<div style="background:var(--card2);border:1px solid rgba(255,214,10,.2);border-radius:12px;padding:14px;margin-bottom:18px">
+  <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);line-height:2.2">
+    <li>🧱 Building unit: <strong style="color:#ffd60a">Acetyl-CoA</strong> (ALL 27 carbons)</li>
+    <li>📍 Synthesis site: Cytosol + ER (liver & intestine for plasma cholesterol)</li>
+    <li>🔑 Key enzyme: <strong style="color:#ffd60a">HMG-CoA Reductase</strong> — target of Statins</li>
+    <li>✅ Active form = Dephosphorylated &nbsp;|&nbsp; ❌ Inactive = Phosphorylated</li>
+    <li>⬆️ Inducers: Insulin, Thyroid hormones &nbsp;|&nbsp; ⬇️ Repressor: Glucagon</li>
+    <li>🎯 Importance: Membranes, <strong>Vit D₃</strong>, Steroid hormones, Bile acids</li>
+    <li>💩 Excretion: → Bile acids → Coprostanol (intestinal bacteria)</li>
+    <li>📊 Normal: <strong>150–230 mg%</strong></li>
+  </ul>
+</div>
+
+<!-- ══ AA CLASSIFICATION TABLE ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--teal);margin:16px 0 8px">🔬 Amino Acid Classification — Quick Reference</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:var(--teal-dim)">
+    <th style="padding:9px 12px;text-align:left;color:var(--teal);border-bottom:1px solid var(--border)">AA</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Essential?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Sulfur?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Aromatic?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Metabolic Fate</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Glycine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Glutamic Acid</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Cysteine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅ (–SH)</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Methionine</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Phenylalanine</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Tyrosine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Tryptophan</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ KEY PATHWAYS ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--orange);margin:16px 0 8px">🗺️ Key Metabolic Pathways (Text Flowcharts)</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;font-family:'Cairo',sans-serif;font-size:12px;line-height:2.2">
+  <div style="color:var(--teal);font-weight:700;margin-bottom:4px">Glycine → Heme:</div>
+  <div>Glycine + Succinyl-CoA <span style="color:var(--orange)">→(ALA Synthase+PLP)→</span> δ-ALA <span style="color:var(--orange)">→→</span> Heme</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Creatine Synthesis:</div>
+  <div>Glycine + Arginine <span style="color:var(--orange)">→(Kidney:Transamidase)→</span> Guanidinoacetate <span style="color:var(--orange)">→(Liver:SAM)→</span> Creatine <span style="color:var(--orange)">→(Muscle:CPK+ATP)→</span> Creatine-Phosphate</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">PHE / TYR Pathway:</div>
+  <div>Phenylalanine <span style="color:var(--orange)">→(Phe Hydroxylase)→</span> Tyrosine</div>
+  <div>Tyrosine <span style="color:var(--orange)">→(Tyrosinase)→</span> Melanin</div>
+  <div>Tyrosine <span style="color:var(--orange)">→(+Iodine)→</span> MIT <span style="color:var(--orange)">→</span> DIT <span style="color:var(--orange)">→</span> T3 / T4</div>
+  <div>Tyrosine <span style="color:var(--orange)">→</span> DOPA <span style="color:var(--orange)">→</span> Dopamine <span style="color:var(--orange)">→</span> Norepinephrine <span style="color:var(--orange)">→</span> Epinephrine</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Tryptophan Products:</div>
+  <div>TRP <span style="color:var(--orange)">→</span> Nicotinic Acid (Vit B3) &nbsp;|&nbsp; TRP <span style="color:var(--orange)">→</span> Serotonin <span style="color:var(--orange)">→</span> Melatonin (pineal gland)</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Purine Catabolism:</div>
+  <div>Adenine / Guanine <span style="color:var(--orange)">→</span> Xanthine <span style="color:var(--orange)">→(Xanthine Oxidase)→</span> Uric Acid &nbsp;<span style="color:var(--danger)">[ &gt;7 mg% → GOUT ]</span></div>
+</div>
+
+<!-- ══ GENETIC DISEASES ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--danger);margin:16px 0 8px">⚠️ Genetic Diseases — Comparison Table</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:rgba(230,57,70,.15)">
+    <th style="padding:9px 12px;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Disease</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Deficient Enzyme</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Accumulated</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Key Feature</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">PKU</td><td style="padding:8px 12px;text-align:center">Phe Hydroxylase</td><td style="padding:8px 12px;text-align:center">Phenylalanine</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Mental retardation — Low PHE diet</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Albinism</td><td style="padding:8px 12px;text-align:center">Tyrosinase</td><td style="padding:8px 12px;text-align:center">Tyrosine</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">No pigmentation</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Gout</td><td style="padding:8px 12px;text-align:center">↑ Uric acid production / ↓ excretion</td><td style="padding:8px 12px;text-align:center">Uric acid crystals</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Joint inflammation — Colchicine</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Lesch-Nyhan</td><td style="padding:8px 12px;text-align:center">HGPRT (↑ PRPP)</td><td style="padding:8px 12px;text-align:center">Uric acid</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cerebral palsy, self-mutilation</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ NORMAL VALUES ══ -->
+<p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--green);margin:16px 0 8px">📊 Normal Values to Memorize</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:18px">
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Urea (plasma)</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">20–40 mg/dL</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Urea (urine)</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">20–40 g/day</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Uric Acid (normal)</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">3–6 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Gout Threshold</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--danger)">&gt;7 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Cholesterol</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">150–230 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;color:var(--muted)">Ketone bodies (normal)</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">1.5–2 mg%</div>
+  </div>
+</div>
+
+<div class="espot">⭐ أهم نقط: TAG = main storage + dietary lipid | LDL = bad | HDL = good | HMG-CoA Reductase = key for cholesterol (Statins target) | β-Oxidation in Mitochondria, Synthesis in Cytosol | Carnitine = transport | β-OH Butyrate = predominant ketone in blood | PKU = no Phe Hydroxylase | PHE + TYR + TRP = Aromatic | CYS + MET = Sulfur</div>
+
+</div>`,
   dentition:`
 <div class="lblock">
   <h3>😁 Key Points — Dentition (Molars)</h3>
@@ -1130,7 +1437,257 @@ const SHARH_SAMPLE = {
   histology:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Introduction to Histology</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Histology is the scientific study of the microscopic structure of tissues. It examines tissues at the cellular level using microscopes and forms the foundation for understanding pathological conditions.</div><div class="exp-ar">الهستولوجي هو علم دراسة الأنسجة تحت الميكروسكوب. بدل ما تشوف الجسم بعينك العادية، بتحط الأنسجة تحت المجهر وتشوف الخلايا. زي ما لو قطعت شريحة رفيعة من تفاحة وحطيتها تحت المجهر — هتلاقي حاجات مش شايفاها بعينك!</div></div></div></div>`,
   physiology:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Cell Physiology</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Physiology is the study of how living organisms function, examining chemical and physical processes at cellular, tissue, organ, and system levels.</div><div class="exp-ar">الفيزيولوجي هو علم "ليه وإزاي الجسم بيشتغل؟". إيه اللي بيخلي قلبك ينبض؟ وإزاي رئتك بتتنفس؟ ده هو الفيزيولوجي — مش بس "إيه اللي موجود؟"، لأ "ليه بيشتغل كده؟"</div></div></div></div>`,
   anatomy:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Head & Neck Anatomy</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Head and neck anatomy covers the oral cavity, TMJ, muscles of mastication, salivary glands, and neurovascular supply — all critical for dentistry.</div><div class="exp-ar">تشريح الرأس والرقبة أهم مادة في طب الأسنان! شغلتك كلها في الرأس والوجه، فلازم تعرف كل عضلة وعصب وشريان. تخيل إنك عايز تبنج مريض — لازم تعرف مكان العصب بالظبط!</div></div></div></div>`,
-  biochemistry:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Introduction to Biochemistry</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Biochemistry studies chemical processes within living organisms. In dentistry it explains tooth structure, caries formation, and fluoride mechanisms at the molecular level.</div><div class="exp-ar">الكيمياء الحيوية هي الكيمياء اللي بتحصل جوا خلايا الجسم. في طب الأسنان بتشرحلك ليه السنة بتتسوس، وإزاي الفلورايد بيحميها، وإيه تركيب المينا على المستوى الجزيئي.</div></div></div></div>`,
+  biochemistry:`
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- CHAPTER 1: LIPID METABOLISM                    -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="ch-card">
+  <div class="ch-head open" onclick="tgCh(this)">
+    <h3>🧬 Chapter 1 — Lipid Metabolism</h3>
+    <span class="tog">▾</span>
+  </div>
+  <div class="ch-body open">
+
+    <!-- 1.1 Introduction -->
+    <div style="margin-bottom:20px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.1 — Introduction & Types of Lipids</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Key Definitions:</strong><br>
+          • <strong>Acyl</strong> = conjugated fatty acid &nbsp;|&nbsp; <strong>Active form</strong> = <strong>Acyl-CoA</strong><br><br>
+          <strong>Types of Lipids:</strong>
+          <ol style="margin:6px 0 0 18px;line-height:2">
+            <li><strong>Triacylglycerol (TAG)</strong> — main dietary lipid AND main storage form in adipose tissue</li>
+            <li><strong>Cholesterol</strong></li>
+            <li><strong>Cholesteryl ester</strong> = Cholesterol + Fatty acid</li>
+            <li><strong>Phospholipids</strong></li>
+          </ol>
+        </div>
+        <div class="exp-ar">بالبلدي كده يا دكاترة — الدهون في جسمنا مش نوع واحد! أهمهم الـ TAG اللي هو الدهن الأساسي في الأكل وفي مخازن الجسم. الشكل النشط لأي حمض دهني هو الـ Acyl-CoA.</div>
+      </div>
+    </div>
+
+    <!-- 1.2 Digestion -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.2 — Digestion of TAG</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Step 1 — Emulsification by Bile Salts:</strong>
+          <ul style="margin:6px 0 0 16px;line-height:1.9">
+            <li>Bile salts: produced in <strong>liver</strong>, stored in <strong>gallbladder</strong></li>
+            <li>Break fat globules → tiny <strong>micelles</strong> (↓ surface tension, ↑ surface area)</li>
+            <li>Also <strong>activate</strong> pancreatic lipase</li>
+          </ul>
+          <br>
+          <strong>Step 2 — Pancreatic Lipase:</strong>
+          <ul style="margin:6px 0 0 16px;line-height:1.9">
+            <li>Requires cofactor: <strong>Colipase</strong></li>
+            <li>Specific for positions <strong>sn-1 and sn-3</strong> of TAG → 2 Free FAs + 1 Monoacylglycerol (2-MAG)</li>
+            <li><strong>Activators:</strong> Ca²⁺ and Bile salts</li>
+          </ul>
+          <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);border-radius:10px;padding:10px 14px;margin-top:10px">
+            <strong style="color:#f87171">⚠️ Steatorrhea:</strong> Fat excreted in stool — caused by deficiency of lipase or colipase. <strong>Orlistat</strong> (obesity drug) works by inhibiting pancreatic lipase.
+          </div>
+        </div>
+        <div class="exp-ar">أملاح الصفراء بتقطع الدهن لقطع صغيرة (Emulsification) — زي الـ Fairy liquid. ثم Pancreatic Lipase بيكسر الـ TAG في مواضع 1 و 3. محتاج مساعد اسمه Colipase. لو الاتنين ناقصين → Steatorrhea.</div>
+      </div>
+    </div>
+
+    <!-- 1.3 Transport -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.3 — Lipid Transport & Lipoproteins</h4>
+      <div class="exp-block">
+        <div class="exp-eng">Lipids are <strong>insoluble in blood</strong> → transported as <strong>Lipoprotein particles</strong> (lipid core + phospholipid shell + apolipoproteins).</div>
+        <div class="exp-ar">الدهون مش بتذوب في الدم — عشان كده الجسم صنع "عربيات نقل" اسمها Lipoproteins. في 4 أنواع.</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-family:'Cairo',sans-serif;font-size:13px">
+        <thead><tr style="background:rgba(220,38,38,.2)">
+          <th style="padding:9px 12px;color:var(--white);text-align:left;border-bottom:1px solid rgba(220,38,38,.3)">Lipoprotein</th>
+          <th style="padding:9px 12px;color:var(--white);text-align:center;border-bottom:1px solid rgba(220,38,38,.3)">Origin</th>
+          <th style="padding:9px 12px;color:var(--white);text-align:center;border-bottom:1px solid rgba(220,38,38,.3)">Main Cargo</th>
+          <th style="padding:9px 12px;color:var(--white);text-align:center;border-bottom:1px solid rgba(220,38,38,.3)">Direction</th>
+          <th style="padding:9px 12px;color:var(--white);text-align:center;border-bottom:1px solid rgba(220,38,38,.3)">Label</th>
+        </tr></thead>
+        <tbody>
+          <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:#f4a261">Chylomicrons</td><td style="padding:8px 12px;text-align:center">Intestine</td><td style="padding:8px 12px;text-align:center">Dietary TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gut → Lymph → Blood</td><td style="padding:8px 12px;text-align:center">—</td></tr>
+          <tr><td style="padding:8px 12px;font-weight:700;color:var(--teal)">VLDL</td><td style="padding:8px 12px;text-align:center">Liver</td><td style="padding:8px 12px;text-align:center">Liver TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center">Pre-β</td></tr>
+          <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--danger)">LDL</td><td style="padding:8px 12px;text-align:center">From VLDL</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center;color:var(--danger);font-weight:700">❌ Bad</td></tr>
+          <tr><td style="padding:8px 12px;font-weight:700;color:var(--green)">HDL</td><td style="padding:8px 12px;text-align:center">Liver/Intestine</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Tissues → Liver</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅ Good</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.4 Lipolysis & β-Oxidation -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.4 — Lipolysis & β-Oxidation</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Lipolysis:</strong> Hydrolysis of TAG in adipose tissue by <strong>Hormone-Sensitive Lipase (HSL)</strong> — stimulated by <strong>Epinephrine</strong>.<br><br>
+          <strong>β-Oxidation — 3 Stages:</strong><br><br>
+          <strong>Stage I — Activation (Cytosol):</strong><br>
+          FFA + CoA + ATP →<strong>(Thiokinase)</strong>→ Acyl-CoA + AMP + PPi &nbsp;<span style="color:var(--muted)">[Cost: 2 ATP]</span><br><br>
+          <strong>Stage II — Carnitine Shuttle:</strong><br>
+          Acyl-CoA →(CPT-I)→ Acyl-Carnitine → crosses inner membrane → Acyl-CoA (inside matrix)<br><br>
+          <strong>Stage III — Oxidation Cycles (Mitochondrial Matrix):</strong><br>
+          Each cycle: 1 Acyl-CoA → 1 Acetyl-CoA + 1 FADH₂ + 1 NADH<br><br>
+          <div style="background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.2);border-radius:10px;padding:12px">
+            <strong style="color:var(--teal)">⚡ Energy: Palmitic Acid C16</strong><br>
+            7 cycles → 7 FADH₂ + 7 NADH (35 ATP) + 8 Acetyl-CoA (×12 = 96 ATP) − 2 = <strong style="color:#ffd60a">129 ATP</strong><br>
+            Stearic Acid C18: 8 cycles + 9 Acetyl-CoA = <strong style="color:#ffd60a">146 ATP</strong>
+          </div>
+        </div>
+        <div class="exp-ar">Lipolysis = تكسير الدهون بواسطة Hormone Sensitive Lipase (بيتنشط بالأدرينالين). الأحماض الدهنية بتعدي 3 مراحل: تفعيل في Cytosol (تكلف 2 ATP) ← نقل للـ Mitochondria بواسطة Carnitine ← أكسدة في دورات. كل دورة تقصر السلسلة 2 كربون وتطلع Acetyl-CoA + FADH₂ + NADH.</div>
+      </div>
+    </div>
+
+    <!-- 1.5 Ketone Bodies -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.5 — Ketone Bodies</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Three Ketone Bodies:</strong> Acetoacetate | <strong>β-Hydroxybutyrate</strong> (predominant in blood/urine) | Acetone (breath)<br><br>
+          <strong>Ketogenesis:</strong> Site = Liver mitochondria | Building unit = Acetyl-CoA | Key enzyme = <strong>HMG-CoA Synthase</strong><br>
+          Pathway: 2 Acetyl-CoA → Acetoacetyl-CoA → HMG-CoA → Acetoacetate → β-OH Butyrate / Acetone<br><br>
+          <strong>Ketolysis:</strong> Site = Extrahepatic tissues (muscle, brain, heart). <em>Liver CANNOT oxidize ketones</em> — lacks <strong>Thiophorase</strong>. Requires <strong>Succinyl-CoA</strong> from TCA.<br><br>
+          <div style="background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.25);border-radius:10px;padding:10px 14px">
+            <strong style="color:var(--danger)">⚠️ Ketosis Causes:</strong> Uncontrolled DM, Starvation, Low CHO diet, High fat diet.<br>
+            Ketones are <strong>acidic</strong> → Ketoacidosis → coma if severe.
+          </div>
+        </div>
+        <div class="exp-ar">أجسام الكيتون بتتصنع في الكبد لكنه مش بيقدر يحرقهم! بيبعتهم للأنسجة الأخرى. المخ بيعتمد عليهم وقت الصيام. لو تراكموا جداً → Ketoacidosis → خطر.</div>
+      </div>
+    </div>
+
+    <!-- 1.6 Cholesterol -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.6 — Cholesterol: Biosynthesis & Regulation</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Building unit:</strong> Acetyl-CoA (source of ALL 27 carbons)<br>
+          <strong>Site:</strong> Cytosol + ER (mainly liver & intestine)<br>
+          <strong>Key enzyme: HMG-CoA Reductase</strong> — target of <strong>Statins</strong><br>
+          • Active = Dephosphorylated &nbsp;|&nbsp; Inactive = Phosphorylated<br>
+          • Inducers (↑): <strong>Insulin, Thyroid hormones</strong><br>
+          • Repressor (↓): <strong>Glucagon</strong><br><br>
+          <strong>Functions:</strong> Cell membranes | <strong>Vitamin D₃</strong> | Steroid hormones | Bile acids<br>
+          <strong>Excretion:</strong> → Bile acids → <strong>Coprostanol</strong> (principal fecal sterol)<br>
+          <strong>Normal:</strong> 150–230 mg%
+        </div>
+        <div class="exp-ar">الكوليسترول مصنوع من Acetyl-CoA. الإنزيم المحوري HMG-CoA Reductase هو هدف أدوية الـ Statins. الإنسولين وهرمونات الغدة الدرقية بيزودوا تخليقه، الجلوكاجون بيقلله.</div>
+      </div>
+    </div>
+
+    <!-- 1.7 Fatty Liver -->
+    <div style="border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">1.7 — Fatty Liver (Steatosis)</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Definition:</strong> Accumulation of TAG in liver cells due to imbalance between TAG formation and VLDL export.<br>
+          <strong>Progression:</strong> Steatosis → Fibrosis → Cirrhosis → Hepatic failure<br>
+          <strong>Lipotropic factors</strong> (prevent fatty liver): <strong>Methionine</strong>, Choline, Betaine, Inositol
+        </div>
+        <div class="exp-ar">Fatty Liver = تراكم TAG في الكبد. لو استمر → تليف ثم تشمع. الميثيونين من أهم الواقيين منه.</div>
+      </div>
+    </div>
+
+  </div><!-- /ch-body -->
+</div><!-- /ch-card Chapter 1 -->
+
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- CHAPTER 2: PROTEIN & AMINO ACID METABOLISM    -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="ch-card">
+  <div class="ch-head open" onclick="tgCh(this)">
+    <h3>🔬 Chapter 2 — Protein & Amino Acid Metabolism</h3>
+    <span class="tog">▾</span>
+  </div>
+  <div class="ch-body open">
+
+    <!-- 2.1 General Protein -->
+    <div style="margin-bottom:20px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">2.1 — General Protein Metabolism & Nitrogen Balance</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Protein Turnover:</strong> ~1–2% of body protein degraded and re-synthesized daily.<br><br>
+          <strong>Amino Acid Classifications:</strong>
+          <ul style="margin:6px 0 0 16px;line-height:1.9">
+            <li><strong>Essential</strong>: PHE, VAL, THR, TRP, ILE, MET, HIS, ARG, LEU, LYS</li>
+            <li><strong>Non-essential</strong>: synthesized endogenously (GLY, GLU, CYS, TYR, SER…)</li>
+            <li><strong>Glucogenic</strong> | <strong>Ketogenic</strong> (Leucine only) | <strong>Gluco + Ketogenic</strong>: PHE, TYR, TRP, ILE, LYS</li>
+          </ul>
+        </div>
+        <div class="exp-ar">البروتين في جسمنا بيتجدد باستمرار. الأحماض الأمينية منها أساسي (لازم تاكله) ومنها غير أساسي (جسمك بيصنعه).</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-family:'Cairo',sans-serif;font-size:13px">
+        <thead><tr style="background:rgba(220,38,38,.2)"><th style="padding:9px 12px;color:var(--white);border-bottom:1px solid rgba(220,38,38,.3)">State</th><th style="padding:9px 12px;text-align:center;color:var(--white);border-bottom:1px solid rgba(220,38,38,.3)">Condition</th><th style="padding:9px 12px;text-align:center;color:var(--white);border-bottom:1px solid rgba(220,38,38,.3)">Examples</th></tr></thead>
+        <tbody>
+          <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--teal)">Equilibrium</td><td style="padding:8px 12px;text-align:center">Intake = Output</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Healthy adult</td></tr>
+          <tr><td style="padding:8px 12px;font-weight:700;color:var(--green)">+ve Balance</td><td style="padding:8px 12px;text-align:center">Intake &gt; Output</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Growth, Pregnancy</td></tr>
+          <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--danger)">−ve Balance</td><td style="padding:8px 12px;text-align:center">Intake &lt; Output</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">TB, Uncontrolled DM, Cancer, Surgery</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.2 Urea Cycle -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">2.2 — Urea Cycle & Ammonia Intoxication</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          Converts toxic <strong>NH₃</strong> (from AA deamination) → non-toxic <strong>Urea</strong> for urinary excretion.<br>
+          <strong>Site:</strong> Liver (Mitochondria + Cytosol)<br>
+          <strong>Normal urea plasma:</strong> 20–40 mg/dL &nbsp;|&nbsp; <strong>Urine:</strong> 20–40 g/day<br><br>
+          <strong>Ammonia Intoxication:</strong> liver disease → NH₃ ↑ → depletes α-ketoglutarate (TCA) → ↓ ATP → brain dysfunction → <em>tremors, coma</em>
+        </div>
+        <div class="exp-ar">دورة اليوريا بتحول الأمونيا السامة ليوريا تطرح في البول. لو الكبد مريض → الأمونيا تتراكم → تسمم المخ → رعشة وغيبوبة.</div>
+      </div>
+    </div>
+
+    <!-- 2.3 Individual AAs -->
+    <div style="margin-bottom:20px;border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">2.3 — Individual Amino Acid Metabolism</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>GLYCINE</strong> — Non-essential, Glucogenic, simplest AA, major in Collagen (Gly-X-Y)<br>
+          <em>Mnemonic: <strong style="color:#f4a261">PCTBG</strong></em> — <strong>P</strong>orphyrins (Heme) | <strong>C</strong>reatine | <strong>T</strong>aurine/Bile salts | <strong>B</strong>ile salts | <strong>G</strong>lutathione<br><br>
+          <strong>Glutathione (GSH):</strong> Glu + Cys + Gly tripeptide — antioxidant, protects RBCs, detoxifies drugs<br><br>
+          <strong>PHENYLALANINE & TYROSINE</strong> — both Aromatic, Gluco+Ketogenic<br>
+          PHE →(Phe Hydroxylase)→ TYR →(Tyrosinase)→ <strong>Melanin</strong> | → T3/T4 | → Epinephrine<br>
+          <div style="background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.25);border-radius:10px;padding:10px 14px;margin:10px 0">
+            <strong style="color:var(--danger)">PKU:</strong> ↓ Phe Hydroxylase → PHE accumulates → mental retardation | Tx: Low PHE diet<br>
+            <strong style="color:var(--danger)">Albinism:</strong> ↓ Tyrosinase → no melanin → loss of pigmentation
+          </div>
+          <strong>TRYPTOPHAN</strong> — Essential, Aromatic (indole ring), Gluco+Ketogenic<br>
+          → <strong>Niacin (Vit B3)</strong> | → <strong>Serotonin</strong> (vasoconstrictor, mood) → <strong>Melatonin</strong> (sleep)<br><br>
+          <strong>SULFUR-CONTAINING AAs:</strong><br>
+          • <strong>Cysteine:</strong> Non-essential, –SH group, used in Glutathione/Keratin/Taurine<br>
+          • <strong>Methionine:</strong> Essential, Lipotropic (prevents fatty liver), generates <strong>SAM</strong> (methyl donor)
+        </div>
+        <div class="exp-ar">الجلايسين مهم جداً — تذكر PCTBG! الفينيل ألانين يتحول للتيروسين. لو إنزيم التحويل ناقص → PKU (تخلف عقلي). لو التيروسيناز ناقص → المهق. التريبتوفان يعمل السيروتونين (مؤثر على المزاج) والميلاتونين (هرمون النوم).</div>
+      </div>
+    </div>
+
+    <!-- 2.4 Purine Metabolism & Gout -->
+    <div style="border-top:1px solid var(--border);padding-top:16px">
+      <h4 style="color:var(--teal);font-family:'Syne',sans-serif;margin-bottom:10px;font-size:15px">2.4 — Purine Metabolism & Gout</h4>
+      <div class="exp-block">
+        <div class="exp-eng">
+          <strong>Uric acid</strong> = end product of purine catabolism<br>
+          Adenine / Guanine → Xanthine →<strong>(Xanthine Oxidase)</strong>→ Uric Acid<br>
+          <strong>Normal:</strong> 3–6 mg% &nbsp;|&nbsp; <strong>Gout threshold:</strong> &gt;7 mg%<br><br>
+          <strong>GOUT:</strong> Painful arthritis → uric acid crystal deposition in joints<br>
+          Mechanism: crystals → phagocytosis by polymorphs → cell lysis → chemotactic substances → more inflammation<br>
+          <strong>Treatment: Colchicine</strong> — inhibits phagocytosis and chemotactic release<br><br>
+          <strong>Lesch-Nyhan Syndrome:</strong> ↑ PRPP synthesis → excess uric acid → cerebral palsy, self-mutilation
+        </div>
+        <div class="exp-ar">النقرس بيحصل لما حمض اليوريك يتراكم فوق 7 mg% → بلورات في المفاصل → التهاب شديد. العلاج بالكولشيسين اللي بيوقف الالتهاب.</div>
+      </div>
+    </div>
+
+  </div><!-- /ch-body -->
+</div><!-- /ch-card Chapter 2 -->
+`,
   dentition:`
 <!-- ══ GENERAL INTRO ══ -->
 <div class="ch-card">
@@ -1677,6 +2234,7 @@ function renderSharh(){
   } else {
     el.innerHTML=saved||sample;
   }
+  if(window.wrapTables) setTimeout(window.wrapTables, 50);
 }
 
 // MLAKHS (ملخص)
@@ -1688,6 +2246,7 @@ function renderMlakhs(){
   } else {
     el.innerHTML=saved||SUMM[CS.id]||coming('الملخص');
   }
+  if(window.wrapTables) setTimeout(window.wrapTables, 50);
 }
 
 // ═══════════ HISTOLOGY PRACTICAL DATA ═══════════
@@ -2958,7 +3517,8 @@ function buildQ(q,i,saved){
     if(ans){c+=' locked';if(oi===q.answer)c+=' correct';else if(oi===saved)c+=' wrong';}
     return `<div class="${c}" onclick="ansQ('${q.id}',${oi})"><span class="ol">${L[oi]}</span>${o}</div>`;
   }).join('');
-  return `<div class="qcard${q.starred?' starred':''}" id="qc-${q.id}"><div class="qnum">سؤال ${i+1}</div><div class="qtxt">${q.text}</div><div class="opts" id="opts-${q.id}">${opts}</div><div class="ans${ans?' show':''}" id="rev-${q.id}"><strong>✅ الإجابة: ${q.options[q.answer]}</strong><br><br>${q.explanation}</div><button class="bshow" onclick="showAns('${q.id}',${q.answer})">عرض الإجابة</button></div>`;
+  const aiBadge=q.ai?`<span style="display:inline-block;font-size:9px;font-weight:800;letter-spacing:.5px;background:linear-gradient(135deg,rgba(0,180,216,.18),rgba(124,58,237,.18));color:var(--teal);border:1px solid rgba(0,180,216,.3);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle;font-family:'Syne',sans-serif">ai</span>`:'';
+  return `<div class="qcard${q.starred?' starred':''}" id="qc-${q.id}"><div class="qnum">سؤال ${i+1}${aiBadge}</div><div class="qtxt">${q.text}</div><div class="opts" id="opts-${q.id}">${opts}</div><div class="ans${ans?' show':''}" id="rev-${q.id}"><strong>✅ الإجابة: ${q.options[q.answer]}</strong><br><br>${q.explanation}</div><button class="bshow" onclick="showAns('${q.id}',${q.answer})">عرض الإجابة</button></div>`;
 }
 
 function ansQ(qid,sel){
@@ -3766,6 +4326,25 @@ function showToast(msg){
     else localStorage.removeItem('dh_session');
   }
   document.getElementById('auth-modal').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
+})();
+
+// Mobile table fix - auto-wrap tables
+(function(){
+  function wrapTables(){
+    document.querySelectorAll('.ch-body table, .lblock table').forEach(function(t){
+      if(t.parentElement.classList.contains('tbl-scroll')) return;
+      var w = document.createElement('div');
+      w.className = 'tbl-scroll';
+      w.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;margin-bottom:14px';
+      t.parentNode.insertBefore(w, t);
+      w.appendChild(t);
+      t.style.minWidth = '480px';
+    });
+  }
+  // Run after content renders
+  document.addEventListener('DOMContentLoaded', wrapTables);
+  // Also expose for dynamic content
+  window.wrapTables = wrapTables;
 })();
 </script>
 </body>
