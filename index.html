@@ -982,10 +982,7 @@ const QS = {
     {id:'h2',starred:false,text:'What is the main function of fibroblasts in connective tissue?',options:['Phagocytosis','Collagen production','Immune response','Fat storage'],answer:1,explanation:'الـ Fibroblasts وظيفتها إنتاج ألياف الكولاجين (Collagen). هم زي العمال اللي بيبنوا الهيكل الأساسي للأنسجة!'},
     {id:'h3',starred:true, text:"The periodontal ligament is composed mainly of:",options:['Elastic fibers','Reticular fibers',"Collagen fibers (Sharpey's)",'Oxytalan fibers'],answer:2,explanation:"الـ PDL مكون من Sharpey's fibers (Collagen). بتربط السنة بالعظم السنخي وبتشتغل زي المخد اللي بيحمي السنة وقت المضغ."}
   ],
-  physiology:[
-    {id:'p1',starred:true, text:'The resting membrane potential of a typical neuron is:',options:['-90 mV','-70 mV','+30 mV','0 mV'],answer:1,explanation:'Resting Membrane Potential = -70 mV. الجانب الداخلي من الخلية سالب بسبب فارق في Na⁺ و K⁺ على جانبي الغشاء.'},
-    {id:'p2',starred:false,text:'Which ion is responsible for the rising phase of action potential?',options:['K⁺','Ca²⁺','Na⁺','Cl⁻'],answer:2,explanation:'Na⁺ المسؤول عن الـ Rising Phase. قنوات الصوديوم بتنفتح فيدخل جوا الخلية بسرعة ويخلي الجهد +30mV.'}
-  ],
+  physiology:[],
   anatomy:[
     {id:'a1',starred:true, text:'The inferior alveolar nerve is a branch of:',options:['CN V1','CN V2','CN V3','CN VII'],answer:2,explanation:'الـ Inferior Alveolar Nerve من CN V3 (Mandibular). ده أهم عصب في طب الأسنان — بنبجه في الـ Inferior Alveolar Block!'},
     {id:'a2',starred:false,text:'Which muscle is the primary elevator of the mandible?',options:['Digastric','Mylohyoid','Masseter','Buccinator'],answer:2,explanation:'الـ Masseter هو المسؤول عن إغلاق الفم. أقوى عضلة بالنسبة لحجمها في الجسم!'}
@@ -1493,7 +1490,14 @@ const SUMM = {
 // Sample explanation per subject
 const SHARH_SAMPLE = {
   histology:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Introduction to Histology</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Histology is the scientific study of the microscopic structure of tissues. It examines tissues at the cellular level using microscopes and forms the foundation for understanding pathological conditions.</div><div class="exp-ar">الهستولوجي هو علم دراسة الأنسجة تحت الميكروسكوب. بدل ما تشوف الجسم بعينك العادية، بتحط الأنسجة تحت المجهر وتشوف الخلايا. زي ما لو قطعت شريحة رفيعة من تفاحة وحطيتها تحت المجهر — هتلاقي حاجات مش شايفاها بعينك!</div></div></div></div>`,
-  physiology:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Cell Physiology</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Physiology is the study of how living organisms function, examining chemical and physical processes at cellular, tissue, organ, and system levels.</div><div class="exp-ar">الفيزيولوجي هو علم "ليه وإزاي الجسم بيشتغل؟". إيه اللي بيخلي قلبك ينبض؟ وإزاي رئتك بتتنفس؟ ده هو الفيزيولوجي — مش بس "إيه اللي موجود؟"، لأ "ليه بيشتغل كده؟"</div></div></div></div>`,
+  physiology:`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;gap:20px">
+  <div style="font-size:52px">❤️</div>
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)">شرح الفيزيولوجي موجود هنا 👇</div>
+  <div style="font-family:'Cairo',sans-serif;font-size:14px;color:var(--muted);max-width:360px;line-height:1.9">الشرح الكامل لمادة الفيزيولوجي متاح على موقع مخصص — اضغط الزرار اللي تحت عشان تروحله!</div>
+  <a href="https://omar-walid-1.github.io/physiology-hub" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--teal);color:#fff;border-radius:12px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 6px 20px rgba(0,180,216,.3)" onmouseover="this.style.background='var(--teal2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 28px rgba(0,180,216,.4)'" onmouseout="this.style.background='var(--teal)';this.style.transform='translateY(0)';this.style.boxShadow='0 6px 20px rgba(0,180,216,.3)'">
+    🌐 اذهب لموقع شرح الفيزيولوجي
+  </a>
+</div>`,
   anatomy:`<div class="ch-card"><div class="ch-head open" onclick="tgCh(this)"><h3>Chapter 1 — Head & Neck Anatomy</h3><span class="tog">▾</span></div><div class="ch-body open"><div class="exp-block"><div class="exp-eng">Head and neck anatomy covers the oral cavity, TMJ, muscles of mastication, salivary glands, and neurovascular supply — all critical for dentistry.</div><div class="exp-ar">تشريح الرأس والرقبة أهم مادة في طب الأسنان! شغلتك كلها في الرأس والوجه، فلازم تعرف كل عضلة وعصب وشريان. تخيل إنك عايز تبنج مريض — لازم تعرف مكان العصب بالظبط!</div></div></div></div>`,
   biochemistry:`
 
@@ -3582,6 +3586,17 @@ function saveCnt(key){
 // BANK
 function renderBank(){
   const el=document.getElementById('c-bank');
+  if(CS.id==='physiology'){
+    el.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;gap:20px">
+  <div style="font-size:52px">❤️</div>
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)">بنك أسئلة الفيزيولوجي موجود هنا 👇</div>
+  <div style="font-family:'Cairo',sans-serif;font-size:14px;color:var(--muted);max-width:360px;line-height:1.9">أسئلة مادة الفيزيولوجي متاحة على موقع مخصص — اضغط الزرار اللي تحت عشان تروحله!</div>
+  <a href="https://omar-walid-1.github.io/physiology-hub" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--teal);color:#fff;border-radius:12px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 6px 20px rgba(0,180,216,.3)" onmouseover="this.style.background='var(--teal2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 28px rgba(0,180,216,.4)'" onmouseout="this.style.background='var(--teal)';this.style.transform='translateY(0)';this.style.boxShadow='0 6px 20px rgba(0,180,216,.3)'">
+    🌐 اذهب لموقع أسئلة الفيزيولوجي
+  </a>
+</div>`;
+    return;
+  }
   const qs=QS[CS.id]||[];
   if(!qs.length){ el.innerHTML=coming('بنك الأسئلة'); return; }
   const slv=CU.solved||{};
