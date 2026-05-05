@@ -5,6 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dental Hub 🦷</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get, push, update, onValue, child }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ══ FIREBASE CONFIG ══
+  const firebaseConfig = {
+    apiKey: "AIzaSyDHVZJdTYEb0bNjAYG2QRu5GOTJSAb4mQA",
+    authDomain: "dental-hub-omarwalid.firebaseapp.com",
+    databaseURL: "https://dental-hub-omarwalid-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "dental-hub-omarwalid",
+    storageBucket: "dental-hub-omarwalid.firebasestorage.app",
+    messagingSenderId: "1613434271",
+    appId: "1:1613434271:web:774569a44a4a99f33481aa",
+    measurementId: "G-8P8QQMZYW7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  // ── Expose DB helpers on window so the rest of the app can use them ──
+  window._fb = {
+    // Get all users
+    getUsers: async () => {
+      const snap = await get(ref(db, 'users'));
+      if (!snap.exists()) return [];
+      const obj = snap.val();
+      return Object.values(obj);
+    },
+    // Save full users array (admin bulk write)
+    setUsers: async (arr) => {
+      const obj = {};
+      arr.forEach(u => { obj[u.id] = u; });
+      await set(ref(db, 'users'), obj);
+    },
+    // Add single user
+    addUser: async (user) => {
+      await set(ref(db, 'users/' + user.id), user);
+    },
+    // Update single user field
+    updateUser: async (uid, data) => {
+      await update(ref(db, 'users/' + uid), data);
+    },
+    // Listen for users changes (admin panel live update)
+    listenUsers: (cb) => {
+      onValue(ref(db, 'users'), snap => {
+        cb(snap.exists() ? Object.values(snap.val()) : []);
+      });
+    },
+    ready: true
+  };
+
+  window.dispatchEvent(new Event('fb-ready'));
+  console.log('✅ Firebase connected');
+</script>
 <style>
 :root{
   --bg:#031c2d;--bg2:#042638;--card:#072638;--card2:#0a3248;
@@ -22,7 +78,7 @@ html{overflow-x:hidden;max-width:100vw}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;max-width:100vw;width:100%}
 
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:200;background:rgba(3,28,45,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;width:100%;max-width:100vw;overflow:hidden}
+.nav{position:sticky;top:0;z-index:200;background:rgba(3,28,45,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;width:100%;max-width:100vw}
 .nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;min-width:0}
 .nav-brand .ico{font-size:24px;filter:drop-shadow(0 0 8px rgba(0,180,216,.5))}
 .nav-brand .txt{display:flex;flex-direction:column;line-height:1.15;min-width:0}
@@ -283,15 +339,17 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
   .feat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}
 
   /* ── NAV mobile fix (ROOT CAUSE of the shift) ── */
-  .nav{padding:0 10px;gap:6px;height:56px}
-  .nav-mid{display:none}                          /* hide social icons */
-  .nav-brand .name{font-size:14px}
-  .nav-brand .ico{font-size:20px}
-  .nav-right{gap:5px}
+  .nav{padding:0 10px;gap:5px;height:auto;min-height:56px;flex-wrap:nowrap}
+  .nav-mid{display:none}
+  .nav-brand .name{font-size:13px}
+  .nav-brand .ico{font-size:18px}
+  .nav-brand .by{display:none}
+  .nav-right{gap:4px;flex-shrink:0}
+  #adm-btn{padding:4px 8px !important;font-size:10px !important}
   .nav-right .btn{padding:5px 9px;font-size:11px}
-  .nav-user{padding:3px 8px 3px 3px;gap:5px}
-  .nav-uname{font-size:11px;max-width:60px;overflow:hidden;text-overflow:ellipsis}
-  .nav-av{width:24px;height:24px;font-size:10px}
+  .nav-user{padding:3px 7px 3px 3px;gap:4px}
+  .nav-uname{font-size:10px;max-width:55px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .nav-av{width:22px;height:22px;font-size:9px}
 
   /* ── Chapter content mobile fixes ── */
   .ch-head h3{font-size:12.5px !important}
@@ -2019,31 +2077,55 @@ const SHARH_SAMPLE = {
 };
 
 // ═══════════ STORAGE ═══════════
-const getU  = () => JSON.parse(localStorage.getItem('dh_users')||'[]');
-const setU  = u  => localStorage.setItem('dh_users', JSON.stringify(u));
+// ══ USER STORAGE — Firebase (shared) + localStorage fallback ══
+const getU = async () => {
+  if (window._fb?.ready) {
+    try { return await window._fb.getUsers(); } catch(e) {}
+  }
+  return JSON.parse(localStorage.getItem('dh_users')||'[]');
+};
+const setU = async (arr) => {
+  if (window._fb?.ready) {
+    try { await window._fb.setUsers(arr); } catch(e) {}
+  }
+  localStorage.setItem('dh_users', JSON.stringify(arr));
+};
+const addUserDB = async (user) => {
+  if (window._fb?.ready) {
+    try { await window._fb.addUser(user); } catch(e) {}
+  }
+  const arr = JSON.parse(localStorage.getItem('dh_users')||'[]');
+  arr.push(user);
+  localStorage.setItem('dh_users', JSON.stringify(arr));
+};
+const updateUserDB = async (uid, data) => {
+  if (window._fb?.ready) {
+    try { await window._fb.updateUser(uid, data); return; } catch(e) {}
+  }
+  const arr = JSON.parse(localStorage.getItem('dh_users')||'[]');
+  const i = arr.findIndex(u=>u.id===uid);
+  if(i>-1){ Object.assign(arr[i], data); localStorage.setItem('dh_users', JSON.stringify(arr)); }
+};
 const getCnt= k  => localStorage.getItem('dh_cnt_'+k)||'';
 const setCnt= (k,v)=> localStorage.setItem('dh_cnt_'+k, v);
 
-function initAdmin() {
-  let us=getU();
+async function initAdmin() {
+  let us = await getU();
+  let changed = false;
   ADMIN_IDS.forEach((sid, index) => {
     if (!us.find(u => u.sid === sid)) {
-      const adminName = index === 0 ? 'Omar Walid' : 'Admin ' + sid;
+      const adminName  = index === 0 ? 'Omar Walid' : 'Admin ' + sid;
       const adminEmail = index === 0 ? 'admin@dentalhub.com' : `admin${sid}@dentalhub.com`;
       us.unshift({
         id: '__admin_' + sid + '__',
-        name: adminName,
-        sid: sid,
-        email: adminEmail,
-        password: ADMIN_PW,
-        role: 'admin',
-        status: 'active',
-        joined: new Date().toISOString(),
-        solved: {}
+        name: adminName, sid, email: adminEmail,
+        password: ADMIN_PW, role: 'admin',
+        status: 'active', joined: new Date().toISOString(), solved: {}
       });
+      changed = true;
     }
   });
-  setU(us);
+  if (changed) await setU(us);
 }
 
 // ═══════════ STATE ═══════════
@@ -2066,7 +2148,7 @@ function swTab(t){
 function showErr(id,msg){ const e=document.getElementById(id); e.textContent=msg; e.style.display='block'; setTimeout(()=>e.style.display='none',3500); }
 
 // ═══════════ REGISTER ═══════════
-function doReg(){
+async function doReg(){
   const name =document.getElementById('rg-name').value.trim();
   const sid  =document.getElementById('rg-sid').value.trim();
   const email=document.getElementById('rg-email').value.trim();
@@ -2074,19 +2156,17 @@ function doReg(){
   if(!name||!sid||!email||!pw) return showErr('rg-err','اكمل كل الخانات!');
   if(pw.length<6) return showErr('rg-err','كلمة السر أقل من 6 حروف!');
   if(!email.includes('@')) return showErr('rg-err','إيميل غير صحيح!');
-  const us=getU();
+  const us = await getU();
   if(us.find(u=>u.sid===sid)) return showErr('rg-err','الـ Student ID ده موجود بالفعل!');
   if(us.find(u=>u.email===email)) return showErr('rg-err','الإيميل ده موجود بالفعل!');
 
-  // Auto-approve if ID is in valid list
   const inList = VALID_IDS.has(Number(sid));
   const status = inList ? 'active' : 'pending';
 
   const user={id:Date.now().toString(),name,sid,email,password:pw,role:'student',status,joined:new Date().toISOString(),solved:{}};
-  us.push(user); setU(us);
+  await addUserDB(user);
 
   if(inList){
-    // Log in directly
     closeModal();
     setSession(user);
     showApp(user);
@@ -2098,11 +2178,11 @@ function doReg(){
 }
 
 // ═══════════ LOGIN ═══════════
-function doLogin(){
+async function doLogin(){
   const id=document.getElementById('li-id').value.trim();
   const pw=document.getElementById('li-pw').value;
   if(!id||!pw) return showErr('li-err','اكمل كل الخانات!');
-  const us=getU();
+  const us = await getU();
   const u=us.find(x=>(x.sid===id||x.email===id||x.name===id)&&x.password===pw);
   if(!u) return showErr('li-err','البيانات غلطة!');
   if(u.status==='pending') return showErr('li-err','⏳ حسابك في انتظار موافقة الأدمن.');
@@ -3521,14 +3601,13 @@ function buildQ(q,i,saved){
   return `<div class="qcard${q.starred?' starred':''}" id="qc-${q.id}"><div class="qnum">سؤال ${i+1}${aiBadge}</div><div class="qtxt">${q.text}</div><div class="opts" id="opts-${q.id}">${opts}</div><div class="ans${ans?' show':''}" id="rev-${q.id}"><strong>✅ الإجابة: ${q.options[q.answer]}</strong><br><br>${q.explanation}</div><button class="bshow" onclick="showAns('${q.id}',${q.answer})">عرض الإجابة</button></div>`;
 }
 
-function ansQ(qid,sel){
+async function ansQ(qid,sel){
   const q=QS[CS.id].find(x=>x.id===qid);
   const key=CS.id+'_'+qid;
   if(CU.solved?.[key]!==undefined) return;
   if(!CU.solved) CU.solved={};
   CU.solved[key]=sel;
-  const us=getU(); const idx=us.findIndex(u=>u.id===CU.id);
-  if(idx>=0){us[idx].solved=CU.solved;setU(us);}
+  updateUserDB(CU.id, {solved: CU.solved}).catch(()=>{});
   document.getElementById('opts-'+qid).querySelectorAll('.opt').forEach((el,oi)=>{
     el.classList.add('locked'); el.onclick=null;
     if(oi===q.answer)el.classList.add('correct');
@@ -4265,8 +4344,24 @@ function bcLbRender(){
 // ── Main render entry ──
 
 // ═══════════ ADMIN ═══════════
-function renderAdmin(){
-  const us=getU().filter(u=>u.role!=='admin');
+async function renderAdmin(){
+  let us;
+  if(window._fb?.ready){
+    us = await window._fb.getUsers();
+    // Set up live listener for real-time updates
+    if(!window._fbAdminListener){
+      window._fbAdminListener = true;
+      window._fb.listenUsers(users=>{
+        _renderAdminTable(users.filter(u=>u.role!=='admin'));
+      });
+    }
+  } else {
+    us = JSON.parse(localStorage.getItem('dh_users')||'[]');
+  }
+  _renderAdminTable(us.filter(u=>u.role!=='admin'));
+}
+
+function _renderAdminTable(us){
   const pen=us.filter(u=>u.status==='pending').length;
   const act=us.filter(u=>u.status==='active').length;
   const blk=us.filter(u=>u.status==='blocked').length;
@@ -4284,10 +4379,8 @@ function renderAdmin(){
   }).join('');
 }
 
-function admAct(uid,st){
-  const us=getU(); const i=us.findIndex(u=>u.id===uid);
-  if(i<0) return;
-  us[i].status=st; setU(us);
+async function admAct(uid,st){
+  await updateUserDB(uid, {status: st});
   renderAdmin();
   showToast({active:'✅ تم قبول الطالب!',blocked:'🚫 تم الحظر',pending:'⏳ تم التحديث'}[st]||'تم');
 }
@@ -4316,12 +4409,20 @@ function showToast(msg){
 }
 
 // ═══════════ INIT ═══════════
-(function(){
-  initAdmin();
+(async function(){
   renderLanding();
+  // Wait for Firebase if available, else proceed immediately
+  if(!window._fb?.ready){
+    await new Promise(res=>{
+      const t=setTimeout(res,2500); // max wait 2.5s
+      window.addEventListener('fb-ready',()=>{ clearTimeout(t); res(); },{once:true});
+    });
+  }
+  await initAdmin();
   const sid=localStorage.getItem('dh_session');
   if(sid){
-    const u=getU().find(x=>x.id===sid);
+    const us = await getU();
+    const u=us.find(x=>x.id===sid);
     if(u&&u.status==='active'){ setSession(u); showApp(u); }
     else localStorage.removeItem('dh_session');
   }
