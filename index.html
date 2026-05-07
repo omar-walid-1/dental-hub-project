@@ -8,7 +8,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get, push, update, onValue, child }
+  import { getDatabase, ref, set, get, push, update, onValue, child, remove, onDisconnect, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   // ══ FIREBASE CONFIG ══
@@ -55,6 +55,28 @@
         cb(snap.exists() ? Object.values(snap.val()) : []);
       });
     },
+    // Delete a user from /users/{uid} and /presence/{uid}
+    deleteUser: async (uid) => {
+      await remove(ref(db, 'users/' + uid));
+      await remove(ref(db, 'presence/' + uid));
+    },
+    // Online presence: write session entry + set onDisconnect handler
+    goOnline: (uid, sessionKey) => {
+      const r = ref(db, 'presence/' + uid + '/' + sessionKey);
+      set(r, { online: true, lastSeen: serverTimestamp(), ua: navigator.userAgent });
+      onDisconnect(r).set({ online: false, lastSeen: serverTimestamp() });
+    },
+    // Manually mark session offline
+    goOffline: (uid, sessionKey) => {
+      const r = ref(db, 'presence/' + uid + '/' + sessionKey);
+      set(r, { online: false, lastSeen: serverTimestamp() });
+    },
+    // Listen to all presence data
+    listenPresence: (cb) => {
+      onValue(ref(db, 'presence'), snap => {
+        cb(snap.exists() ? snap.val() : {});
+      });
+    },
     ready: true
   };
 
@@ -84,6 +106,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .img-placeholder .ip-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--orange);letter-spacing:.3px}
 .img-placeholder .ip-name{font-family:'Cairo',sans-serif;font-size:11px;color:var(--text);line-height:1.7;max-width:380px}
 .img-placeholder .ip-badge{background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.35);color:var(--orange);font-size:9px;font-weight:700;padding:2px 10px;border-radius:10px;font-family:'Syne',sans-serif;letter-spacing:.5px;margin-top:4px}
+
+/* ── CHAPTER SELECTOR ── */
+#chapter-select-wrap{padding:0}
+.ch-sel-header{padding:22px 28px 14px;border-bottom:1px solid var(--border)}
+.ch-sel-breadcrumb{font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.ch-sel-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--white);margin-bottom:3px}
+.ch-sel-sub{font-size:12px;color:var(--muted);font-family:'Cairo',sans-serif}
+.ch-sel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:22px 28px}
+.ch-sel-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:22px 18px 18px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;text-align:center}
+.ch-sel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--csc);border-radius:16px 16px 0 0;transition:height .25s}
+.ch-sel-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,var(--csf) 0%,transparent 70%);pointer-events:none}
+.ch-sel-card:hover{border-color:var(--csc);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.ch-sel-card:hover::before{height:5px}
+.cs-ico{font-size:38px;margin-bottom:11px;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
+.cs-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);margin-bottom:2px}
+.cs-title-ar{font-family:'Cairo',sans-serif;font-size:12px;color:var(--muted);margin-bottom:10px}
+.cs-desc{font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif;line-height:1.65;margin-bottom:13px}
+.cs-meta{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.cs-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;font-family:'Cairo',sans-serif}
+.cs-enter{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif;color:var(--muted);transition:all .2s;margin-top:4px}
+.ch-sel-card:hover .cs-enter{color:var(--csc);transform:translateX(3px)}
+/* back strip */
+.ch-back-strip{padding:8px 28px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ch-back-btn-inner{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:5px 12px;transition:all .2s}
+.ch-back-btn-inner:hover{border-color:var(--teal);color:var(--teal)}
+.ch-active-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.3px;color:var(--orange);padding:4px 12px;background:var(--orange-dim);border:1px solid rgba(244,162,97,.3);border-radius:8px}
+@media(max-width:600px){.ch-sel-grid{grid-template-columns:1fr;padding:14px 16px}.ch-sel-header{padding:14px 16px 12px}.ch-back-strip{padding:8px 16px 0}}
 
 /* ── NAV ── */
 .nav{position:sticky;top:0;z-index:200;background:rgba(3,28,45,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;width:100%;max-width:100vw}
@@ -325,6 +374,31 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .ab-bl:hover{background:rgba(230,57,70,.08)}
 .ab-ub{border-color:rgba(0,180,216,.3);color:var(--teal);background:transparent}
 .ab-ub:hover{background:var(--teal-dim)}
+.ab-del{border-color:rgba(230,57,70,.35);color:var(--danger);background:transparent}
+.ab-del:hover{background:rgba(230,57,70,.1)}
+
+/* ── PRESENCE DOTS ── */
+.pdot{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:'Cairo',sans-serif}
+.pdot-circle{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pdot-circle.green{background:var(--green);box-shadow:0 0 6px var(--green);animation:pdot-pulse 2s ease-in-out infinite}
+.pdot-circle.grey{background:var(--muted)}
+@keyframes pdot-pulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:.6;box-shadow:0 0 2px var(--green)}}
+.pdot-devices{font-size:10px;color:var(--muted)}
+
+/* ── DELETE MODAL ── */
+.del-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);z-index:600;display:none;align-items:center;justify-content:center;padding:16px}
+.del-modal.show{display:flex}
+.del-box{background:var(--card);border:1px solid rgba(230,57,70,.4);border-radius:24px;padding:36px;width:100%;max-width:360px;box-shadow:var(--shadow),0 0 30px rgba(230,57,70,.12);animation:mIn .3s ease;text-align:center}
+.del-box .del-ico{font-size:40px;display:block;margin-bottom:14px}
+.del-box h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:8px}
+.del-box p{font-family:'Cairo',sans-serif;font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:22px}
+.del-box .del-name{color:var(--danger);font-weight:700}
+.del-box-btns{display:flex;gap:10px;justify-content:center}
+.del-box-btns button{padding:10px 22px;border-radius:var(--rsm);font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .25s;border:1px solid}
+.del-cancel{background:transparent;border-color:var(--border);color:var(--text)}
+.del-cancel:hover{border-color:var(--teal);color:var(--teal)}
+.del-confirm{background:var(--danger);border-color:var(--danger);color:#fff}
+.del-confirm:hover{background:#c1121f;box-shadow:0 4px 14px rgba(230,57,70,.4)}
 /* Admin content editor */
 .ced{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:14px;margin-top:10px;display:none}
 .ced textarea{width:100%;padding:9px;background:var(--card);border:1px solid var(--border);border-radius:var(--rsm);color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:90px}
@@ -914,8 +988,19 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
       <button class="mtab" id="mt-practice" onclick="swMode('practice',this)">🧪 عملي</button>
     </div>
 
+    <!-- Chapter selector (rendered when subject has chapters) -->
+    <div id="chapter-select-wrap" style="display:none">
+      <div id="chapter-select-inner"></div>
+    </div>
+
+    <!-- Back strip (shown when inside a chapter) -->
+    <div id="ch-back-strip" style="display:none" class="ch-back-strip">
+      <button class="ch-back-btn-inner" onclick="backToChapters()">← الرجوع للـ Chapters</button>
+      <span class="ch-active-label" id="ch-active-label"></span>
+    </div>
+
     <!-- Theory: sub tabs -->
-    <div class="sub-tabs" id="sub-tabs">
+    <div class="sub-tabs" id="sub-tabs" style="display:none">
       <button class="stab on" onclick="swSub('sharh',this)">📖 الشرح</button>
       <button class="stab" onclick="swSub('mlakhs',this)">📋 الملخص</button>
       <button class="stab" onclick="swSub('bank',this)">❓ بنك الأسئلة</button>
@@ -940,7 +1025,20 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
     <div class="adm-stats" id="adm-stats"></div>
     <div class="scard2">
       <h3>👥 المستخدمين</h3>
-      <div style="overflow-x:auto"><table class="utbl"><thead><tr><th>الاسم</th><th>Student ID</th><th>الإيميل</th><th>التسجيل</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="u-tbody"></tbody></table></div>
+      <div style="overflow-x:auto"><table class="utbl"><thead><tr><th>الاسم</th><th>Student ID</th><th>الإيميل</th><th>التسجيل</th><th>الحالة</th><th>🟢 أونلاين</th><th>الإجراءات</th></tr></thead><tbody id="u-tbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DELETE USER MODAL ════ -->
+<div class="del-modal" id="del-modal">
+  <div class="del-box">
+    <span class="del-ico">🗑️</span>
+    <h3>حذف الحساب</h3>
+    <p>هل أنت متأكد أنك تريد حذف حساب<br><span class="del-name" id="del-uname"></span>؟<br><small style="color:var(--muted);font-size:11px">لا يمكن التراجع عن هذا الإجراء</small></p>
+    <div class="del-box-btns">
+      <button class="del-cancel" onclick="closeDelModal()">إلغاء</button>
+      <button class="del-confirm" id="del-confirm-btn">حذف نهائي</button>
     </div>
   </div>
 </div>
@@ -983,7 +1081,191 @@ const SUBJECTS = [
   {id:'dentition',   name:'Dentition',    nameAr:'التسنين',       icon:'😁', color:'#D97706', fade:'rgba(217,119,6,.08)',  hasPractical:true,  desc:'الأسنان وتطورها وتشريحها'}
 ];
 
-// ═══════════ QUESTIONS ═══════════
+// ═══════════ CHAPTER CONFIG (subjects that use the chapter selector) ═══════════
+const CHAPTER_CONFIG = {
+  dentition: [
+    {
+      id:      'molars',
+      icon:    '🦷',
+      title:   'Molars Chapter',
+      titleAr: 'الأضراس الكبيرة',
+      desc:    'Maxillary & Mandibular Molars — Upper/Lower 6, 7, 8',
+      color:   '#f4a261',
+      fade:    'rgba(244,162,97,.1)',
+      qPrefixes: ['dm','d1','d2']   // dm* = molar questions, d1/d2 = general
+    }
+    // ── active chapters ──
+    ,{
+      id:      'premolars',
+      icon:    '🦴',
+      title:   'Premolars Chapter',
+      titleAr: 'الأضراس الصغيرة',
+      desc:    'Maxillary & Mandibular Premolars — Upper/Lower 4, 5',
+      color:   '#22c55e',
+      fade:    'rgba(34,197,94,.1)',
+      qPrefixes: ['dp']
+    }
+    // ── future: canines, deciduous ──
+  ]
+};
+
+// ── Per-chapter summaries (SUMM_CHAPTERS['subjectId:chapterId']) ──
+const SUMM_CHAPTERS = {
+'dentition:molars': `
+<div class="lblock">
+  <h3>📋 ملخص — Molars Chapter</h3>
+
+  <h4>🔵 Upper First Molar (U6) — أهم سنة في الفم</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Cusps</b></td><td>4 cusps أساسيين + Cusp of Carabelli (5th accessory cusp على الـ MB)</td></tr>
+    <tr><td><b>Cusp order</b></td><td>MB > DB > ML > DL (largest to smallest)</td></tr>
+    <tr><td><b>Roots</b></td><td>3 roots: MB (أكبر) · DB · Palatal (أطول وأسمح)</td></tr>
+    <tr><td><b>Root form</b></td><td>Palatal root مستقيم ومخروطي · MB root مقوّس مع 2 canals</td></tr>
+    <tr><td><b>Crown shape</b></td><td>Rhomboidal من الأوكلوزال · العرض الـ Buccal > العرض الـ Lingual</td></tr>
+    <tr><td><b>Oblique ridge</b></td><td>يربط ML cusp بـ DB cusp — مميزة فقط للـ Upper Molars</td></tr>
+    <tr><td><b>Eruption</b></td><td>6 سنوات (first permanent tooth) — تُعرف بـ "6-year molar"</td></tr>
+  </table></div>
+
+  <h4>🔵 Upper Second Molar (U7)</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Cusps</b></td><td>4 cusps (نفس الـ U6 بدون Cusp of Carabelli)</td></tr>
+    <tr><td><b>Crown</b></td><td>أصغر من U6 · أكثر converging للـ Distal</td></tr>
+    <tr><td><b>Roots</b></td><td>3 roots لكن أقرب لبعض (less divergent)</td></tr>
+    <tr><td><b>Eruption</b></td><td>12 سنة — "12-year molar"</td></tr>
+  </table></div>
+
+  <h4>🔵 Upper Third Molar (U8) — Wisdom Tooth</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Variability</b></td><td>Most variable tooth — أشكال مختلفة جداً من شخص لآخر</td></tr>
+    <tr><td><b>Roots</b></td><td>3 roots عادةً لكن ممكن fused أو أكثر من 3</td></tr>
+    <tr><td><b>Crown</b></td><td>أصغر من U7 · Heart-shaped من الأوكلوزال</td></tr>
+    <tr><td><b>Eruption</b></td><td>17–21 سنة — أحياناً impacted ومش بتطلع</td></tr>
+  </table></div>
+
+  <h4>🟠 Lower First Molar (L6) — أكبر سنة في الفم</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Cusps</b></td><td>5 cusps: MB · DB · ML · DL · Distal (الـ 5th هو المميز)</td></tr>
+    <tr><td><b>Cusp order</b></td><td>MB > ML > DB > DL > Distal</td></tr>
+    <tr><td><b>Roots</b></td><td>2 roots: Mesial (أكبر وأعرض، 2 canals) · Distal (أصغر)</td></tr>
+    <tr><td><b>Crown shape</b></td><td>Pentagonal من الأوكلوزال (بسبب الـ 5th cusp)</td></tr>
+    <tr><td><b>Buccal groove</b></td><td>Buccal groove بين MB و DB · Distal cusp يفصله عن الـ DB</td></tr>
+    <tr><td><b>Contact areas</b></td><td>Mesial > Distal · Buccal contact أعلى من Lingual</td></tr>
+    <tr><td><b>Eruption</b></td><td>6 سنوات — أول سنة دائمة تطلع</td></tr>
+  </table></div>
+
+  <h4>🟠 Lower Second Molar (L7)</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Cusps</b></td><td>4 cusps بالتساوي (+ أحياناً 5)</td></tr>
+    <tr><td><b>Crown</b></td><td>Rectangular من الأوكلوزال (× shape للـ grooves)</td></tr>
+    <tr><td><b>Roots</b></td><td>2 roots أقل divergence من الـ L6</td></tr>
+    <tr><td><b>Eruption</b></td><td>12 سنة</td></tr>
+  </table></div>
+
+  <h4>🟠 Lower Third Molar (L8)</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>الخاصية</th><th>التفاصيل</th></tr>
+    <tr><td><b>Variability</b></td><td>Most variable mandibular tooth</td></tr>
+    <tr><td><b>Roots</b></td><td>2 roots عادةً لكن ممكن fused — مشابه للـ L7 لكن أصغر</td></tr>
+    <tr><td><b>Position</b></td><td>غالباً mesially impacted (تحت L7)</td></tr>
+    <tr><td><b>Eruption</b></td><td>17–25 سنة</td></tr>
+  </table></div>
+
+  <h4>⚡ Key Differences: Upper vs Lower Molars</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Upper Molars</th><th>Lower Molars</th></tr>
+    <tr><td><b>Roots</b></td><td>3 roots</td><td>2 roots</td></tr>
+    <tr><td><b>Crown shape</b></td><td>Rhomboidal / Trapezoidal</td><td>Rectangular / Pentagonal (L6)</td></tr>
+    <tr><td><b>Cusps (M6)</b></td><td>4 (+ Carabelli)</td><td>5</td></tr>
+    <tr><td><b>Oblique ridge</b></td><td>✅ موجودة</td><td>❌ غير موجودة</td></tr>
+    <tr><td><b>Largest cusp</b></td><td>MB cusp</td><td>MB cusp</td></tr>
+    <tr><td><b>Lingual cusps</b></td><td>Lingual cusps sharper وأطول</td><td>Buccal cusps sharper</td></tr>
+  </table></div>
+</div>`,
+
+'dentition:premolars': `
+<div class="lblock">
+  <h3>📋 ملخص — Premolars Chapter</h3>
+
+  <h4>📌 General Rules — كل الأضراس الصغيرة</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Feature</th><th>Details</th></tr>
+    <tr><td><b>Number</b></td><td>8 في الفم — 4 upper, 4 lower, 2 في كل quadrant</td></tr>
+    <tr><td><b>Type</b></td><td>Succedaneous — بيحلوا محل Deciduous Molars</td></tr>
+    <tr><td><b>Cusps</b></td><td>كلهم Bicuspid (2 cusps) ماعدا Lower 5 (3-cusp type)</td></tr>
+    <tr><td><b>Lobes</b></td><td>4 lobes ماعدا 3-cusp Lower 5 = 5 lobes</td></tr>
+    <tr><td><b>Buccal outline</b></td><td>كلهم Trapezoid (short side cervical)</td></tr>
+    <tr><td><b>B-L vs M-D</b></td><td>B-L > M-D في الـ Maxillary premolars</td></tr>
+    <tr><td><b>Proximal outline</b></td><td>Upper = Trapezoidal · Lower = Rhomboidal</td></tr>
+  </table></div>
+
+  <h4>⚡ الـ EXCEPTIONS — اللي لازم تحفظها</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Exception</th><th>الوحيد اللي عنده كده</th></tr>
+    <tr><td>Mesial cusp slope أطول من الـ Distal</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>2 Roots (80%)</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>MMDG (Mesial Marginal Dev. Groove)</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>Canine Fossa على الـ Crown</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>Distal contact أعلى من الـ Mesial</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>Hexagonal occlusal outline</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>Kidney-shaped root canal cross-section</td><td><b>Upper 4 فقط</b></td></tr>
+    <tr><td>Non-functional lingual cusp (2/3 height)</td><td><b>Lower 4 فقط</b></td></tr>
+    <tr><td>Mesiolingual Dev. Groove</td><td><b>Lower 4 فقط</b></td></tr>
+    <tr><td>Mesial contact أقل (more cervical) من الـ Distal</td><td><b>Lower 4 فقط</b></td></tr>
+    <tr><td>Snake Eyes appearance</td><td><b>Lower 4 فقط</b></td></tr>
+    <tr><td>DMR أعلى من الـ MMR</td><td><b>Lower 4 فقط</b></td></tr>
+    <tr><td>3-cusp type + 5 lobes</td><td><b>Lower 5 فقط</b></td></tr>
+    <tr><td>Y-shaped groove pattern</td><td><b>3-cusp Lower 5 فقط</b></td></tr>
+    <tr><td>Central Pit</td><td><b>3-cusp Lower 5 فقط</b></td></tr>
+  </table></div>
+
+  <h4>🔵 Maxillary Premolars — Upper 4 vs Upper 5</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Feature</th><th>Upper 4</th><th>Upper 5</th></tr>
+    <tr><td><b>Cusps</b></td><td>2 Sharp (Buccal أطول بـ 1mm)</td><td>2 nearly Equal height (أقل حدة)</td></tr>
+    <tr><td><b>Mesial cusp slope</b></td><td>Mesial > Distal (Exception!)</td><td>Mesial &lt; Distal (normal)</td></tr>
+    <tr><td><b>Roots</b></td><td>80% = 2 roots (Buccal + Lingual)</td><td>Single root (أطول)</td></tr>
+    <tr><td><b>Root canals</b></td><td>دايماً 2 canals</td><td>عادةً 1 canal</td></tr>
+    <tr><td><b>MMDG</b></td><td>✅ موجودة</td><td>❌ غير موجودة</td></tr>
+    <tr><td><b>Canine fossa</b></td><td>✅ على الـ Mesial crown + root</td><td>❌ على الـ Crown</td></tr>
+    <tr><td><b>Occlusal outline</b></td><td>Hexagonal</td><td>Oval / Round</td></tr>
+    <tr><td><b>Central groove</b></td><td>طويل</td><td>قصير + Supplemental grooves (wrinkled)</td></tr>
+    <tr><td><b>Mesial contact</b></td><td>Junction occlusal + middle thirds</td><td>Junction occlusal + middle thirds</td></tr>
+    <tr><td><b>Distal contact</b></td><td>More occlusal (Exception!)</td><td>Middle third</td></tr>
+    <tr><td><b>Eruption</b></td><td>10 – 11 years</td><td>10 – 12 years</td></tr>
+  </table></div>
+
+  <h4>🟠 Mandibular Premolars — Lower 4 vs Lower 5</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Feature</th><th>Lower 4</th><th>Lower 5</th></tr>
+    <tr><td><b>Cusps</b></td><td>2 cusps (Lingual = Non-functional)</td><td>2-cusp type OR 3-cusp type</td></tr>
+    <tr><td><b>Lingual cusp height</b></td><td>2/3 الـ Buccal cusp (Non-functional)</td><td>2-cusp: functional · 3-cusp: ML + DL functional</td></tr>
+    <tr><td><b>Lobes</b></td><td>4 lobes</td><td>2-cusp: 4 lobes · 3-cusp: 5 lobes</td></tr>
+    <tr><td><b>Occlusal outline</b></td><td>Diamond / Round</td><td>2-cusp: Oval · 3-cusp: Square</td></tr>
+    <tr><td><b>Groove pattern</b></td><td>Central groove crosses Transverse ridge</td><td>2-cusp: U/H · 3-cusp: Y shaped</td></tr>
+    <tr><td><b>Transverse ridge</b></td><td>✅ موجودة</td><td>2-cusp: ✅ · 3-cusp: ❌</td></tr>
+    <tr><td><b>Mesiolingual groove</b></td><td>✅ موجودة</td><td>❌ غير موجودة</td></tr>
+    <tr><td><b>Lingual convergence</b></td><td>High convergence</td><td>2-cusp: موجودة · 3-cusp: ❌</td></tr>
+    <tr><td><b>Root</b></td><td>Conical, pointed apex, shorter</td><td>Broader, longer, blunt apex</td></tr>
+    <tr><td><b>Contact areas</b></td><td>Mesial more cervical (Exception!)</td><td>Same level (more occlusal than L4)</td></tr>
+    <tr><td><b>DMR vs MMR</b></td><td>DMR more occlusal (Exception!)</td><td>DMR more cervical (normal)</td></tr>
+    <tr><td><b>Eruption</b></td><td>9 – 10 years</td><td>10 – 11 years</td></tr>
+  </table></div>
+
+  <h4>📅 Chronology Table</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Tooth</th><th>Calcification</th><th>Crown Complete</th><th>Eruption</th><th>Root Complete</th></tr>
+    <tr><td><b>Upper 4</b></td><td>1.5–1.75 yrs</td><td>5–6 yrs</td><td>10–11 yrs</td><td>12–13 yrs</td></tr>
+    <tr><td><b>Upper 5</b></td><td>2–2.25 yrs</td><td>6–7 yrs</td><td>10–12 yrs</td><td>13–15 yrs</td></tr>
+    <tr><td><b>Lower 4</b></td><td>1.75–2 yrs</td><td>5–6 yrs</td><td>9–10 yrs</td><td>12–13 yrs</td></tr>
+    <tr><td><b>Lower 5</b></td><td>2.25–2.5 yrs</td><td>6–7 yrs</td><td>10–11 yrs</td><td>13–15 yrs</td></tr>
+  </table></div>
+</div>`
+};
 const QS = {
   histology:[
     {id:'h1',starred:true, text:'Which type of epithelium lines the oral cavity?',options:['Simple squamous','Stratified squamous','Simple columnar','Transitional'],answer:1,explanation:'الإجابة: Stratified squamous epithelium. تجويف الفم بيتعرض لاحتكاك وضغط كبير أثناء المضغ، فالتطبق (Stratified) بيديها مقاومة وقوة. ده أكتر نوع ظهارة موجود في الفم.'},
@@ -1214,7 +1496,74 @@ const QS = {
     {id:'dm22',starred:false,text:'From the buccal aspect, how many cusps are visible in the mandibular first molar?',options:['2','3','4','5'],answer:1,explanation:'من الـ Buccal aspect بتشوف 3 cusps: MB (الأعرض) + DB + Distal (الأصغر والأحد). الـ lingual cusps مش ظاهرة.'},
     {id:'dm23',starred:true, text:'What is the geometric outline of the mandibular second molar from the occlusal view?',options:['Hexagonal','Rhomboidal','Rectangular','Trapezoidal'],answer:2,explanation:'الـ Lower 7 من الـ Occlusal بيبقى Rectangular! مختلف عن الـ Lower 6 (Hexagonal). كمان عنده supplemental grooves.'},
     {id:'dm24',starred:false,text:'The pulp chamber of mandibular molars is broader in which dimension?',options:['Buccolingually (B-L > M-D)','Mesiodistally (M-D > B-L)','Equal in both dimensions','Depends on the molar'],answer:1,explanation:'الـ Pulp chamber في الـ Lower molars أعرض Mesiodistally (M-D > B-L). ده عكس الـ Upper molars اللي أعرض Buccolingually.'},
-    {id:'dm25',starred:true, text:'The maxillary second molar differs from the first molar mainly because:',options:['It has 5 cusps','It has no Cusp of Carabelli and shows lingual convergence','It has 4 roots','It erupts before the first molar'],answer:1,explanation:'الـ Upper 7 مفيهوش Cusp of Carabelli، وعنده Lingual convergence (الـ 6 مفيهوش لingual convergence). كمان الـ DB cusp أصغر.'}
+    {id:'dm25',starred:true, text:'The maxillary second molar differs from the first molar mainly because:',options:['It has 5 cusps','It has no Cusp of Carabelli and shows lingual convergence','It has 4 roots','It erupts before the first molar'],answer:1,explanation:'الـ Upper 7 مفيهوش Cusp of Carabelli، وعنده Lingual convergence (الـ 6 مفيهوش لingual convergence). كمان الـ DB cusp أصغر.'},
+    // ══ PREMOLARS CHAPTER QUESTIONS ══
+    // ── General & Maxillary ──
+    {id:'dp1',starred:true, text:'Evidence of calcification for the Maxillary First Premolar (Upper 4) begins at:',options:['A. Birth','B. 1.5 – 1.75 years','C. 3 – 4 years','D. 7 months in utero'],answer:1,explanation:'الإجابة B. Upper 4 يبدأ التكلس عند 1.5 – 1.75 سنة. حفظها: كلما كانت السنة أكبر كلما بدأ تكلسها في سن مبكر (الأضراس الكبيرة تبدأ من الولادة).'},
+    {id:'dp2',starred:false,text:'The Maxillary First Premolar (Upper 4) typically erupts at the age of:',options:['A. 8 – 9 years','B. 10 – 11 years','C. 12 – 13 years','D. 6 – 7 years'],answer:1,explanation:'الإجابة B. Upper 4 يطلع في 10-11 سنة. ترتيب طلوع الأسنان الدايمة: 6 (6-7) → 1 → 2 → 4 (10-11) → 3 → 5 → 7 → 8.'},
+    {id:'dp3',starred:false,text:'Root completion for the Maxillary Second Premolar (Upper 5) occurs at:',options:['A. 10 – 11 years','B. 12 – 13 years','C. 13 – 15 years','D. 9 years'],answer:2,explanation:'الإجابة C. Upper 5 يكمل الـ root عند 13-15 سنة. ده أكثر من Upper 4 اللي بيكمل عند 12-13 سنة.'},
+    {id:'dp4',starred:true, text:'The geometric outline of the Maxillary First Premolar from the BUCCAL aspect is:',options:['A. Rhomboidal','B. Trapezoid (long side cervical)','C. Trapezoid (short side cervical)','D. Hexagonal'],answer:2,explanation:'الإجابة C. من الـ Buccal: Trapezoid مع الضلع الصغير ناحية الـ Cervix. ده ينطبق على كل الـ Premolars من الـ Buccal!'},
+    {id:'dp5',starred:true, text:'Regarding the buccal cusp slopes of Upper 4 — which is an EXCEPTION to the general rule?',options:['A. Mesial slope longer than the distal slope','B. Distal slope longer than the mesial slope','C. Both slopes are equal','D. Mesial slope is concave while distal is straight'],answer:0,explanation:'الإجابة A. الـ Exception في Upper 4: الـ Mesial cusp slope أطول من الـ Distal! العكس هو القاعدة الطبيعية. Upper 5, Lower 4, Lower 5 كلهم عندهم Mesial slope أقصر من Distal.'},
+    {id:'dp6',starred:false,text:'The lingual cusp of the Maxillary First Premolar compared to the buccal cusp is:',options:['A. 1 mm longer','B. 1 mm shorter','C. Same length','D. 2/3 the length'],answer:1,explanation:'الإجابة B. الـ Lingual cusp في Upper 4 أقصر من الـ Buccal بـ 1mm. لكن في Upper 5 الكسبين تقريباً بنفس المستوى!'},
+    {id:'dp7',starred:true, text:'A distinguishing feature found ONLY on the mesial surface of the Maxillary First Premolar is:',options:['A. Canine fossa only','B. Mesial Marginal Developmental Groove (MMDG) only','C. Both Canine fossa and MMDG','D. Distal marginal groove'],answer:2,explanation:'الإجابة C. Upper 4 مميز بـ: (1) MMDG اللي بيعبر الـ Mesial Marginal Ridge، و(2) الـ Canine Fossa (Depression عميق على الـ Mesial surface). كلاهم على الـ Mesial فقط!'},
+    {id:'dp8',starred:false,text:'The mesial contact area of the Maxillary First Premolar is located at:',options:['A. The occlusal third','B. The junction of the occlusal and middle thirds','C. The middle of the middle third','D. The cervical third'],answer:1,explanation:'الإجابة B. Mesial contact area في Upper 4: عند junction of occlusal and middle thirds. لكن الـ Distal contact area أعلى قليلاً (Exception)!'},
+    {id:'dp9',starred:true, text:'The DISTAL contact area of the Maxillary First Premolar is unique because:',options:['A. It is more cervical than the mesial','B. It is more occlusal than the mesial — Exception','C. It is at the same level as the mesial','D. It is in the cervical third'],answer:1,explanation:'الإجابة B. Exception مهم! الـ Distal contact area في Upper 4 أعلى (more occlusal) من الـ Mesial contact area. ده عكس القاعدة العامة. اتذكر: Upper 4 = Exception في كل حاجة!'},
+    {id:'dp10',starred:true, text:'The occlusal outline of the Maxillary First Premolar is:',options:['A. Oval','B. Round','C. Hexagonal','D. Square'],answer:2,explanation:'الإجابة C. Upper 4 من الـ Occlusal = Hexagonal! وده مختلف عن Upper 5 (Oval). الـ Hexagonal الـ 6 جوانب جاية من: Buccal + Lingual cusps + Mesial + Distal + MB angle + DB angle.'},
+    {id:'dp11',starred:true, text:'The ridge formed by the union of the buccal triangular ridge and the lingual triangular ridge of a premolar is called:',options:['A. Oblique ridge','B. Transverse ridge','C. Marginal ridge','D. Cervical ridge'],answer:1,explanation:'الإجابة B. Transverse ridge = Buccal triangular ridge + Lingual triangular ridge. موجود في Upper 4, Lower 4, وـ2-cusp Lower 5. مهم جداً تعرف الفرق بينه وبين الـ Oblique ridge (اللي في Upper Molars فقط).'},
+    {id:'dp12',starred:false,text:'The Maxillary First Premolar typically has:',options:['A. One root and one canal','B. Two roots (Buccal and Lingual) and always two canals','C. Three roots','D. Two roots (Mesial and Distal)'],answer:1,explanation:'الإجابة B. Upper 4: 80% عنده 2 roots (Buccal + Lingual). لكن سواء 1 root أو 2 roots، دايماً فيه 2 root canals! ده مهم جداً.'},
+    {id:'dp13',starred:false,text:'In cross-section at the cervical line, the root canal shape of Upper 4 is:',options:['A. Rounded','B. Triangular','C. Kidney-shaped (figure-8)','D. Square'],answer:2,explanation:'الإجابة C. الـ Root canal في Upper 4 عند الـ Cervical line = Kidney-shaped (أو Figure-8). ده بسبب الميل للانقسام لـ 2 canals.'},
+    {id:'dp14',starred:false,text:'Which is TRUE about the DISTAL surface of Upper 4 compared to the mesial?',options:['A. Deep developmental depression on crown','B. Greater cervical line curvature','C. No developmental groove crossing the marginal ridge','D. More cervical contact area'],answer:2,explanation:'الإجابة C. الـ Distal surface في Upper 4 ليس عليها الـ MMDG (Mesial Marginal Developmental Groove) — ده موجود على الـ Mesial فقط. الـ Distal surface أنعم وأبسط من الـ Mesial.'},
+    {id:'dp15',starred:true, text:'The Maxillary Second Premolar (Upper 5) differs from Upper 4 mainly because:',options:['A. Has two roots','B. Buccal and lingual cusps are nearly equal in height — not sharp','C. Has MMDG crossing the mesial ridge','D. Has a Hexagonal occlusal outline'],answer:1,explanation:'الإجابة B. أهم فرق: في Upper 5 الكسبان (Buccal + Lingual) تقريباً بنفس الارتفاع وأقل حدة من Upper 4. وعنده Single root. وبدون MMDG.'},
+    {id:'dp16',starred:false,text:'The occlusal surface of Upper 5 often appears "wrinkled" due to:',options:['A. Deep central pits','B. Numerous supplemental grooves','C. Large triangular ridges','D. Lack of marginal ridges'],answer:1,explanation:'الإجابة B. Upper 5 عنده Short central groove ومنه بيطلع كتير من الـ Supplemental grooves → شكل "مجعد". ده أهم feature مميز للـ Upper 5 من الـ Occlusal.'},
+    {id:'dp17',starred:false,text:'The root of the Maxillary Second Premolar (Upper 5) compared to Upper 4 is:',options:['A. Bifurcated','B. Single and longer','C. Trifurcated','D. Shorter than the crown'],answer:1,explanation:'الإجابة B. Upper 5: Single root (مش بيتشعب زي Upper 4) وأطول من Upper 4. تذكر: Upper 4 = 80% double root, Upper 5 = single root دائماً.'},
+    // ── Upper 4 vs Upper 5 ──
+    {id:'dp18',starred:true, text:'Which of the following is the most CHARACTERISTIC feature of Upper 4?',options:['A. Has 2 cusps','B. Has 2 roots','C. Has MMDG (Mesial Marginal Developmental Groove)','D. Has thin marginal ridges'],answer:2,explanation:'الإجابة C. أكثر feature مميز لـ Upper 4 = الـ MMDG. ده موجود على Upper 4 فقط دون أي premolar تاني!'},
+    {id:'dp19',starred:true, text:'The Mesial Marginal Developmental Groove (MMDG) is found ONLY on:',options:['A. Maxillary 1st Premolar (Upper 4)','B. Maxillary 2nd Premolar (Upper 5)','C. Both Maxillary Premolars','D. Mandibular 1st Premolar'],answer:0,explanation:'الإجابة A. MMDG = Upper 4 فقط! ده مش موجود على Upper 5 ولا أي premolar تاني. سؤال متكرر جداً.'},
+    {id:'dp20',starred:false,text:'Which tooth has a deeper developmental depression (Canine Fossa) on the mesial surface?',options:['A. Upper 5','B. Upper 4','C. Maxillary Canine','D. Lower 4'],answer:1,explanation:'الإجابة B. الـ Canine Fossa موجودة على الـ Mesial surface بتاعة الـ Upper 4 — depression على الـ Crown ويكمل في الـ Root. Upper 5 مفهوش على الـ Crown.'},
+    {id:'dp21',starred:false,text:'Regarding Bucco-Lingual (B-L) vs Mesio-Distal (M-D) width in Upper Premolars:',options:['A. B-L is greater than M-D in both Upper 4 and 5','B. M-D is greater than B-L','C. They are equal','D. Varies between teeth'],answer:0,explanation:'الإجابة A. في الـ Maxillary Premolars: B-L > M-D. الأسنان أعرض Buccolingually. ده ينطبق على Upper 4 و Upper 5 كليهم.'},
+    {id:'dp22',starred:true, text:'From the occlusal aspect — geometric outline of Upper 5 vs Upper 4:',options:['A. Hexagonal & Oval','B. Diamond & Trapezoid','C. Oval & Hexagonal','D. Both Diamond'],answer:2,explanation:'الإجابة C. Upper 5 = Oval / Round. Upper 4 = Hexagonal. سؤال متكرر جداً! Upper 5 أبسط وأكثر استدارة.'},
+    // ── Mandibular Premolars ──
+    {id:'dp23',starred:false,text:'Evidence of calcification for the Mandibular First Premolar (Lower 4) begins at:',options:['A. Birth','B. 1.75 – 2 years','C. 3 – 4 years','D. 5 – 6 years'],answer:1,explanation:'الإجابة B. Lower 4 يبدأ التكلس عند 1.75-2 سنة. أبطأ قليلاً من Upper 4 (1.5-1.75 سنة).'},
+    {id:'dp24',starred:false,text:'The Mandibular First Premolar (Lower 4) typically erupts at:',options:['A. 8 – 9 years','B. 9 – 10 years','C. 10 – 12 years','D. 12 – 13 years'],answer:1,explanation:'الإجابة B. Lower 4 يطلع في 9-10 سنة — قبل Upper 4 بسنة (10-11 سنة). الـ Mandibular teeth عموماً بتطلع قبل الـ Maxillary.'},
+    {id:'dp25',starred:true, text:'The geometric outline of Lower 4 from the BUCCAL aspect is:',options:['A. Rhomboidal','B. Trapezoid (short side cervical)','C. Trapezoid (long side cervical)','D. Ovoid'],answer:1,explanation:'الإجابة B. من الـ Buccal: Trapezoid مع الجانب الصغير ناحية الـ Cervix — زي كل الـ Premolars. لكن الفرق هو إن الـ Crown في Lower 4 ميال ناحية اللسان (Lingual inclination).'},
+    {id:'dp26',starred:true, text:'The lingual cusp of the Mandibular First Premolar (Lower 4) is described as:',options:['A. Functional — equal to buccal cusp','B. Small, non-functional — reaching only 2/3 crown length','C. Larger than the buccal cusp','D. Divided into two distinct cusps'],answer:1,explanation:'الإجابة B. الـ Lingual cusp في Lower 4 = Non-functional! طوله 2/3 طول الـ Buccal cusp فقط، وما بيتلمسش مع الأسنان الـ Upper أثناء المضغ. ده أهم feature مميز للـ Lower 4.'},
+    {id:'dp27',starred:false,text:'A distinctive feature found on the lingual aspect of the Mandibular First Premolar is:',options:['A. The Mesiolingual Developmental Groove','B. The Distolingual Developmental Groove','C. Cusp of Carabelli','D. A functional lingual cusp'],answer:0,explanation:'الإجابة A. الـ Mesiolingual Developmental Groove موجود على الـ Lingual surface في Lower 4 — بيفصل الـ Mesial Marginal Ridge عن الـ Lingual cusp slope.'},
+    {id:'dp28',starred:true, text:'The crown of the Mandibular First Premolar tilts noticeably towards the:',options:['A. Buccal','B. Lingual','C. Distal','D. Mesial'],answer:1,explanation:'الإجابة B. الـ Crown في Lower 4 ميال للـ Lingual! ده اسمه Lingual inclination/tilt. لذلك من الـ Mesial aspect، الـ Buccal cusp tip بيكون فوق محور الـ Root مباشرة.'},
+    {id:'dp29',starred:true, text:'The geometric outline of the occlusal surface of the Mandibular First Premolar is:',options:['A. Square','B. Diamond-shaped or Round','C. Hexagonal','D. Triangular'],answer:1,explanation:'الإجابة B. Lower 4 من الـ Occlusal = Diamond-shaped أو Round shape مع Lingual convergence عالية جداً. ده بسبب الـ Small non-functional lingual cusp.'},
+    {id:'dp30',starred:true, text:'The "Snake Eyes" appearance in the Mandibular First Premolar refers to:',options:['A. Two pulp horns','B. The Mesial and Distal triangular fossae (pits) separated by transverse ridge','C. The large buccal and lingual cusps','D. Deep caries pattern'],answer:1,explanation:'الإجابة B. "Snake Eyes" = المظهر الأوكلوزال للـ Lower 4 اللي فيه الـ Mesial Pit + Distal Pit مفصولين بالـ Transverse Ridge — بيشبهوا عيون أفعى!'},
+    {id:'dp31',starred:true, text:'The Mandibular Second Premolar (Lower 5) is unique because it frequently has:',options:['A. Three cusps (1 Buccal + 2 Lingual)','B. Two roots','C. A mesiolingual groove only','D. A canine fossa'],answer:0,explanation:'الإجابة A. Lower 5 هو الـ Premolar الوحيد اللي ممكن يبقى عنده 3 cusps! النوع 3-cusp عنده: Buccal + Mesiolingual + Distolingual. ده مميزه الأساسي.'},
+    {id:'dp32',starred:true, text:'The occlusal groove pattern in the 3-cusp type Lower 5 is:',options:['A. Y-shaped','B. U-shaped','C. H-shaped','D. Straight'],answer:0,explanation:'الإجابة A. 3-cusp Lower 5 = Y-shaped groove. الـ Y بيتكون من الـ Central pit مع Mesial + Distal + Lingual grooves. الـ 2-cusp type = U أو H shaped.'},
+    {id:'dp33',starred:false,text:'The occlusal groove pattern in the 2-cusp type Lower 5 is:',options:['A. Y-shaped','B. U or H-shaped','C. W-shaped','D. X-shaped'],answer:1,explanation:'الإجابة B. 2-cusp Lower 5 = U-shaped أو H-shaped groove. في U-shape: Crescent shape. في H-shape: خط مستقيم مع Mesial + Distal fossae. الـ Y = لـ 3-cusp فقط.'},
+    {id:'dp34',starred:false,text:'In the 3-cusp type Lower 5, what is the cusp hierarchy from largest to smallest?',options:['A. ML > B > DL','B. B > DL > ML','C. B > ML > DL','D. All equal'],answer:2,explanation:'الإجابة C. Bcusp > MLcusp > DLcusp. الـ Mesiolingual cusp أكبر من الـ Distolingual. تذكر: الـ Buccal دايماً الأكبر في الـ Mandibular premolars.'},
+    {id:'dp35',starred:false,text:'The 3-cusp type Mandibular Second Premolar develops from how many lobes?',options:['A. 3','B. 4','C. 5','D. 2'],answer:2,explanation:'الإجابة C. 3-cusp Lower 5 يتطور من 5 lobes: 3 Buccal + 2 Lingual (ML + DL). كل الـ Premolars التانية 4 lobes ماعدا ده!'},
+    // ── Comparison Lower 4 vs Lower 5 ──
+    {id:'dp36',starred:true, text:'Which mandibular premolar has a NON-FUNCTIONAL lingual cusp?',options:['A. Mandibular 1st Premolar (Lower 4)','B. Mandibular 2nd Premolar (Lower 5)','C. Both','D. Neither'],answer:0,explanation:'الإجابة A. فقط Lower 4 عنده Non-functional lingual cusp (2/3 طول الـ Buccal cusp). Lower 5 عنده Functional lingual cusps (سواء 2-cusp أو 3-cusp).'},
+    {id:'dp37',starred:false,text:'The root of Lower 5 compared to Lower 4 is:',options:['A. Shorter and thinner','B. Longer and wider with blunt apex','C. Bifurcated','D. Identical'],answer:1,explanation:'الإجابة B. Lower 5 عنده Root أطول وأعرض مع Blunt apex. Lower 4 عنده Root أقصر مع Pointed apex وله Distal inclination في الـ apical third.'},
+    {id:'dp38',starred:true, text:'Which mandibular premolar has a mesial contact area that is MORE CERVICAL than the distal contact area?',options:['A. Lower 4 — unique exception','B. Lower 5','C. Lower Molar','D. None — this is a trait of Upper 4'],answer:0,explanation:'الإجابة A. Lower 4 Exception مهم! الـ Mesial contact area أقل (more cervical) من الـ Distal. في Lower 5، الـ Mesial + Distal contact areas بنفس المستوى (more occlusally من Lower 4).'},
+    // ── General Comparisons ──
+    {id:'dp39',starred:true, text:'All permanent premolars are SUCCEDANEOUS because:',options:['A. They erupt after age 12','B. They replace deciduous (primary) molars','C. They have two cusps','D. They are the last to erupt'],answer:1,explanation:'الإجابة B. Succedaneous = بيحلوا محل أسنان لبن. الـ Premolars بيحلوا محل الـ Deciduous Molars (أضراس اللبن). الأضراس الدايمة الكبيرة (Molars) = Non-succedaneous.'},
+    {id:'dp40',starred:true, text:'Which is the ONLY premolar that commonly has TWO ROOTS?',options:['A. Maxillary 1st Premolar (Upper 4)','B. Maxillary 2nd Premolar (Upper 5)','C. Mandibular 1st Premolar (Lower 4)','D. Mandibular 2nd Premolar (Lower 5)'],answer:0,explanation:'الإجابة A. فقط Upper 4 عنده 2 roots (80% من الحالات)! Buccal root + Lingual root. كل الـ Premolars التانية Single root.'},
+    {id:'dp41',starred:true, text:'Which is the ONLY premolar where the mesial cusp slope is LONGER than the distal cusp slope?',options:['A. Lower 4','B. Upper 5','C. Upper 4','D. Lower 5'],answer:2,explanation:'الإجابة C. Exception مهم جداً! فقط Upper 4 عنده Mesial cusp slope أطول من الـ Distal. ده عكس القاعدة في كل الأسنان. اتذكر: Upper 4 = Exception في الـ Cusp slopes.'},
+    {id:'dp42',starred:true, text:'Which is the ONLY premolar that may exhibit a Central Pit?',options:['A. Upper 4','B. Upper 5','C. Lower 4','D. Lower 5 (3-cusp type)'],answer:3,explanation:'الإجابة D. فقط 3-cusp Lower 5 عنده Central pit! ده بيتكون من الـ Y-shaped groove اللي بتتقاطع في Central pit. Upper 4 و 5 عندهم Central groove مش pit.'},
+    {id:'dp43',starred:false,text:'The "Snake Eyes" appearance is a clinical characteristic of which premolar?',options:['A. Upper 4','B. Lower 4','C. Upper 5','D. Lower 5'],answer:1,explanation:'الإجابة B. "Snake Eyes" = خاصية مميزة للـ Lower 4! الـ Mesial + Distal triangular fossae مفصولين بالـ Transverse Ridge يشبهوا عيني الأفعى.'},
+    {id:'dp44',starred:false,text:'Most premolars develop from how many lobes, and which is the exception?',options:['A. 3 lobes; Upper 4','B. 4 lobes; Lower 5 (3-cusp) has 5','C. 5 lobes; Lower 4','D. 4 lobes; Upper 5'],answer:1,explanation:'الإجابة B. معظم الـ Premolars = 4 lobes (3 Buccal + 1 Lingual). الاستثناء = Lower 5 (3-cusp type) = 5 lobes (3 Buccal + 2 Lingual).'},
+    {id:'dp45',starred:false,text:'From the PROXIMAL aspect: Maxillary premolars are ______, Mandibular premolars are ______.',options:['A. Trapezoidal; Rhomboidal','B. Rhomboidal; Trapezoidal','C. Triangular; Square','D. Square; Rhomboidal'],answer:0,explanation:'الإجابة A. من الـ Proximal: Upper Premolars = Trapezoidal. Lower Premolars = Rhomboidal. الفرق الرئيسي هو إن الـ Lower عنده Lingual inclination و Lingual convergence.'},
+    // ── Dr. Nour Eldeen Questions ──
+    {id:'dp46',starred:false,text:'In a single-rooted Maxillary First Premolar, how many root canals are typically found?',options:['A. Only one canal','B. Two root canals','C. Three root canals','D. Varies with age'],answer:1,explanation:'الإجابة B. حتى لو Upper 4 عنده Single root، دايماً فيه 2 root canals! ده مختلف عن باقي الأسنان اللي بيبقى فيها canal واحد في Single root.'},
+    {id:'dp47',starred:false,text:'The "Canine Fossa" in Upper 4 is located on the:',options:['A. Distal surface of crown and root','B. Mesial surface of crown, continuing to the root','C. Buccal surface near cervical ridge','D. Lingual surface near maximum convexity'],answer:1,explanation:'الإجابة B. الـ Canine Fossa = Depression على الـ Mesial surface بتاعة الـ Crown وبتكمل في الـ Root. موجودة على الـ Mesial فقط وبتكون أعمق ناحية الـ Mesial من الـ Distal.'},
+    {id:'dp48',starred:false,text:'The root bifurcation of the Maxillary First Premolar usually occurs at:',options:['A. The cervical third','B. The apical third','C. The half-root length (middle)','D. Near the CEJ'],answer:2,explanation:'الإجابة C. الـ Root bifurcation في Upper 4 بيحصل عند منتصف طول الـ Root (½ root length). ده مهم للـ Extraction — لو بتعمل Rotation ممكن تكسر الـ Roots.'},
+    {id:'dp49',starred:true, text:'The maximum convexity of the LINGUAL surface of Upper 4 is found at the:',options:['A. Cervical third','B. Middle third','C. Occlusal third','D. Junction of cervical and middle thirds'],answer:1,explanation:'الإجابة B. Maximum convexity الـ Lingual surface في Upper 4 = Middle third. ده مختلف عن الـ Buccal surface اللي maximum convexity بتاعه في الـ Cervical third.'},
+    {id:'dp50',starred:false,text:'The ridges that ascend from the cusp tips of maxillary premolars toward the center of the occlusal surface are called:',options:['A. Marginal ridges','B. Triangular ridges','C. Transverse ridges','D. Cusp ridges'],answer:1,explanation:'الإجابة B. Triangular ridges هي الـ Ridges اللي بتطلع من الـ Cusp tip ناحية مركز الـ Occlusal surface. لما Buccal + Lingual triangular ridges يتقابلوا = Transverse ridge.'},
+    {id:'dp51',starred:false,text:'The central developmental groove is LONGER in the:',options:['A. Maxillary first premolar (Upper 4)','B. Maxillary second premolar (Upper 5)','C. Same in both','D. Neither has a central groove'],answer:0,explanation:'الإجابة A. Upper 4 عنده Central groove أطول من Upper 5. Upper 5 عنده Short central groove ومنه بتطلع Supplemental grooves.'},
+    {id:'dp52',starred:false,text:'Which mandibular premolar has contact areas at the SAME LEVEL, positioned more occlusally?',options:['A. Lower 4','B. Lower 5','C. Lower Canine','D. Both'],answer:1,explanation:'الإجابة B. Lower 5: الـ Mesial + Distal contact areas بنفس المستوى وأعلى (more occlusal) من Lower 4. Lower 4: الـ Mesial contact أقل (more cervical) من الـ Distal.'},
+    {id:'dp53',starred:true, text:'Which statement accurately describes the transverse ridge in mandibular premolars?',options:['A. Present in all mandibular premolars','B. Formed by union of two lingual triangular ridges','C. Present in Lower 4 but ABSENT in 3-cusp Lower 5','D. Found only in Y-shaped Lower 5'],answer:2,explanation:'الإجابة C. الـ Transverse ridge موجودة في Lower 4 و2-cusp Lower 5. لكن في 3-cusp Lower 5 مفيش Transverse ridge! عشان عنده 2 lingual cusps مفيش الـ Direct connection.'},
+    {id:'dp54',starred:true, text:'Which feature is characteristic of the LINGUAL surface of a 3-cusp Mandibular Second Premolar?',options:['A. High lingual convergence','B. A lingual groove between the two lingual cusps','C. A non-functional lingual cusp','D. A transverse ridge'],answer:1,explanation:'الإجابة B. في 3-cusp Lower 5، فيه Lingual groove بين الـ Mesiolingual + Distolingual cusps. ده عكس Lower 4 اللي عنده Mesiolingual groove وNo lingual convergence في الـ 3-cusp type.'},
+    {id:'dp55',starred:false,text:'The three-cusp type mandibular second premolar (3-cusp Lower 5) typically possesses how many pulp horns?',options:['A. One','B. Two','C. Three','D. Four'],answer:2,explanation:'الإجابة C. 3-cusp Lower 5 عنده 3 pulp horns — واحد لكل cusp (Buccal + ML + DL). الـ 2-cusp Lower 5 = 2 pulp horns. الـ Lower 4 = 1 pulp horn تحت الـ Buccal cusp.'},
+    {id:'dp56',starred:false,text:'Which mandibular premolar type has NO lingual convergence?',options:['A. Lower 4','B. 2-cusp Lower 5','C. 3-cusp Lower 5','D. All have lingual convergence'],answer:2,explanation:'الإجابة C. 3-cusp Lower 5 = No lingual convergence! عشان الـ Lingual surface واسعة بسبب وجود 2 lingual cusps. Lower 4 و 2-cusp Lower 5 عندهم Lingual convergence.'},
+    {id:'dp57',starred:true, text:'The marginal ridges of the Mandibular First Premolar (Lower 4) have a unique characteristic:',options:['A. Mesial marginal ridge is more occlusal than distal','B. Distal marginal ridge is more occlusal than mesial — unique feature','C. Both ridges at same level','D. Mesial ridge is straight and at right angle to long axis'],answer:1,explanation:'الإجابة B. Exception! في Lower 4: الـ Distal Marginal Ridge أعلى (more occlusal) من الـ Mesial Marginal Ridge. الـ MMR مائل للـ Midline (oblique)، الـ DMR مستقيم وعمودي على الـ Long axis.'},
+    {id:'dp58',starred:false,text:'From the buccal aspect of Lower 4, the buccal cusp tip is positioned:',options:['A. Distal to the midline','B. Mesial to the midline','C. Directly on the midline','D. On the distal slope'],answer:1,explanation:'الإجابة B. في Lower 4 من الـ Buccal: الـ Cusp tip ميال ناحية الـ Mesial من الـ Midline. ده feature مميز للـ Lower 4.'},
+    {id:'dp59',starred:false,text:'When comparing the roots of Lower 4 and Lower 5, the Lower 5 root is:',options:['A. Shorter and more pointed','B. Broader and longer with a blunt apex','C. Has a deep mesiolingual groove','D. Shorter than the canine root'],answer:1,explanation:'الإجابة B. Lower 5 root أعرض وأطول مع Blunt apex. Lower 4 root = أقصر، Cone shape، مع Pointed apex وله Distal inclination في الـ apical third.'},
+    {id:'dp60',starred:true, text:'What percentage of Maxillary First Premolars are typically found to have TWO ROOTS?',options:['A. 20%','B. 50%','C. 80%','D. 100%'],answer:2,explanation:'الإجابة C. 80% من Upper 4 عنده 2 roots! والـ 20% الباقيين عندهم Single root. لكن حتى في الـ Single root، دايماً فيه 2 root canals.'}
   ]
 };
 
@@ -3616,7 +3965,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong>General:</strong> Largest tooth in the maxillary arch. Has 4 major cusps + 1 non-functioning 5th cusp = <strong style="color:#f4a261">Tubercle of Carabelli</strong> — attached to the <strong>Mesiolingual cusp</strong> and separated from it by a developmental groove. No lingual convergence — only <strong>distal convergence</strong>. 3 roots (2 buccal + 1 palatal) providing maximum anchorage.</div>
       <div class="exp-ar">الـ Upper 6 أكبر سنة في الفك العلوي. عنده 4 cusps كبيرة + واحد صغير (Carabelli على الـ Mesiolingual cusp) متفصل بـ developmental groove. مفيش Lingual convergence — بس عنده Distal convergence فقط. وعنده 3 roots بيدوا أقصى تثبيت.</div>
     </div>
-    <img src="images/img_0.png" alt="Maxillary First Molar (Upper 6) - General Overview" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin:10px 0">
       <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--orange);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">🏅 Cusp Size Order (Largest → Smallest)</div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -3634,10 +3983,10 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong style="color:var(--teal)">Buccal surface:</strong> Outline = <strong>Trapezoid</strong> (shortest side cervically). Shows 2 buccal cusps: MB (broader) &gt; DB (sharper &amp; longer). Separated by <strong>Buccal developmental groove</strong> that terminates mid-crown as a small horizontal groove. Max convexity = <strong>Cervical ridge (cervical 1/3)</strong>. Root trunk = <strong>4mm</strong> with deep developmental depression. Contact areas: Mesial at junction of occlusal &amp; middle 1/3; Distal at middle 1/3.</div>
       <div class="exp-ar">السطح الـ Buccal: شكله Trapezoid أقصر ضلعيه Cervically. الـ MB cusp أعرض من الـ DB. الـ Buccal groove بيفصلهم وبينتهي وسط التاج. أكبر convexity = Cervical ridge. الـ Root trunk = 4mm وعنده depression عميق.</div>
     </div>
-    <img src="images/img_1.png" alt="Maxillary First Molar (Upper 6) - Buccal View" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;"> Outline = Trapezoid. <strong>No lingual convergence</strong>. Max convexity at <strong>middle 1/3</strong>. Shows 2 lingual cusps + Carabelli on ML. Lingual developmental groove separates the 2 lingual cusps (ML is wider and larger than DL). Palatal root is the <strong>longest root</strong>, straight, tapers to rounded apex, runs between 2 buccal roots.</div>
+     Outline = Trapezoid. <strong>No lingual convergence</strong>. Max convexity at <strong>middle 1/3</strong>. Shows 2 lingual cusps + Carabelli on ML. Lingual developmental groove separates the 2 lingual cusps (ML is wider and larger than DL). Palatal root is the <strong>longest root</strong>, straight, tapers to rounded apex, runs between 2 buccal roots.</div>
       <div class="exp-ar">السطح الـ Palatal: مفيش Lingual convergence. أقصى convexity عند الـ middle 1/3. الـ ML cusp أكبر وأعرض من DL. الـ Palatal root هو الأطول وبيمشي مستقيم بين الـ buccal roots.</div>
     </div>
-    <img src="images/img_2.png" alt="Maxillary First Molar (Upper 6) - Lingual (Palatal) View" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;"> Outline = Trapezoid (short side occlusally). Contact area at junction of <strong>occlusal &amp; middle 1/3</strong>, just buccal to midline. Mesial surface is <strong>flat</strong>. Shallow concavity above contact area extending toward root crossing the cervical line. Root trunk of MB root = <strong>3mm</strong>.</div>
+     Outline = Trapezoid (short side occlusally). Contact area at junction of <strong>occlusal &amp; middle 1/3</strong>, just buccal to midline. Mesial surface is <strong>flat</strong>. Shallow concavity above contact area extending toward root crossing the cervical line. Root trunk of MB root = <strong>3mm</strong>.</div>
       <div class="exp-ar">السطح الـ Mesial: Trapezoid. الـ Contact area عند تقاطع الـ occlusal و middle 1/3، Buccal to midline. السطح flat مع concavity فوق الـ contact. الـ root trunk في الـ MB root = 3mm.</div>
     </div>
     <div class="exp-block">
@@ -3648,7 +3997,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong style="color:var(--teal)">Occlusal surface:</strong> Outline = <strong>Rhomboidal</strong>. Acute angles = MB &amp; DL | Obtuse angles = ML &amp; DB. Has <strong>buccal and distal convergence</strong>. Lingual side wider than buccal; mesial side wider than distal.</div>
       <div class="exp-ar">السطح الـ Occlusal: Rhomboidal. الـ acute angles = MB و DL | الـ obtuse angles = ML و DB. عنده Buccal + Distal convergence.</div>
     </div>
-    <img src="images/img_3.png" alt="Maxillary First Molar (Upper 6) - Occlusal View (Rhomboidal)" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
       <thead>
         <tr style="background:rgba(244,162,97,.1)">
           <th style="padding:8px 11px;color:#f4a261;text-align:right;border-bottom:1px solid var(--border)">الـ Fossae &amp; Grooves (Occlusal)</th>
@@ -3678,7 +4027,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong style="color:var(--teal)">Roots &amp; Pulp:</strong> MB root curves distally. DB root = <strong>SHORTEST</strong>. Palatal root = <strong>LONGEST</strong>, runs straight between 2 buccal roots. Pulp has <strong>4 pulp horns</strong> under each cusp. MB root often has <strong>2 canals with separate apical foramina</strong>. DB root = 1 canal. Palatal canal = large and accessible. In Mesiodistal section: MB &amp; DB canals are narrow and taper toward apex.</div>
       <div class="exp-ar">الـ Roots: MB بيتحنى Distally. DB الأقصر. Palatal الأطول وبيمشي مستقيم. الـ Pulp عنده 4 pulp horns. الـ MB root في أغلب الحالات بيبقى فيه 2 canals منفصلين — مهم جداً للـ Root Canal!</div>
     </div>
-    <img src="images/img_4.png" alt="Maxillary First Molar (Upper 6) - Roots & Pulp" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center">
         <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Dental Organ</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">4 m.i.u</div></div>
         <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Calcification</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">At birth</div></div>
@@ -3698,7 +4047,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong>Similar to Upper 6 but differs in:</strong> Shorter in all dimensions. Shows <strong>BOTH lingual AND distal convergence</strong> (Upper 6 has only distal). Roots less divergent with longer root trunk. Both distal cusps (DL and DB) are smaller. Less prominent oblique ridge. <strong>NO Cusp of Carabelli</strong>. More rhomboidal occlusal outline.</div>
       <div class="exp-ar">الـ Upper 7 شبه الـ 6 بس أصغر في كل الأبعاد. الفرق الأهم: عنده Lingual convergence (الـ 6 مفيهوش). كمان الـ distal cusps أصغر، الـ oblique ridge أقل وضوحاً، ومفيش Carabelli.</div>
     </div>
-    <img src="images/img_5.png" alt="Upper 7 vs Upper 6 Comparison" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <table style="width:100%;border-collapse:collapse;margin:12px 0;font-family:'Cairo',sans-serif;font-size:12px">
       <thead>
         <tr style="background:rgba(0,180,216,.08)">
@@ -3719,7 +4068,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong>Two types based on cusps:</strong> 🟢 <strong>4-cusp type (95%)</strong>: Rhomboid shape — 2 buccal + 2 lingual cusps with lingual developmental groove. Oblique ridge connects ML and DB. | 🔵 <strong>3-cusp type (5%)</strong>: Heart/oval shape — DL cusp is <strong>ABSENT</strong>. Only 1 lingual cusp. Oblique ridge connects the single lingual cusp with DB cusp. <strong>NO lingual developmental groove</strong>.</div>
       <div class="exp-ar">Upper 7 بييجي في نوعين: الـ 4-cusp type (95%) شكله Rhomboid والـ DL cusp موجود. الـ 3-cusp type (5%) شكله Heart لأن الـ DL cusp غايب — والـ Oblique ridge بيوصل اللبني الوحيد بالـ DB cusp ومفيش Lingual groove.</div>
     </div>
-    <img src="images/img_6.png" alt="Maxillary Second Molar (Upper 7) - 4-Cusp vs 3-Cusp Types" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.15);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
       <div style="font-weight:700;color:var(--teal);margin-bottom:10px">📅 Chronology — Upper 7</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center">
@@ -3746,7 +4095,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng">Smallest maxillary molar with <strong>highly variable shape and size</strong>. Most common crown form = <strong>Heart shape</strong> (1 lingual + 2 buccal cusps). Occlusal surface has <strong>wrinkled appearance</strong> due to numerous supplemental grooves. <strong>NO distal contact area</strong>. May have typical form of 1st or 2nd molar with smaller dimensions. 3 roots but <strong>less divergent, shorter, often fused</strong> with longer root trunk. Pulp chamber LARGER (it is 9–11 years younger than Upper 6).</div>
       <div class="exp-ar">الـ Upper 8 أصغر الأضراس العلوية وشكله بيتغير كتير. الشكل الأشيع هو Heart shape (1 lingual + 2 buccal cusps). السطح الـ Occlusal عنده Wrinkled appearance بسبب كتر الـ Supplemental grooves. مفيش Distal contact area. الـ roots 3 بس أقصر وأقل divergence وغالباً fused. الـ Pulp chamber أكبر لأنه أصغر سناً بـ 9-11 سنة.</div>
     </div>
-    <img src="images/img_7.png" alt="Maxillary Third Molar (Upper 8) - Occlusal View + Heart Shape" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.15);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
       <div style="font-weight:700;color:var(--teal);margin-bottom:10px">📅 Chronology — Upper 8</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center">
@@ -3774,7 +4123,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong>General:</strong> Has <strong>5 cusps</strong> (developed from 5 lobes: 3 buccal + 2 lingual). 2 roots (1 mesial + 1 distal). First permanent molar to calcify and erupt. Together with Upper 6 = <strong>Key of Occlusion</strong>. Crown has <strong>lingual inclination</strong>. Root trunk extends till about <strong>one-third</strong> of the root length with a deep developmental depression at its center.</div>
       <div class="exp-ar">الـ Lower 6 عنده 5 cusps وبيتكون من 5 lobes (3 buccal + 2 lingual). له 2 roots. هو أول ضرس دايم يتكلس ويطلع. هو + الـ Upper 6 = Key of Occlusion. الـ Crown مايلة Lingually. الـ root trunk = ثلث طول الـ root مع deep depression في وسطه.</div>
     </div>
-    <img src="images/img_8.png" alt="Mandibular First Molar (Lower 6) - General Overview" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin:10px 0">
       <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#52b788;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">🏅 Cusp Size Order — Lower 6 (Largest → Smallest)</div>
       <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
@@ -3793,12 +4142,12 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong style="color:#52b788">Buccal surface:</strong> Outline = Trapezoid (shortest side cervically). <strong>3 buccal cusps</strong>: MB (largest, blunt) › DB (blunt) › Distal (smallest, sharp). 2 developmental grooves: <strong>Mesiobuccal DG</strong> (separates MB and DB) + <strong>Distobuccal DG</strong> (separates DB and Distal). Max convexity = Cervical ridge. Lingual cusp tips visible in background (they are higher). Mesial contact area at junction of occlusal &amp; middle 1/3.</div>
       <div class="exp-ar">السطح الـ Buccal: Trapezoid. فيه 3 buccal cusps. الـ MB و DB blunt، الـ Distal sharp. 2 developmental grooves بيفصلوا الـ 3 cusps. أكبر convexity = Cervical ridge. الـ contact area عند الـ occlusal/middle 1/3.</div>
     </div>
-    <img src="images/img_9.png" alt="Mandibular First Molar (Lower 6) - Buccal View" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div class="exp-block">
       <div class="exp-eng"><strong style="color:#52b788">Lingual surface:</strong> Trapezoid with <strong>lingual convergence</strong>. 2 lingual cusps (ML slightly wider than DL). Lingual DG separates them. Lingual cusps are <strong>higher and more pointed</strong> than buccal. Cervical line is located at a higher level (more occlusally). Roots appear longer from this aspect.</div>
       <div class="exp-ar">السطح الـ Lingual: Trapezoid مع Lingual convergence. الـ ML أعرض قليلاً من DL. الـ lingual cusps أطول وأحد من الـ buccal. الـ cervical line عند مستوى أعلى من الـ buccal.</div>
     </div>
-    <img src="images/img_10.png" alt="Mandibular First Molar (Lower 6) - Lingual View" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div class="exp-block">
       <div class="exp-eng"><strong style="color:#52b788">Mesial surface:</strong> <strong>Rhomboidal</strong> with lingual inclination. Buccal outline convex at cervical 1/3 (cervical ridge) then straight. Lingual outline convex with max convexity at middle. Cervical line straight inclined from lingual to buccal. Contact area at junction of <strong>middle &amp; occlusal 1/3</strong>, slightly buccal to vertical line. Mesial marginal ridge at lower level. Mesial surface convex and smooth. Mesial root: straight till middle then tapers to blunt apex; root surface has deep groove on center.</div>
       <div class="exp-ar">السطح الـ Mesial: Rhomboidal مع Lingual inclination. الـ Contact area عند تقاطع الـ middle و occlusal 1/3. الـ Mesial MR عند مستوى أدنى من المعتاد. الـ mesial root عنده deep groove في المركز.</div>
@@ -3811,12 +4160,12 @@ const SHARH_SAMPLE = {
       <div class="exp-eng"><strong style="color:#52b788">Occlusal surface:</strong> Outline = <strong>HEXAGONAL</strong> (wider mesiodistally). Lingual and distal convergence. Buccal surface longer than lingual, mesial longer than distal. 3 fossae: Central fossa (center) + Mesial triangular fossa + Distal triangular fossa. Each fossa has a developmental pit. 4 developmental grooves: <strong>Central DG</strong> (runs mesiodistally, separates buccal from lingual cusps, connects 3 fossae) + <strong>Mesiobuccal DG</strong> (from central fossa buccally, separates MB and DB) + <strong>Distobuccal DG</strong> (from central DG between central and distal fossae, separates DB and Distal) + <strong>Lingual DG</strong> (from central fossa lingually, separates 2 lingual cusps).</div>
       <div class="exp-ar">السطح الـ Occlusal: شكله Hexagonal (مش Rhomboidal زي الـ Upper). عنده Lingual + Distal convergence. 3 fossae كل واحدة فيها pit. 4 developmental grooves: Central (mesiodistal) + Mesiobuccal + Distobuccal + Lingual.</div>
     </div>
-    <img src="images/img_11.png" alt="Mandibular First Molar (Lower 6) - Occlusal View (Hexagonal)" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div class="exp-block">
       <div class="exp-eng"><strong style="color:#52b788">Roots &amp; Pulp:</strong> <strong>Mesial root</strong> = wider and longer; curves mesially from root trunk to middle, then curves distally to apex (S-curve). <strong>Distal root</strong> = straight with distal curvature at apical 1/3. Pulp chamber broader <strong>Mesiodistally</strong> (opposite to upper molars). 3 root canals: Mesial root has <strong>2 canals</strong> (MB + ML), Distal root has 1 canal.</div>
       <div class="exp-ar">الـ Mesial root أعرض وأطول وبيعمل S-curve (ينحني Mesially وسط ثم Distally للـ apex). الـ Distal root مستقيم. الـ Pulp أعرض Mesiodistally (عكس الـ Upper). الـ Mesial root عنده 2 canals، الـ Distal root عنده 1.</div>
     </div>
-    <img src="images/img_12.png" alt="Mandibular First Molar (Lower 6) - Roots & Pulp" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
       <div style="font-weight:700;color:#52b788;margin-bottom:10px">📅 Chronology — Lower 6</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center">
@@ -3843,7 +4192,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng">Has <strong>4 cusps</strong> (developed from 4 lobes: 2 buccal + 2 lingual) — all cusps nearly <strong>EQUAL in size</strong>. Smaller than Lower 6 with shorter roots. Buccal groove (1 groove only from buccal) — may end in buccal pit. <strong>Both contact areas at same level</strong> (middle 1/3). Roots closer and nearly parallel with more pointed apex. Supplemental grooves radiating from central DG.</div>
       <div class="exp-ar">الـ Lower 7 عنده 4 cusps فقط (من 4 lobes: 2 buccal + 2 lingual) وكلهم متساوين تقريباً. أصغر من الـ Lower 6. البـ buccal surface عنده groove واحدة بس. الـ roots أقرب لبعض ومتوازية تقريباً.</div>
     </div>
-    <img src="images/img_13.png" alt="Mandibular Second Molar (Lower 7) - Occlusal View (Rectangular + Cruciform)" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div class="hint">الفروق الرئيسية Lower 7 عن Lower 6: <strong>4 cusps</strong> (مش 5) | Occlusal = <strong>Rectangular</strong> (مش Hexagonal) | Cruciform grooves ✚ | كلا الـ contact areas عند نفس المستوى (middle 1/3) | الـ roots أقرب وأكثر توازياً</div>
     <div class="exp-block">
       <div class="exp-eng"><strong style="color:#52b788">Occlusal specifics:</strong> Rectangular outline with <strong>cruciform (+) shaped grooves</strong>. From central DG: buccal groove extends buccally separating MB and DB cusps equally; lingual groove extends lingually separating ML and DL cusps equally. 3 fossae: Central + Mesial triangular + Distal triangular. 3 developmental pits. Lingual groove: <strong>no pit</strong>.</div>
@@ -3875,7 +4224,7 @@ const SHARH_SAMPLE = {
       <div class="exp-eng">Shows <strong>2 basic types:</strong> <br>① Type like Lower 6: <strong>5 cusps + 2 roots</strong> but with supplemental grooves. <br>② Type like Lower 7: <strong>4 cusps + 2 roots</strong> but with more supplemental grooves. <br>No distal contact area — only <strong>1 mesial contact area</strong> at middle 1/3. Common variations: extra large or small size, fused roots, extra small roots, highly curved roots. Occlusal: Rectangular or oval with wrinkled appearance. Pulp chamber LARGER (9–11 yrs younger than Lower 6).</div>
       <div class="exp-ar">الـ Lower 8 بييجي في نوعين: شبه الـ 6 (5 cusps) أو شبه الـ 7 (4 cusps). مفيش Distal contact area — بس عنده Mesial contact عند الـ middle 1/3. بييجي بأشكال كتير: كبير أو صغير جداً، roots fused أو ملتوية. الـ Pulp chamber أكبر لأنه أصغر سناً.</div>
     </div>
-    <img src="images/img_14.png" alt="Mandibular Third Molar (Lower 8) - Types and Variations" style="width:100%;max-width:600px;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:12px 0;display:block;">
+    
     <div style="background:rgba(230,57,70,.05);border:1px solid rgba(230,57,70,.15);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
       <div style="font-weight:700;color:var(--danger);margin-bottom:10px">📅 Chronology — Lower 8</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center">
@@ -3887,6 +4236,241 @@ const SHARH_SAMPLE = {
       </div>
     </div>
   </div>
+</div>
+`
+,
+'dentition:premolars': `
+<div style="padding:4px 0">
+
+<!-- Intro badge -->
+<div style="display:inline-block;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:10px;font-size:11px;font-weight:700;padding:4px 13px;font-family:'Cairo',sans-serif;margin-bottom:14px">Chapter 2 · Premolars</div>
+<h2 style="font-family:'Syne',sans-serif;font-size:21px;font-weight:800;color:var(--white);margin-bottom:8px">Premolars — الأضراس الصغيرة</h2>
+<p style="font-family:'Cairo',sans-serif;font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:20px">الأضراس الصغيرة (Premolars / Bicuspids) هي الأسنان اللي بتيجي بين الأنياب (Canines) والأضراس الكبيرة (Molars). اسمها Bicuspids لأن معظمها عنده 2 cusps — ماعدا Lower 5 (3-cusp type).</p>
+
+<!-- GENERAL RULES -->
+<div class="ch-card">
+  <div class="ch-head" onclick="tgCh(this)"><h3>📌 General Rules — قواعد عامة لكل الـ Premolars</h3><span class="tog">▾</span></div>
+  <div class="ch-body">
+    <div class="exp-block">
+      <div class="exp-eng">
+        <strong>General facts:</strong> 8 premolars total (4 upper, 4 lower, 2 per quadrant). Intermediate teeth between canines and molars. They are <strong>Succedaneous</strong> — replace deciduous molars. Crowns & roots shorter than anterior teeth but longer than molars. All develop from <strong>4 lobes</strong> EXCEPT Lower 5 (3-cusp) = 5 lobes. All called Bicuspids EXCEPT Lower 5 (3-cusp) = Tricuspid. Marginal ridges on the <strong>Occlusal surface</strong> (unlike anteriors where they're lingual). Cervical line has less curvature than anterior teeth.
+      </div>
+      <div class="exp-ar">8 أضراس صغيرة في الفم. Succedaneous = بيحلوا محل أضراس اللبن. بيتطوروا من 4 lobes ماعدا Lower 5 (3-cusp) = 5 lobes. الـ Marginal ridges موجودة على الـ Occlusal surface (مش الـ Lingual زي الأسنان الأمامية). الـ Cervical line أقل curvature من الأسنان الأمامية.</div>
+    </div>
+    <div class="espot">⚡ سؤال متكرر: الـ Premolars اسمهم Succedaneous لأنهم بيحلوا محل Deciduous Molars. الأضراس الكبيرة (Molars) = Non-succedaneous.</div>
+    <div class="hint">الـ Buccal outline لكل الـ Premolars = <strong>Trapezoid (short side cervical)</strong> — ينطبق على الكل بدون استثناء!</div>
+  </div>
+</div>
+
+<!-- UPPER 4 -->
+<div class="ch-card">
+  <div class="ch-head" onclick="tgCh(this)"><h3>🔵 Upper First Premolar (Upper 4) — الضرس الصغير الأول العلوي</h3><span class="tog">▾</span></div>
+  <div class="ch-body">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <span style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">2 Cusps (Buccal + Lingual)</span>
+      <span style="background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.3);color:#f4a261;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">80% = 2 Roots</span>
+      <span style="background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);color:var(--danger);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Hexagonal Occlusal</span>
+      <span style="background:rgba(100,149,237,.1);border:1px solid rgba(100,149,237,.3);color:#6495ed;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">King of Exceptions ⚡</span>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Buccal Aspect:</strong> Trapezoid (short side cervical). Mesial outline: slightly <strong>concave</strong> from cervical to contact area (at junction of occlusal & middle thirds). Distal outline: slightly straight to contact area. Occlusal outline: <strong>Mesial cusp slope LONGER than distal — EXCEPTION!</strong> (Normal rule = mesial shorter). Cervical line convex toward root. Buccal surface: prominent buccal ridge + cervical ridge.</div>
+      <div class="exp-ar">الـ Buccal: Trapezoid. الـ Mesial outline = مقعرة (concave) من الـ Cervical للـ Contact area. الـ Occlusal: Mesial cusp slope أطول من الـ Distal — Exception! الطبيعي عكس كده في كل الأسنان التانية.</div>
+    </div>
+    <div class="espot">⚡ EXCEPTION: Mesial cusp slope > Distal cusp slope — Upper 4 هو الوحيد!</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Lingual Aspect:</strong> Lingual cusp is more pointed and <strong>1mm shorter</strong> than buccal cusp. Crown & root converge (taper) toward lingual. Mesial slope shorter than distal slope (like canine). Maximum convexity at <strong>middle third</strong>. If 2 roots: lingual root shorter & narrower than buccal root with pointed distal-curved apex.</div>
+      <div class="exp-ar">الـ Lingual: الـ Lingual cusp أقصر بـ 1mm من الـ Buccal. الـ Crown والـ Root بيتضيقوا ناحية الـ Lingual. Maximum convexity = middle third. لو 2 roots: الـ Lingual root أقصر وأضيق.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Mesial Aspect:</strong> Trapezoid (longest side cervically). Buccal outline convex (max convexity = cervical ridge). Lingual outline convex (max = middle third). Mesial contact area: junction of occlusal & middle thirds. Cervical line: curves occlusally ~1mm. Special features: (1) <strong>Mesial Marginal Developmental Groove (MMDG)</strong> crosses the mesial marginal ridge; (2) <strong>Canine Fossa</strong> = developmental depression on mesial crown surface extending to root. Root bifurcation at ½ root length.</div>
+      <div class="exp-ar">الـ Mesial: Trapezoid (أطول ناحية الـ Cervical). الـ Mesial contact = junction of occlusal + middle thirds. 2 features مميزة: MMDG (groove بيعبر الـ Mesial Marginal Ridge) + الـ Canine Fossa (depression على الـ Mesial surface).</div>
+    </div>
+    <div class="espot">⚡ الـ MMDG = خاصية مميزة لـ Upper 4 فقط! مش موجودة على أي Premolar تاني.</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Distal Aspect:</strong> Differs from mesial in: (1) Distal contact area at junction of occlusal & middle thirds — <strong>more occlusal than mesial — EXCEPTION!</strong>; (2) NO developmental groove crossing DMR; (3) No developmental depression on crown (only on root); (4) Root bifurcation more apical (longer root trunk).</div>
+      <div class="exp-ar">الـ Distal: الـ Distal contact area أعلى من الـ Mesial — Exception! مفيش MMDG على الـ Distal. مفيش Depression على الـ Crown على الـ Distal.</div>
+    </div>
+    <div class="espot">⚡ EXCEPTION: الـ Distal contact area في Upper 4 أعلى (more occlusal) من الـ Mesial!</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Occlusal Aspect:</strong> <strong>Hexagonal outline</strong>. B-L dimension > M-D dimension. Elevations: Buccal cusp + Lingual cusp + Buccal triangular ridge + Lingual triangular ridge + Mesial marginal ridge + Distal marginal ridge. Buccal + Lingual triangular ridges unite = <strong>Transverse ridge</strong>. Depressions: Central developmental groove (long) + Mesial & Distal triangular fossae + MMDG.</div>
+      <div class="exp-ar">الـ Occlusal: Hexagonal. الـ Elevations: Buccal + Lingual cusps + Buccal + Lingual triangular ridges + M & D marginal ridges. الـ Buccal + Lingual triangular ridges = Transverse ridge. الـ Depressions: Central groove (طويل) + M & D fossae + MMDG.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#22c55e">Roots & Pulp:</strong> 80% = 2 roots (Buccal + Lingual), 20% = single root. <strong>ALWAYS 2 root canals</strong> regardless of root number! Root canal cross-section at CEJ = <strong>Kidney-shaped (figure-8)</strong>. Bifurcation at ½ root length. Buccal root = conical (like canine root but shorter).</div>
+      <div class="exp-ar">الـ Roots: 80% = 2 roots, 20% = 1 root. لكن دايماً 2 root canals! Cross-section = Kidney-shaped. Bifurcation عند ½ الـ Root.</div>
+    </div>
+    <div class="hint">💡 Why difficult to extract with rotation? عشان عنده 2 roots رفيعين — الـ Rotation ممكن يكسرهم!</div>
+
+    <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:14px 16px;margin:12px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
+      <div style="font-weight:700;color:#22c55e;margin-bottom:10px">📅 Chronology — Upper 4</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Calcification</div><div style="font-family:'Syne',sans-serif;color:#22c55e;font-weight:800;font-size:13px">1.5–1.75 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Crown</div><div style="font-family:'Syne',sans-serif;color:#f4a261;font-weight:800;font-size:13px">5–6 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Eruption</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">10–11 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Root Complete</div><div style="font-family:'Syne',sans-serif;color:var(--text);font-weight:800;font-size:13px">12–13 yrs</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPPER 5 -->
+<div class="ch-card">
+  <div class="ch-head" onclick="tgCh(this)"><h3>🔵 Upper Second Premolar (Upper 5) — الضرس الصغير الثاني العلوي</h3><span class="tog">▾</span></div>
+  <div class="ch-body">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <span style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Equal Cusps</span>
+      <span style="background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.3);color:#f4a261;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Single Root (Longer)</span>
+      <span style="background:rgba(100,149,237,.1);border:1px solid rgba(100,149,237,.3);color:#6495ed;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Oval / Round Occlusal</span>
+      <span style="background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.3);color:#9b59b6;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Wrinkled Surface 🌊</span>
+    </div>
+
+    <div class="hint">💡 Upper 5 مشابه لـ Upper 4 ماعدا الفروق التالية:</div>
+    <div class="exp-block">
+      <div class="exp-eng">
+        <strong style="color:#6495ed">Key differences from Upper 4:</strong><br>
+        1. <strong>Single root</strong> (longer than Upper 4)<br>
+        2. Buccal cusp: <strong>less pointed & shorter</strong> — buccal & lingual cusps nearly <strong>equal in height</strong><br>
+        3. Mesial cusp slope <strong>SHORTER</strong> than distal slope (normal rule — NOT an exception)<br>
+        4. <strong>No MMDG</strong> (no mesial marginal developmental groove)<br>
+        5. <strong>No developmental depression on mesial crown surface</strong> (canine fossa only on root)<br>
+        6. Occlusal outline = <strong>Oval / Round</strong> (NOT hexagonal)<br>
+        7. Central groove = <strong>short</strong>, with numerous <strong>supplemental grooves</strong> → wrinkled appearance<br>
+        8. Distal marginal ridge (DMR) more cervical than mesial marginal ridge (MMR)<br>
+        9. Pulp chamber with <strong>2 pulp horns</strong>
+      </div>
+      <div class="exp-ar">الفروق عن Upper 4: Single root أطول. الكسبان بنفس الارتفاع تقريباً وأقل حدة. Mesial slope أقصر من Distal (القاعدة الطبيعية). مفيش MMDG. مفيش Canine fossa على الـ Crown. الـ Occlusal = Oval. الـ Central groove قصير + Supplemental grooves كتير = Wrinkled appearance.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#6495ed">Occlusal Aspect:</strong> Oval / rounded outline. Short central developmental groove from which radiate numerous <strong>supplemental grooves</strong> → wrinkled appearance. Buccal & Lingual triangular ridges present. Thicker M & D marginal ridges. NO mesial marginal developmental groove. M and D triangular fossae.</div>
+      <div class="exp-ar">الـ Occlusal: Oval. Central groove قصير + Supplemental grooves → Wrinkled. Marginal ridges أسمك من Upper 4. مفيش MMDG.</div>
+    </div>
+    <div class="espot">⚡ أهم feature مميز لـ Upper 5 = الـ Wrinkled occlusal surface بسبب الـ Supplemental grooves!</div>
+
+    <div style="background:rgba(100,149,237,.06);border:1px solid rgba(100,149,237,.2);border-radius:10px;padding:14px 16px;margin:12px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
+      <div style="font-weight:700;color:#6495ed;margin-bottom:10px">📅 Chronology — Upper 5</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Calcification</div><div style="font-family:'Syne',sans-serif;color:#6495ed;font-weight:800;font-size:13px">2–2.25 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Crown</div><div style="font-family:'Syne',sans-serif;color:#f4a261;font-weight:800;font-size:13px">6–7 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Eruption</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">10–12 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Root Complete</div><div style="font-family:'Syne',sans-serif;color:var(--text);font-weight:800;font-size:13px">13–15 yrs</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOWER 4 -->
+<div class="ch-card">
+  <div class="ch-head" onclick="tgCh(this)"><h3>🟠 Lower First Premolar (Lower 4) — الضرس الصغير الأول السفلي</h3><span class="tog">▾</span></div>
+  <div class="ch-body">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <span style="background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);color:var(--danger);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Non-functional Lingual Cusp</span>
+      <span style="background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.3);color:#f4a261;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Lingual Inclination</span>
+      <span style="background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.3);color:#9b59b6;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Diamond Occlusal</span>
+      <span style="background:rgba(100,149,237,.1);border:1px solid rgba(100,149,237,.3);color:#6495ed;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Snake Eyes 👀</span>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Buccal Aspect:</strong> Trapezoid (short side cervical). Buccal cusp tip: <strong>mesial to midline</strong>. Mesial cusp slope SHORTER than distal (normal rule). Cervical line convex toward root. Surface: convex, max convexity at cervical ridge, well-developed buccal ridge (middle lobe). Root: cone shape, shorter than canine, distal inclination of apical third, pointed apex.</div>
+      <div class="exp-ar">الـ Buccal: الـ Cusp tip ميال للـ Mesial من الـ Midline. Mesial slope أقصر من Distal (قاعدة عادية). الـ Root مخروطي، أقصر من الـ Canine، ميال ناحية الـ Distal في الـ apical third.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Lingual Aspect:</strong> Crown & root show high <strong>lingual convergence</strong>. Lingual cusp = <strong>small, non-functional, reaching only 2/3 the crown length</strong>. Pointed cusp tip. Maximum convexity at <strong>middle third</strong>. Distinctive feature: <strong>Mesiolingual Developmental Groove</strong> at ML line angle (separates mesial marginal ridge from lingual cusp mesial slope).</div>
+      <div class="exp-ar">الـ Lingual: Lingual convergence عالية. الـ Lingual cusp صغير، Non-functional، طوله 2/3 الـ Buccal cusp. الـ Mesiolingual Developmental Groove موجودة عند الـ ML line angle.</div>
+    </div>
+    <div class="espot">⚡ الـ Lingual cusp في Lower 4 = NON-FUNCTIONAL! مش بيعض مع الأسنان الـ Upper أثناء الـ Occlusion!</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Mesial Aspect:</strong> Rhomboidal outline. Crown tilts noticeably <strong>toward lingual (lingual inclination)</strong>. Buccal cusp tip centered over root apex (due to lingual tilt). Lingual cusp tip in line with lingual border of root. Mesial marginal ridge: oblique to midline, parallel to buccal cusp ridge. Deep developmental depression on root (mesiolingual groove). Lingual inclination very prominent.</div>
+      <div class="exp-ar">الـ Mesial: Rhomboidal. الـ Crown ميال ناحية الـ Lingual بوضوح — Lingual inclination. الـ Buccal cusp tip فوق محور الـ Root مباشرة. الـ MMR مائل للـ Midline (oblique).</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Distal Aspect:</strong> Rhomboidal. DMR higher (more occlusal) and straighter than MMR — <strong>EXCEPTION! DMR is at right angle to long axis</strong>. Max convexity at lingual surface at middle third. No developmental groove on distal. Distal contact area is broader. Mesial MR is oblique while distal MR is straight.</div>
+      <div class="exp-ar">الـ Distal: الـ DMR أعلى من الـ MMR — Exception! الـ DMR مستقيم وعمودي على الـ Long axis. الـ Mesial MR مائل (oblique) والـ Distal MR مستقيم.</div>
+    </div>
+    <div class="espot">⚡ EXCEPTION Lower 4: الـ DMR أعلى (more occlusal) من الـ MMR!</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Occlusal Aspect:</strong> <strong>Diamond / Round shape</strong> with high lingual convergence. Buccal cusp well-developed (large triangular ridge). Lingual cusp less developed (small triangular ridge = non-functional). Buccal + Lingual triangular ridges united = <strong>Transverse ridge</strong> (characteristic feature). Central developmental groove crosses the transverse ridge. <strong>"Snake Eyes"</strong> = mesial & distal triangular fossae (pits) separated by transverse ridge → looks like two eyes! Mesiolingual developmental groove also visible.</div>
+      <div class="exp-ar">الـ Occlusal: Diamond أو Round مع Lingual convergence عالية. الـ Transverse ridge = خاصية مميزة. "Snake Eyes" = الـ Mesial + Distal pits اللي بيشبهوا عيني الأفعى على جانبي الـ Transverse ridge.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#f4a261">Mesial Contact:</strong> At junction of occlusal & middle thirds. <strong>Distal Contact: LOWER & MORE CERVICAL than mesial — EXCEPTION!</strong> (Normal: distal is higher or equal). <strong>EXCEPTION: Mesial contact more occlusal than distal in Lower 4!</strong></div>
+      <div class="exp-ar">Exception! في Lower 4: الـ Mesial contact أعلى (more occlusal) من الـ Distal. ده عكس القاعدة الطبيعية في كل الأسنان التانية!</div>
+    </div>
+
+    <div style="background:rgba(244,162,97,.06);border:1px solid rgba(244,162,97,.2);border-radius:10px;padding:14px 16px;margin:12px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
+      <div style="font-weight:700;color:#f4a261;margin-bottom:10px">📅 Chronology — Lower 4</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Calcification</div><div style="font-family:'Syne',sans-serif;color:#f4a261;font-weight:800;font-size:13px">1.75–2 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Crown</div><div style="font-family:'Syne',sans-serif;color:#f4a261;font-weight:800;font-size:13px">5–6 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Eruption</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">9–10 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Root Complete</div><div style="font-family:'Syne',sans-serif;color:var(--text);font-weight:800;font-size:13px">12–13 yrs</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOWER 5 -->
+<div class="ch-card">
+  <div class="ch-head" onclick="tgCh(this)"><h3>🟠 Lower Second Premolar (Lower 5) — الضرس الصغير الثاني السفلي</h3><span class="tog">▾</span></div>
+  <div class="ch-body">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <span style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">2-cusp OR 3-cusp type</span>
+      <span style="background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);color:var(--danger);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Y-groove (3-cusp)</span>
+      <span style="background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.3);color:#f4a261;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">Longer + Wider Root</span>
+      <span style="background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.3);color:#9b59b6;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif">5 Lobes (3-cusp)</span>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#9b59b6">Overview:</strong> Lower 5 is the ONLY premolar with a 3-cusp type. Has two forms: <strong>2-cusp type</strong> (more common) and <strong>3-cusp type</strong>. Similar to Lower 4 from buccal but differs in: buccal cusp shorter & less pointed, mesial + distal contact areas at same level (more occlusal than Lower 4), less prominent buccal ridge, root = broader & longer with blunt apex.</div>
+      <div class="exp-ar">Lower 5 = الـ Premolar الوحيد اللي ممكن يبقى 3-cusp. له نوعين: 2-cusp (الأكثر شيوعاً) و 3-cusp. مشابه لـ Lower 4 من الـ Buccal لكن الـ Cusp أقصر وأقل حدة والـ Root أعرض وأطول.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#9b59b6">Lingual Aspect Comparison:</strong><br>
+      <strong>2-cusp type:</strong> One lingual cusp — shorter & smaller than buccal but larger than Lower 4's lingual cusp. Functional cusp. Lingual convergence present. Max convexity at occlusal third.<br>
+      <strong>3-cusp type:</strong> Two lingual cusps (ML + DL). Hierarchy: B > ML > DL. NO lingual convergence. Lingual groove between ML and DL cusps. Wide lingual surface. Max convexity at occlusal third.</div>
+      <div class="exp-ar">2-cusp: Lingual cusp وظيفي، أكبر من Lower 4 لكن أصغر من Buccal. 3-cusp: 2 lingual cusps (ML + DL). B > ML > DL. مفيش Lingual convergence. Lingual groove بين ML و DL.</div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#9b59b6">Occlusal Aspect:</strong><br>
+      <strong>3-cusp type:</strong> Square outline. NO lingual convergence. 1B + 2L cusps (B > ML > DL). NO transverse ridge. Central groove = <strong>Y-shaped</strong>. Many supplemental grooves. Central pit formed by Y-groove.<br>
+      <strong>2-cusp type:</strong> Oval / round outline. Lingual convergence present. 1B + 1L (functional). Transverse ridge present. Central groove = <strong>U or H-shaped</strong>. Less supplemental grooves.</div>
+      <div class="exp-ar">3-cusp: Square، Y-groove، Central pit، بدون Transverse ridge، بدون Lingual convergence. 2-cusp: Oval، U/H groove، مع Transverse ridge، مع Lingual convergence.</div>
+    </div>
+    <div class="espot">⚡ Y-groove = 3-cusp type. U/H groove = 2-cusp type. سؤال متكرر جداً!</div>
+
+    <div class="exp-block">
+      <div class="exp-eng"><strong style="color:#9b59b6">Pulp Cavities:</strong><br>
+      Lower 4: 1 pulp horn (under buccal cusp), single root canal, rounded cross-section.<br>
+      Lower 5 (2-cusp): 2 pulp horns, single root canal, wider pulp chamber than Lower 4.<br>
+      Lower 5 (3-cusp): <strong>3 pulp horns</strong>, single wide root canal (sometimes 2), buccal horn usually highest.</div>
+      <div class="exp-ar">Lower 4: 1 pulp horn. 2-cusp Lower 5: 2 pulp horns. 3-cusp Lower 5: 3 pulp horns!</div>
+    </div>
+
+    <div style="background:rgba(155,89,182,.06);border:1px solid rgba(155,89,182,.2);border-radius:10px;padding:14px 16px;margin:12px 0;font-family:'Cairo',sans-serif;font-size:12px;direction:rtl">
+      <div style="font-weight:700;color:#9b59b6;margin-bottom:10px">📅 Chronology — Lower 5</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Calcification</div><div style="font-family:'Syne',sans-serif;color:#9b59b6;font-weight:800;font-size:13px">2.25–2.5 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Crown</div><div style="font-family:'Syne',sans-serif;color:#f4a261;font-weight:800;font-size:13px">6–7 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Eruption</div><div style="font-family:'Syne',sans-serif;color:var(--teal);font-weight:800;font-size:13px">10–11 yrs</div></div>
+        <div style="background:var(--card2);border-radius:8px;padding:8px;border:1px solid var(--border)"><div style="font-size:11px;color:var(--muted)">Root Complete</div><div style="font-family:'Syne',sans-serif;color:var(--text);font-weight:800;font-size:13px">13–15 yrs</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 `
 };
@@ -3944,7 +4528,10 @@ async function initAdmin() {
 }
 
 // ═══════════ STATE ═══════════
-let CU=null, CS=null;
+let CU=null, CS=null, CS_CHAPTER=null;
+const SESSION_KEY = 'sk_' + Math.random().toString(36).slice(2);
+let _PRESENCE_DATA = {};
+let _fbPresenceListener = false;
 
 // ═══════════ MODAL ═══════════
 function openModal(tab='login'){
@@ -4010,6 +4597,7 @@ async function doLogin(){
 function setSession(u){ CU=u; localStorage.setItem('dh_session',u.id); }
 
 function doLogout(){
+  if(CU && window._fb?.ready) window._fb.goOffline(CU.id, SESSION_KEY);
   CU=null; CS=null;
   localStorage.removeItem('dh_session');
   document.getElementById('app').style.display='none';
@@ -4024,10 +4612,12 @@ function showApp(u){
   document.getElementById('nav-av').textContent=ini;
   document.getElementById('nav-uname').textContent=u.name.split(' ')[0];
   document.getElementById('adm-btn').style.display=u.role==='admin'?'block':'none';
+  if(window._fb?.ready) window._fb.goOnline(u.id, SESSION_KEY);
   goHome();
 }
 
 function goHome(){
+  CS_CHAPTER=null;
   document.getElementById('dash-page').style.display='block';
   document.getElementById('subj-page').style.display='none';
   document.getElementById('admin-page').style.display='none';
@@ -4068,6 +4658,7 @@ function renderDash(){
 function openSubj(id){
   CS=SUBJECTS.find(s=>s.id===id);
   if(!CS) return;
+  CS_CHAPTER=null;
   document.getElementById('dash-page').style.display='none';
   document.getElementById('subj-page').style.display='block';
   document.getElementById('s-ico').textContent=CS.icon;
@@ -4087,17 +4678,38 @@ function swMode(mode, btn){
   document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   const subTabs=document.getElementById('sub-tabs');
+  const chWrap=document.getElementById('chapter-select-wrap');
+  const chBack=document.getElementById('ch-back-strip');
   if(mode==='theory'){
-    subTabs.style.display='flex';
+    const hasChapters=CS && CHAPTER_CONFIG[CS.id];
+    // reset panes
     document.getElementById('pane-sharh').classList.add('on');
     document.getElementById('pane-mlakhs').classList.remove('on');
     document.getElementById('pane-bank').classList.remove('on');
     document.getElementById('pane-practice').classList.remove('on');
-    // reset sub tabs
     document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
     document.querySelectorAll('.stab')[0].classList.add('on');
+    if(hasChapters && !CS_CHAPTER){
+      // Show chapter selector, hide sub-tabs
+      chWrap.style.display='block';
+      subTabs.style.display='none';
+      chBack.style.display='none';
+      document.getElementById('pane-sharh').classList.remove('on');
+    } else if(hasChapters && CS_CHAPTER){
+      chWrap.style.display='none';
+      subTabs.style.display='flex';
+      chBack.style.display='flex';
+    } else {
+      chWrap.style.display='none';
+      subTabs.style.display='flex';
+      chBack.style.display='none';
+    }
   } else {
+    // Practice mode
+    CS_CHAPTER=null;
+    chWrap.style.display='none';
     subTabs.style.display='none';
+    chBack.style.display='none';
     document.getElementById('pane-sharh').classList.remove('on');
     document.getElementById('pane-mlakhs').classList.remove('on');
     document.getElementById('pane-bank').classList.remove('on');
@@ -4114,7 +4726,98 @@ function swSub(pane, btn){
 }
 
 function renderContent(){
-  renderSharh(); renderMlakhs(); renderBank(); renderPractice2();
+  const hasChapters=CS && CHAPTER_CONFIG[CS.id];
+  if(hasChapters && !CS_CHAPTER){
+    renderChapterSelect();
+  } else {
+    renderSharh(); renderMlakhs(); renderBank();
+  }
+  renderPractice2();
+}
+
+// ── CHAPTER SELECTOR ──
+function renderChapterSelect(){
+  const chapters=CHAPTER_CONFIG[CS.id]||[];
+  const wrap=document.getElementById('chapter-select-wrap');
+  wrap.style.display='block';
+  document.getElementById('sub-tabs').style.display='none';
+  document.getElementById('ch-back-strip').style.display='none';
+  document.getElementById('pane-sharh').classList.remove('on');
+
+  const cards=chapters.map(ch=>{
+    const total=(QS[CS.id]||[]).filter(q=>ch.qPrefixes.some(p=>q.id.startsWith(p))).length;
+    const slv=CU.solved||{};
+    const done=(QS[CS.id]||[]).filter(q=>ch.qPrefixes.some(p=>q.id.startsWith(p))&&slv[CS.id+'_'+q.id]!==undefined).length;
+    return `
+    <div class="ch-sel-card" style="--csc:${ch.color};--csf:${ch.fade}" onclick="openChapter('${ch.id}')">
+      <span class="cs-ico">${ch.icon}</span>
+      <div class="cs-title">${ch.title}</div>
+      <div class="cs-title-ar">${ch.titleAr}</div>
+      <div class="cs-desc">${ch.desc}</div>
+      <div class="cs-meta">
+        <span class="cs-badge" style="background:${ch.fade};color:${ch.color}">${total} سؤال</span>
+        <span class="cs-badge" style="background:rgba(16,185,129,.1);color:var(--green)">${done} تم</span>
+      </div>
+      <div class="cs-enter">ابدأ المذاكرة →</div>
+    </div>`;
+  });
+
+  // Add coming-soon placeholders (up to 2)
+  const comingSoon=`
+    <div class="ch-sel-card" style="--csc:var(--muted);--csf:rgba(90,122,138,.08);opacity:.45;cursor:default;pointer-events:none">
+      <span class="cs-ico">🔜</span>
+      <div class="cs-title">Canines & Incisors</div>
+      <div class="cs-title-ar">الأنياب والقواطع</div>
+      <div class="cs-desc">Upper & Lower Anterior Teeth</div>
+      <div class="cs-meta"><span class="cs-badge" style="background:rgba(90,122,138,.12);color:var(--muted)">قريباً</span></div>
+    </div>
+    <div class="ch-sel-card" style="--csc:var(--muted);--csf:rgba(90,122,138,.08);opacity:.45;cursor:default;pointer-events:none">
+      <span class="cs-ico">🔜</span>
+      <div class="cs-title">Deciduous Teeth</div>
+      <div class="cs-title-ar">أسنان اللبن</div>
+      <div class="cs-desc">Primary Dentition</div>
+      <div class="cs-meta"><span class="cs-badge" style="background:rgba(90,122,138,.12);color:var(--muted)">قريباً</span></div>
+    </div>`;
+
+  document.getElementById('chapter-select-inner').innerHTML=`
+    <div class="ch-sel-header">
+      <div class="ch-sel-breadcrumb">📚 ${CS.name} · ${CS.nameAr} <span style="opacity:.4">›</span> اختار الـ Chapter</div>
+      <div class="ch-sel-title">Chapters</div>
+      <div class="ch-sel-sub">اختار الـ chapter اللي عايز تذاكره — كل chapter فيه شرح وملخص وبنك أسئلة</div>
+    </div>
+    <div class="ch-sel-grid">${cards.join('')}${comingSoon}</div>`;
+}
+
+function openChapter(chId){
+  const chapters=CHAPTER_CONFIG[CS.id]||[];
+  CS_CHAPTER=chapters.find(c=>c.id===chId);
+  if(!CS_CHAPTER) return;
+
+  // Hide chapter selector, show sub-tabs and back strip
+  document.getElementById('chapter-select-wrap').style.display='none';
+  document.getElementById('sub-tabs').style.display='flex';
+  const backStrip=document.getElementById('ch-back-strip');
+  backStrip.style.display='flex';
+  document.getElementById('ch-active-label').textContent=CS_CHAPTER.icon+' '+CS_CHAPTER.title;
+
+  // Activate first sub-tab (شرح)
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.stab')[0].classList.add('on');
+  document.getElementById('pane-sharh').classList.add('on');
+  document.getElementById('pane-mlakhs').classList.remove('on');
+  document.getElementById('pane-bank').classList.remove('on');
+
+  renderSharh(); renderMlakhs(); renderBank();
+}
+
+function backToChapters(){
+  CS_CHAPTER=null;
+  document.getElementById('sub-tabs').style.display='none';
+  document.getElementById('ch-back-strip').style.display='none';
+  document.getElementById('pane-sharh').classList.remove('on');
+  document.getElementById('pane-mlakhs').classList.remove('on');
+  document.getElementById('pane-bank').classList.remove('on');
+  renderChapterSelect();
 }
 
 function tgCh(head){ head.classList.toggle('open'); head.nextElementSibling.classList.toggle('open'); }
@@ -4122,8 +4825,11 @@ function tgCh(head){ head.classList.toggle('open'); head.nextElementSibling.clas
 // SHARH (شرح)
 function renderSharh(){
   const el=document.getElementById('c-sharh');
-  const saved=getCnt(CS.id+'_sharh');
-  const sample=SHARH_SAMPLE[CS.id]||coming('الشرح التفصيلي');
+  // Chapter-specific sharh
+  const sharhKey=CS_CHAPTER ? `${CS.id}:${CS_CHAPTER.id}` : null;
+  const saved=getCnt(CS.id+'_sharh'+(CS_CHAPTER?'_'+CS_CHAPTER.id:''));
+  const sample=sharhKey ? (SHARH_SAMPLE[sharhKey]||SHARH_SAMPLE[CS.id]||coming('الشرح التفصيلي'))
+                        : (SHARH_SAMPLE[CS.id]||coming('الشرح التفصيلي'));
   if(CU.role==='admin'){
     el.innerHTML=`<div class="lblock"><h3>📖 الشرح <button class="edit-btn" onclick="tgEd('ed-sharh')">✏️ تعديل</button></h3><div id="pv-sharh">${saved||sample}</div><div class="ced" id="ed-sharh"><textarea id="ta-sharh" style="min-height:120px">${saved||''}</textarea><button class="save-btn" onclick="saveCnt('sharh')">💾 حفظ</button></div></div>`;
   } else {
@@ -4135,11 +4841,14 @@ function renderSharh(){
 // MLAKHS (ملخص)
 function renderMlakhs(){
   const el=document.getElementById('c-mlakhs');
-  const saved=getCnt(CS.id+'_mlakhs');
+  const chKey=CS_CHAPTER ? `${CS.id}:${CS_CHAPTER.id}` : null;
+  const saved=getCnt(CS.id+'_mlakhs'+(CS_CHAPTER?'_'+CS_CHAPTER.id:''));
+  const fallback=chKey ? (SUMM_CHAPTERS[chKey]||SUMM[CS.id]||coming('الملخص'))
+                       : (SUMM[CS.id]||coming('الملخص'));
   if(CU.role==='admin'){
-    el.innerHTML=`<div class="lblock"><h3>📋 الملخص <button class="edit-btn" onclick="tgEd('ed-mlakhs')">✏️ تعديل</button></h3><div id="pv-mlakhs">${saved||SUMM[CS.id]||coming('الملخص')}</div><div class="ced" id="ed-mlakhs"><textarea id="ta-mlakhs" style="min-height:120px">${saved||''}</textarea><button class="save-btn" onclick="saveCnt('mlakhs')">💾 حفظ</button></div></div>`;
+    el.innerHTML=`<div class="lblock"><h3>📋 الملخص <button class="edit-btn" onclick="tgEd('ed-mlakhs')">✏️ تعديل</button></h3><div id="pv-mlakhs">${saved||fallback}</div><div class="ced" id="ed-mlakhs"><textarea id="ta-mlakhs" style="min-height:120px">${saved||''}</textarea><button class="save-btn" onclick="saveCnt('mlakhs')">💾 حفظ</button></div></div>`;
   } else {
-    el.innerHTML=saved||SUMM[CS.id]||coming('الملخص');
+    el.innerHTML=saved||fallback;
   }
   if(window.wrapTables) setTimeout(window.wrapTables, 50);
 }
@@ -5397,11 +6106,16 @@ function saveCnt(key){
 // BANK
 function renderBank(){
   const el=document.getElementById('c-bank');
-  const qs=QS[CS.id]||[];
+  const allQs=QS[CS.id]||[];
+  // Filter by chapter if inside one
+  const qs=CS_CHAPTER
+    ? allQs.filter(q=>CS_CHAPTER.qPrefixes.some(p=>q.id.startsWith(p)))
+    : allQs;
   if(!qs.length){ el.innerHTML=coming('بنك الأسئلة'); return; }
   const slv=CU.solved||{};
   const done=qs.filter(q=>slv[CS.id+'_'+q.id]!==undefined).length;
-  el.innerHTML=`<div class="qhead"><h3>❓ بنك الأسئلة</h3><div class="qfilts"><button class="qf on" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button></div></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك في المادة</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="ql">${qs.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('')}</div>`;
+  const label=CS_CHAPTER ? `${CS_CHAPTER.icon} ${CS_CHAPTER.title}` : 'بنك الأسئلة';
+  el.innerHTML=`<div class="qhead"><h3>❓ ${label}</h3><div class="qfilts"><button class="qf on" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button></div></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك${CS_CHAPTER?' في الـ Chapter':' في المادة'}</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="ql">${qs.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('')}</div>`;
 }
 
 function buildQ(q,i,saved){
@@ -5443,7 +6157,10 @@ function showAns(qid,ai){
 
 function fQ(type,btn){
   document.querySelectorAll('.qf').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
-  const qs=QS[CS.id]||[];
+  const allQs=QS[CS.id]||[];
+  const qs=CS_CHAPTER
+    ? allQs.filter(q=>CS_CHAPTER.qPrefixes.some(p=>q.id.startsWith(p)))
+    : allQs;
   const slv=CU.solved||{};
   const filtered=type==='starred'?qs.filter(q=>q.starred):qs;
   document.getElementById('ql').innerHTML=filtered.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('');
@@ -5829,8 +6546,7 @@ function renderBiochemPractical(el){
 
         <!-- Image 1: Exam sheet -->
         <div onclick="bcImgOpen(0)" style="cursor:pointer;border-radius:12px;overflow:hidden;border:2px solid rgba(220,38,38,.25);transition:all .25s;background:#000" onmouseover="this.style.borderColor='#f87171';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(220,38,38,.25)';this.style.transform='translateY(0)'">
-          <img src="images/img_15.jpeg"
-               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22><rect fill=%22%23042638%22 width=%22300%22 height=%22200%22/><text fill=%22%23f87171%22 font-family=%22Arial%22 font-size=%2220%22 x=%2250%25%22 y=%2240%25%22 text-anchor=%22middle%22>📋</text><text fill=%22%23b8d4e0%22 font-family=%22Arial%22 font-size=%2213%22 x=%2250%25%22 y=%2260%25%22 text-anchor=%22middle%22>ورقة الامتحان</text></svg>'"
+          <rect fill=%22%23042638%22 width=%22300%22 height=%22200%22/><text fill=%22%23f87171%22 font-family=%22Arial%22 font-size=%2220%22 x=%2250%25%22 y=%2240%25%22 text-anchor=%22middle%22>📋</text><text fill=%22%23b8d4e0%22 font-family=%22Arial%22 font-size=%2213%22 x=%2250%25%22 y=%2260%25%22 text-anchor=%22middle%22>ورقة الامتحان</text></svg>'"
                alt="ورقة الامتحان العملي"
                style="width:100%;height:220px;object-fit:contain;display:block"
                id="bc-img-0-thumb">
@@ -5839,8 +6555,7 @@ function renderBiochemPractical(el){
 
         <!-- Image 2: Lab notes -->
         <div onclick="bcImgOpen(1)" style="cursor:pointer;border-radius:12px;overflow:hidden;border:2px solid rgba(220,38,38,.25);transition:all .25s;background:#000" onmouseover="this.style.borderColor='#f87171';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(220,38,38,.25)';this.style.transform='translateY(0)'">
-          <img src="images/img_16.jpeg"
-               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22><rect fill=%22%23042638%22 width=%22300%22 height=%22200%22/><text fill=%22%23f87171%22 font-family=%22Arial%22 font-size=%2220%22 x=%2250%25%22 y=%2240%25%22 text-anchor=%22middle%22>📝</text><text fill=%22%23b8d4e0%22 font-family=%22Arial%22 font-size=%2213%22 x=%2250%25%22 y=%2260%25%22 text-anchor=%22middle%22>ملاحظات التجارب</text></svg>'"
+          <rect fill=%22%23042638%22 width=%22300%22 height=%22200%22/><text fill=%22%23f87171%22 font-family=%22Arial%22 font-size=%2220%22 x=%2250%25%22 y=%2240%25%22 text-anchor=%22middle%22>📝</text><text fill=%22%23b8d4e0%22 font-family=%22Arial%22 font-size=%2213%22 x=%2250%25%22 y=%2260%25%22 text-anchor=%22middle%22>ملاحظات التجارب</text></svg>'"
                alt="ملاحظات التجارب الكيميائية"
                style="width:100%;height:220px;object-fit:contain;display:block"
                id="bc-img-1-thumb">
@@ -6170,10 +6885,47 @@ async function renderAdmin(){
         _renderAdminTable(users.filter(u=>u.role!=='admin'));
       });
     }
+    // Set up presence listener (only once)
+    if(!_fbPresenceListener){
+      _fbPresenceListener = true;
+      window._fb.listenPresence(presenceObj=>{
+        _PRESENCE_DATA = presenceObj || {};
+        // Update only presence cells without re-rendering the whole table
+        document.querySelectorAll('[data-presence-uid]').forEach(td=>{
+          td.innerHTML = buildPresenceCell(td.dataset.presenceUid);
+        });
+      });
+    }
   } else {
     us = JSON.parse(localStorage.getItem('dh_users')||'[]');
   }
   _renderAdminTable(us.filter(u=>u.role!=='admin'));
+}
+
+function buildPresenceCell(uid){
+  const sessions = _PRESENCE_DATA[uid];
+  if(!sessions || typeof sessions !== 'object'){
+    return `<span class="pdot"><span class="pdot-circle grey"></span>—</span>`;
+  }
+  const vals = Object.values(sessions);
+  const onlineCount = vals.filter(s=>s.online===true).length;
+  if(onlineCount > 0){
+    const devLabel = onlineCount > 1 ? ` <span class="pdot-devices">(${onlineCount} أجهزة)</span>` : '';
+    return `<span class="pdot"><span class="pdot-circle green"></span>أونلاين${devLabel}</span>`;
+  }
+  // Offline — find max lastSeen
+  const maxTs = vals.reduce((m, s)=>{ const t=s.lastSeen||0; return t>m?t:m; }, 0);
+  if(!maxTs){
+    return `<span class="pdot"><span class="pdot-circle grey"></span>آخر ظهور: —</span>`;
+  }
+  const diffMs = Date.now() - maxTs;
+  const diffMin = Math.floor(diffMs / 60000);
+  let ago;
+  if(diffMin < 1) ago = 'الآن';
+  else if(diffMin < 60) ago = `${diffMin} د`;
+  else if(diffMin < 1440) ago = `${Math.floor(diffMin/60)} س`;
+  else ago = `${Math.floor(diffMin/1440)} يوم`;
+  return `<span class="pdot"><span class="pdot-circle grey"></span><span style="color:var(--muted)">آخر ظهور: ${ago}</span></span>`;
 }
 
 function _renderAdminTable(us){
@@ -6182,7 +6934,7 @@ function _renderAdminTable(us){
   const blk=us.filter(u=>u.status==='blocked').length;
   document.getElementById('adm-stats').innerHTML=`<div class="as"><div class="an" style="color:var(--text)">${us.length}</div><div class="al">إجمالي الطلاب</div></div><div class="as"><div class="an" style="color:var(--green)">${act}</div><div class="al">مفعلين</div></div><div class="as"><div class="an" style="color:var(--orange)">${pen}</div><div class="al">انتظار</div></div><div class="as"><div class="an" style="color:var(--danger)">${blk}</div><div class="al">محظورين</div></div>`;
   const tb=document.getElementById('u-tbody');
-  if(!us.length){ tb.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--muted);font-family:'Cairo',sans-serif;padding:28px">لا يوجد طلاب بعد</td></tr>`; return; }
+  if(!us.length){ tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--muted);font-family:'Cairo',sans-serif;padding:28px">لا يوجد طلاب بعد</td></tr>`; return; }
   tb.innerHTML=us.map(u=>{
     const dt=new Date(u.joined||Date.now()).toLocaleDateString('ar-EG');
     const sb={active:`<span class="sbadge s-ok">✅ مفعّل</span>`,pending:`<span class="sbadge s-pend">⏳ انتظار</span>`,blocked:`<span class="sbadge s-blk">🚫 محظور</span>`}[u.status]||'';
@@ -6190,8 +6942,37 @@ function _renderAdminTable(us){
     if(u.status==='pending') acts=`<button class="ab ab-ok" onclick="admAct('${u.id}','active')">✅ قبول</button><button class="ab ab-bl" onclick="admAct('${u.id}','blocked')">🚫 حظر</button>`;
     else if(u.status==='active') acts=`<button class="ab ab-bl" onclick="admAct('${u.id}','blocked')">🚫 حظر</button>`;
     else acts=`<button class="ab ab-ub" onclick="admAct('${u.id}','active')">🔓 رفع الحظر</button>`;
-    return `<tr><td><strong style="color:var(--white)">${u.name}</strong></td><td style="color:var(--teal);font-weight:700">${u.sid}</td><td>${u.email||'—'}</td><td>${dt}</td><td>${sb}</td><td><div class="abtns">${acts}</div></td></tr>`;
+    acts += `<button class="ab ab-del" onclick="openDelModal('${u.id}','${u.name.replace(/'/g,"\\'")}')">🗑️</button>`;
+    return `<tr><td><strong style="color:var(--white)">${u.name}</strong></td><td style="color:var(--teal);font-weight:700">${u.sid}</td><td>${u.email||'—'}</td><td>${dt}</td><td>${sb}</td><td data-presence-uid="${u.id}">${buildPresenceCell(u.id)}</td><td><div class="abtns">${acts}</div></td></tr>`;
   }).join('');
+}
+
+// Delete modal helpers
+let _delUid = null;
+function openDelModal(uid, name){
+  _delUid = uid;
+  document.getElementById('del-uname').textContent = name;
+  document.getElementById('del-modal').classList.add('show');
+  document.getElementById('del-confirm-btn').onclick = confirmDeleteUser;
+}
+function closeDelModal(){
+  _delUid = null;
+  document.getElementById('del-modal').classList.remove('show');
+}
+async function confirmDeleteUser(){
+  if(!_delUid || !window._fb?.ready) return;
+  const btn = document.getElementById('del-confirm-btn');
+  btn.textContent = '...جاري الحذف';
+  btn.disabled = true;
+  try {
+    await window._fb.deleteUser(_delUid);
+    closeDelModal();
+    showToast('🗑️ تم حذف الحساب نهائياً');
+  } catch(e){
+    showToast('❌ حدث خطأ أثناء الحذف');
+    btn.textContent = 'حذف نهائي';
+    btn.disabled = false;
+  }
 }
 
 async function admAct(uid,st){
