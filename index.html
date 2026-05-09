@@ -8,7 +8,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get, push, update, onValue, child }
+  import { getDatabase, ref, set, get, push, update, onValue, child, remove, onDisconnect, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   // ══ FIREBASE CONFIG ══
@@ -53,6 +53,26 @@
     listenUsers: (cb) => {
       onValue(ref(db, 'users'), snap => {
         cb(snap.exists() ? Object.values(snap.val()) : []);
+      });
+    },
+    // Delete user from /users/{uid} AND /presence/{uid}
+    deleteUser: async (uid) => {
+      await remove(ref(db, 'users/' + uid));
+      await remove(ref(db, 'presence/' + uid));
+    },
+    // Online presence
+    goOnline: (uid, sessionKey) => {
+      const presRef = ref(db, 'presence/' + uid + '/' + sessionKey);
+      set(presRef, { online: true, lastSeen: serverTimestamp(), ua: navigator.userAgent });
+      onDisconnect(presRef).set({ online: false, lastSeen: serverTimestamp() });
+    },
+    goOffline: (uid, sessionKey) => {
+      const presRef = ref(db, 'presence/' + uid + '/' + sessionKey);
+      set(presRef, { online: false, lastSeen: serverTimestamp() });
+    },
+    listenPresence: (cb) => {
+      onValue(ref(db, 'presence'), snap => {
+        cb(snap.exists() ? snap.val() : {});
       });
     },
     ready: true
@@ -352,6 +372,31 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .ab-bl:hover{background:rgba(230,57,70,.08)}
 .ab-ub{border-color:rgba(0,180,216,.3);color:var(--teal);background:transparent}
 .ab-ub:hover{background:var(--teal-dim)}
+.ab-del{border-color:rgba(230,57,70,.35);color:var(--danger);background:transparent}
+.ab-del:hover{background:rgba(230,57,70,.1)}
+
+/* ── PRESENCE ── */
+@keyframes presencePulse{0%,100%{box-shadow:0 0 0 0 rgba(82,183,136,.6)}70%{box-shadow:0 0 0 6px rgba(82,183,136,0)}}
+.pdot{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:'Cairo',sans-serif}
+.pdot-circle{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pdot-circle.online{background:var(--green);animation:presencePulse 1.8s infinite;box-shadow:0 0 0 0 rgba(82,183,136,.6)}
+.pdot-circle.offline{background:var(--muted)}
+.pdot-devices{font-size:10px;color:var(--muted)}
+
+/* ── DELETE MODAL ── */
+.del-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);z-index:600;display:none;align-items:center;justify-content:center;padding:16px}
+.del-modal.show{display:flex}
+.del-box{background:var(--card);border:1px solid rgba(230,57,70,.4);border-radius:20px;padding:32px;width:100%;max-width:360px;text-align:center;box-shadow:var(--shadow),0 0 30px rgba(230,57,70,.15);animation:mIn .3s ease}
+.del-box .del-icon{font-size:40px;margin-bottom:12px;display:block}
+.del-box h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:8px}
+.del-box p{font-family:'Cairo',sans-serif;font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:22px}
+.del-box .del-name{color:var(--danger);font-weight:700}
+.del-actions{display:flex;gap:10px;justify-content:center}
+.del-actions button{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;border:none}
+.del-cancel{background:var(--card2);border:1px solid var(--border)!important;color:var(--text)}
+.del-cancel:hover{border-color:var(--teal)!important;color:var(--teal)}
+.del-confirm{background:var(--danger);color:#fff}
+.del-confirm:hover{background:#c1121f;transform:translateY(-1px)}
 /* Admin content editor */
 .ced{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:14px;margin-top:10px;display:none}
 .ced textarea{width:100%;padding:9px;background:var(--card);border:1px solid var(--border);border-radius:var(--rsm);color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:90px}
@@ -831,6 +876,19 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
   </footer>
 </div>
 
+<!-- ════ DELETE USER MODAL ════ -->
+<div class="del-modal" id="del-modal">
+  <div class="del-box">
+    <span class="del-icon">🗑️</span>
+    <h3>حذف الحساب نهائياً</h3>
+    <p>هل أنت متأكد أنك تريد حذف حساب<br><span class="del-name" id="del-user-name"></span>؟<br>لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="del-actions">
+      <button class="del-cancel" onclick="closeDelModal()">إلغاء</button>
+      <button class="del-confirm" id="del-confirm-btn">حذف نهائي</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════ AUTH MODAL ════ -->
 <div class="overlay" id="auth-modal">
   <div class="modal">
@@ -978,7 +1036,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
     <div class="adm-stats" id="adm-stats"></div>
     <div class="scard2">
       <h3>👥 المستخدمين</h3>
-      <div style="overflow-x:auto"><table class="utbl"><thead><tr><th>الاسم</th><th>Student ID</th><th>الإيميل</th><th>التسجيل</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="u-tbody"></tbody></table></div>
+      <div style="overflow-x:auto"><table class="utbl"><thead><tr><th>الاسم</th><th>Student ID</th><th>الإيميل</th><th>التسجيل</th><th>الحالة</th><th>🟢 أونلاين</th><th>الإجراءات</th></tr></thead><tbody id="u-tbody"></tbody></table></div>
     </div>
   </div>
 </div>
@@ -5735,7 +5793,10 @@ async function initAdmin() {
 }
 
 // ═══════════ STATE ═══════════
+const SESSION_KEY = 'sess_' + Math.random().toString(36).slice(2);
 let CU=null, CS=null, CS_CHAPTER=null;
+let _PRESENCE_DATA = {};
+let _presenceListenerRegistered = false;
 
 // ═══════════ MODAL ═══════════
 function openModal(tab='login'){
@@ -5801,6 +5862,7 @@ async function doLogin(){
 function setSession(u){ CU=u; localStorage.setItem('dh_session',u.id); }
 
 function doLogout(){
+  if(CU && window._fb?.ready) window._fb.goOffline(CU.id, SESSION_KEY);
   CU=null; CS=null;
   localStorage.removeItem('dh_session');
   document.getElementById('app').style.display='none';
@@ -5815,6 +5877,7 @@ function showApp(u){
   document.getElementById('nav-av').textContent=ini;
   document.getElementById('nav-uname').textContent=u.name.split(' ')[0];
   document.getElementById('adm-btn').style.display=u.role==='admin'?'block':'none';
+  if(window._fb?.ready) window._fb.goOnline(u.id, SESSION_KEY);
   goHome();
 }
 
@@ -8073,11 +8136,20 @@ async function renderAdmin(){
   let us;
   if(window._fb?.ready){
     us = await window._fb.getUsers();
-    // Set up live listener for real-time updates
     if(!window._fbAdminListener){
       window._fbAdminListener = true;
       window._fb.listenUsers(users=>{
         _renderAdminTable(users.filter(u=>u.role!=='admin'));
+      });
+    }
+    if(!_presenceListenerRegistered){
+      _presenceListenerRegistered = true;
+      window._fb.listenPresence(data=>{
+        _PRESENCE_DATA = data || {};
+        // update only presence cells without full re-render
+        document.querySelectorAll('[data-presence-uid]').forEach(td=>{
+          td.innerHTML = buildPresenceCell(td.dataset.presenceUid);
+        });
       });
     }
   } else {
@@ -8086,13 +8158,35 @@ async function renderAdmin(){
   _renderAdminTable(us.filter(u=>u.role!=='admin'));
 }
 
+function buildPresenceCell(uid){
+  const sessions = _PRESENCE_DATA[uid];
+  if(!sessions) return `<span class="pdot"><span class="pdot-circle offline"></span><span style="color:var(--muted)">—</span></span>`;
+  const entries = Object.values(sessions);
+  const onlineCount = entries.filter(s=>s.online===true).length;
+  const maxLastSeen = Math.max(...entries.map(s=>typeof s.lastSeen==='number'?s.lastSeen:0));
+  if(onlineCount > 0){
+    const devTxt = onlineCount > 1 ? `<span class="pdot-devices">(${onlineCount} أجهزة)</span>` : '';
+    return `<span class="pdot"><span class="pdot-circle online"></span><span style="color:var(--green)">أونلاين</span>${devTxt}</span>`;
+  }
+  if(maxLastSeen > 0){
+    const diff = Math.floor((Date.now() - maxLastSeen) / 1000);
+    let ago;
+    if(diff < 60) ago = 'الآن';
+    else if(diff < 3600) ago = `${Math.floor(diff/60)} د`;
+    else if(diff < 86400) ago = `${Math.floor(diff/3600)} س`;
+    else ago = `${Math.floor(diff/86400)} يوم`;
+    return `<span class="pdot"><span class="pdot-circle offline"></span><span style="color:var(--muted);font-size:10px">آخر ظهور: ${ago}</span></span>`;
+  }
+  return `<span class="pdot"><span class="pdot-circle offline"></span><span style="color:var(--muted)">—</span></span>`;
+}
+
 function _renderAdminTable(us){
   const pen=us.filter(u=>u.status==='pending').length;
   const act=us.filter(u=>u.status==='active').length;
   const blk=us.filter(u=>u.status==='blocked').length;
   document.getElementById('adm-stats').innerHTML=`<div class="as"><div class="an" style="color:var(--text)">${us.length}</div><div class="al">إجمالي الطلاب</div></div><div class="as"><div class="an" style="color:var(--green)">${act}</div><div class="al">مفعلين</div></div><div class="as"><div class="an" style="color:var(--orange)">${pen}</div><div class="al">انتظار</div></div><div class="as"><div class="an" style="color:var(--danger)">${blk}</div><div class="al">محظورين</div></div>`;
   const tb=document.getElementById('u-tbody');
-  if(!us.length){ tb.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--muted);font-family:'Cairo',sans-serif;padding:28px">لا يوجد طلاب بعد</td></tr>`; return; }
+  if(!us.length){ tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--muted);font-family:'Cairo',sans-serif;padding:28px">لا يوجد طلاب بعد</td></tr>`; return; }
   tb.innerHTML=us.map(u=>{
     const dt=new Date(u.joined||Date.now()).toLocaleDateString('ar-EG');
     const sb={active:`<span class="sbadge s-ok">✅ مفعّل</span>`,pending:`<span class="sbadge s-pend">⏳ انتظار</span>`,blocked:`<span class="sbadge s-blk">🚫 محظور</span>`}[u.status]||'';
@@ -8100,7 +8194,8 @@ function _renderAdminTable(us){
     if(u.status==='pending') acts=`<button class="ab ab-ok" onclick="admAct('${u.id}','active')">✅ قبول</button><button class="ab ab-bl" onclick="admAct('${u.id}','blocked')">🚫 حظر</button>`;
     else if(u.status==='active') acts=`<button class="ab ab-bl" onclick="admAct('${u.id}','blocked')">🚫 حظر</button>`;
     else acts=`<button class="ab ab-ub" onclick="admAct('${u.id}','active')">🔓 رفع الحظر</button>`;
-    return `<tr><td><strong style="color:var(--white)">${u.name}</strong></td><td style="color:var(--teal);font-weight:700">${u.sid}</td><td>${u.email||'—'}</td><td>${dt}</td><td>${sb}</td><td><div class="abtns">${acts}</div></td></tr>`;
+    acts += `<button class="ab ab-del" onclick="openDelModal('${u.id}','${u.name.replace(/'/g,"\\'")}')" style="margin-right:4px">🗑️</button>`;
+    return `<tr><td><strong style="color:var(--white)">${u.name}</strong></td><td style="color:var(--teal);font-weight:700">${u.sid}</td><td>${u.email||'—'}</td><td>${dt}</td><td>${sb}</td><td data-presence-uid="${u.id}">${buildPresenceCell(u.id)}</td><td><div class="abtns">${acts}</div></td></tr>`;
   }).join('');
 }
 
@@ -8108,6 +8203,28 @@ async function admAct(uid,st){
   await updateUserDB(uid, {status: st});
   renderAdmin();
   showToast({active:'✅ تم قبول الطالب!',blocked:'🚫 تم الحظر',pending:'⏳ تم التحديث'}[st]||'تم');
+}
+
+// ── Delete modal helpers ──
+let _delTargetId = null;
+function openDelModal(uid, name){
+  _delTargetId = uid;
+  document.getElementById('del-user-name').textContent = name;
+  document.getElementById('del-modal').classList.add('show');
+}
+function closeDelModal(){
+  _delTargetId = null;
+  document.getElementById('del-modal').classList.remove('show');
+}
+async function confirmDeleteUser(){
+  if(!_delTargetId) return;
+  const uid = _delTargetId;
+  closeDelModal();
+  if(window._fb?.ready){
+    try{ await window._fb.deleteUser(uid); } catch(e){ showToast('❌ خطأ في الحذف'); return; }
+  }
+  showToast('🗑️ تم حذف الحساب نهائياً');
+  renderAdmin();
 }
 
 // ═══════════ LANDING PREVIEW ═══════════
@@ -8152,6 +8269,8 @@ function showToast(msg){
     else localStorage.removeItem('dh_session');
   }
   document.getElementById('auth-modal').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
+  document.getElementById('del-confirm-btn').addEventListener('click', confirmDeleteUser);
+  document.getElementById('del-modal').addEventListener('click',function(e){ if(e.target===this)closeDelModal(); });
 })();
 
 // Mobile table fix - auto-wrap tables
