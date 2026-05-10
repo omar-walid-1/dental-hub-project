@@ -8621,7 +8621,8 @@ function fQ(type,btn){
   } else {
     filtered=type==='starred'?qs.filter(q=>q.starred):qs;
   }
-  document.getElementById('ql').innerHTML=filtered.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('');
+  // For 'wrong' filter — show questions fresh (unsolved) so user can retry them
+  document.getElementById('ql').innerHTML=filtered.map((q,i)=>buildQ(q,i, type==='wrong' ? undefined : slv[CS.id+'_'+q.id])).join('');
 }
 
 function coming(msg){ return `<div class="coming"><div class="ci">🔜</div><p>${msg} هيتضاف قريباً — <span>ابعتلنا المحتوى!</span></p></div>`; }
@@ -8800,7 +8801,7 @@ function fExamQ(type,btn){
   if(type==='starred')f=qs.filter(q=>q.starred);
   else if(type==='unsolved')f=qs.filter(q=>slv[CS.id+'_'+q.id]===undefined);
   else if(type==='wrong')f=qs.filter(q=>{ const a=slv[CS.id+'_'+q.id]; return a!==undefined && a!==q.answer; });
-  document.getElementById('ql').innerHTML=f.map((q,i)=>buildExamQ(q,i,slv[CS.id+'_'+q.id])).join('');
+  document.getElementById('ql').innerHTML=f.map((q,i)=>buildExamQ(q,i, type==='wrong' ? undefined : slv[CS.id+'_'+q.id])).join('');
 }
 
 // ═══════════ LABELING QUIZ DATA ═══════════
