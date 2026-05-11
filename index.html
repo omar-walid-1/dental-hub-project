@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Dental Hub 🦷</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -116,6 +117,25 @@
   --radius:16px;--rsm:10px;
   --shadow:0 10px 40px rgba(0,0,0,.5);--glow:0 0 30px rgba(0,180,216,.15);
 }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes successBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 [data-theme="light"]{
   --bg:#f0f6fa;--bg2:#e2edf5;--card:#ffffff;--card2:#eaf3fb;
   --teal:#0096c7;--teal2:#0077a8;--teal-dim:rgba(0,150,199,.1);
@@ -146,12 +166,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ch-sel-title{font-family:'Cairo',sans-serif;font-size:19px;font-weight:800;color:var(--white);margin-bottom:3px}
 .ch-sel-sub{font-size:12px;color:var(--muted);font-family:'Cairo',sans-serif}
 .ch-sel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:22px 28px}
-.ch-sel-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:22px 18px 18px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;text-align:center}
-.ch-sel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--csc);border-radius:16px 16px 0 0;transition:height .25s}
+.ch-sel-card{background:var(--card);border:2px solid var(--border);border-radius:24px;padding:26px 20px 22px;cursor:pointer;transition:all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;overflow:hidden;text-align:center;display:flex;flex-direction:column;align-items:center}
+.ch-sel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:var(--csc);border-radius:24px 24px 0 0;transition:height .3s}
 .ch-sel-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,var(--csf) 0%,transparent 70%);pointer-events:none}
-.ch-sel-card:hover{border-color:var(--csc);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.ch-sel-card:hover{border-color:var(--csc);transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--csf)}
 .ch-sel-card:hover::before{height:5px}
-.cs-ico{font-size:38px;margin-bottom:11px;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
+.cs-ico{font-size:42px;margin-bottom:14px;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3));transition: transform 0.3s ease;}
+.ch-sel-card:hover .cs-ico{transform: scale(1.1) rotate(5deg);}
 .cs-title{font-family:'Cairo',sans-serif;font-size:16px;font-weight:800;color:var(--white);margin-bottom:2px}
 .cs-title-ar{font-family:'Cairo',sans-serif;font-size:12px;color:var(--muted);margin-bottom:10px}
 .cs-desc{font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif;line-height:1.65;margin-bottom:13px}
@@ -312,10 +333,11 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .stat-v{font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
 .stat-l{font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif}
 .subjs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.scard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac);border-radius:18px 18px 0 0}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;cursor:pointer;transition:all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;overflow:hidden}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--ac);border-radius:20px 20px 0 0;transition: height 0.3s;}
+.scard:hover::before{height: 6px;}
 .scard::after{content:'';position:absolute;top:-50px;right:-50px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,var(--af) 0%,transparent 70%);pointer-events:none}
-.scard:hover{border-color:var(--ac);transform:translateY(-4px);box-shadow:var(--shadow)}
+.scard:hover{border-color:var(--ac);transform:translateY(-8px);box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 15px var(--af);}
 .sj-ico{font-size:32px;margin-bottom:12px;display:block}
 .sj-name{font-family:'Cairo',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:4px}
 .sj-desc{font-size:12px;color:var(--muted);line-height:1.5;font-family:'Cairo',sans-serif;margin-bottom:16px}
@@ -346,12 +368,14 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .stab:hover{color:var(--text)}
 .stab.on{color:var(--orange);border-bottom-color:var(--orange)}
 
-.tab-wrap{padding:32px;max-width:1100px;margin:0 auto;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.tab-pane{display:none}.tab-pane.on{display:block}
+.tab-wrap{padding:32px;max-width:1100px;margin:0 auto;position:relative}
+.tab-pane{display:none;opacity:0;transform:translateY(10px);transition:all 0.4s ease}
+.tab-pane.on{display:block;opacity:1;transform:translateY(0);animation: fadeUp 0.4s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* Content blocks */
-.lblock{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:15px}
+.lblock{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:20px;box-shadow: 0 4px 20px rgba(0,0,0,0.15);transition: transform 0.3s ease;}
+.lblock:hover{transform: translateY(-2px);}
 .lblock h3{font-family:'Cairo',sans-serif;font-size:16px;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .ch-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
 .ch-head{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
@@ -361,14 +385,14 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .ch-head.open .tog{transform:rotate(180deg)}
 .ch-body{display:none;padding:0 20px 20px}
 .ch-body.open{display:block}
-.exp-block{margin-bottom:20px;padding:16px;background:var(--bg2);border-radius:var(--rsm);border-left:3px solid var(--teal)}
+.exp-block{margin-bottom:24px;padding:20px;background:var(--bg2);border-radius:14px;border-left:4px solid var(--teal);box-shadow: inset 0 0 10px rgba(0,0,0,0.1);}
 .exp-eng{font-size:14px;line-height:1.9;color:var(--text);margin-bottom:12px}
-.exp-ar{background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.13);border-radius:var(--rsm);padding:13px;font-family:'Cairo',sans-serif;font-size:14px;line-height:2;color:var(--text);direction:rtl}
+.exp-ar{background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.13);border-radius:12px;padding:16px;font-family:'Cairo',sans-serif;font-size:15px;line-height:2.2;color:var(--text);direction:rtl;margin-top:12px;}
 .exp-ar::before{content:'🇪🇬 شرح بالمصري';display:block;font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px}
-.hint{background:rgba(244,162,97,.07);border:1px solid rgba(244,162,97,.2);border-radius:var(--rsm);padding:11px 15px;margin:9px 0;font-size:13px;line-height:1.7;color:#ffe0c0;font-family:'Cairo',sans-serif}
-.hint::before{content:'💡 Hint: ';font-weight:700;color:var(--orange)}
-.espot{background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.18);border-radius:var(--rsm);padding:11px 15px;margin:9px 0;font-size:13px;line-height:1.7;color:#ffb0b0;font-family:'Cairo',sans-serif}
-.espot::before{content:'🎯 مهم للامتحان: ';font-weight:700;color:var(--danger)}
+.hint{background:rgba(244,162,97,.07);border:1px solid rgba(244,162,97,.2);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14px;line-height:1.8;color:#ffe0c0;font-family:'Cairo',sans-serif;position:relative;padding-left:45px;display:flex;align-items:center}
+.hint::before{content:'💡';font-size:20px;position:absolute;left:15px;top:50%;transform:translateY(-50%)}
+.espot{background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.18);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14px;line-height:1.8;color:#ffb0b0;font-family:'Cairo',sans-serif;position:relative;padding-left:45px;display:flex;align-items:center}
+.espot::before{content:'🎯';font-size:20px;position:absolute;left:15px;top:50%;transform:translateY(-50%)}
 .coming{text-align:center;padding:40px 20px;font-family:'Cairo',sans-serif;color:var(--muted);border:1px dashed var(--border);border-radius:var(--radius)}
 .coming .ci{font-size:36px;margin-bottom:8px}
 .coming span{color:var(--orange);font-weight:600}
@@ -394,7 +418,8 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .opt{padding:10px 13px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:13px;color:var(--text);transition:all .2s;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:8px}
 .opt:hover:not(.locked){border-color:var(--teal);background:var(--teal-dim)}
 .opt.correct{border-color:var(--green);background:rgba(82,183,136,.1);color:#a7f3d0}
-.opt.wrong{border-color:var(--danger);background:rgba(230,57,70,.08);color:#ffaaaa}
+.opt.wrong{border-color:var(--danger);background:rgba(230,57,70,.08);color:#ffaaaa;animation: shake 0.4s ease-in-out;}
+.opt.correct{animation: successBounce 0.5s ease-in-out;}
 .opt.locked{cursor:default}
 .ol{width:21px;height:21px;border-radius:5px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;font-family:'Cairo',sans-serif}
 .opt.correct .ol{background:var(--green);color:#fff}
@@ -1361,12 +1386,12 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 }
 
 /* ── PAGE TRANSITION ── */
-#dash-page,#subj-page,#admin-page{
-  animation:pageIn .4s cubic-bezier(.16,1,.3,1);
+#dash-page,#subj-page,#admin-page,#chapter-select-wrap{
+  animation:pageIn .5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 @keyframes pageIn{
-  from{opacity:0;transform:translateY(16px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;transform:translateY(20px) scale(0.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
 /* ════════════════════════════════════════
@@ -1419,6 +1444,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
   border-radius:var(--radius);overflow:hidden;
   box-shadow:var(--shadow);
   display:none;margin-top:8px;
+  animation: bounceIn 0.3s ease-out;
 }
 .search-results.show{display:block}
 .sr-group-label{font-family:'Cairo',sans-serif;font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.6px;padding:10px 16px 5px;background:var(--bg2);text-transform:uppercase}
@@ -1919,6 +1945,10 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
     </div>
 
     <div class="tab-wrap">
+      <div id="chapter-search-wrap" style="display:none;margin-bottom:15px;position:relative">
+        <input class="search-input" id="chapter-search" placeholder="🔍 ابحث داخل هذا الفصل..." oninput="onChapterSearch(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
       <!-- Theory panes -->
       <div class="tab-pane on" id="pane-sharh"><div id="c-sharh"></div></div>
       <div class="tab-pane" id="pane-mlakhs"><div id="c-mlakhs"></div></div>
@@ -7122,10 +7152,14 @@ function swMode(mode, btn){
       subTabs.style.display='none';
       chBack.style.display='none';
       document.getElementById('pane-sharh').classList.remove('on');
+      const sWrap = document.getElementById('chapter-search-wrap');
+      if(sWrap) sWrap.style.display = 'none';
     } else if(hasChapters && CS_CHAPTER){
       chWrap.style.display='none';
       subTabs.style.display='flex';
       chBack.style.display='flex';
+      const sWrap = document.getElementById('chapter-search-wrap');
+      if(sWrap) sWrap.style.display = 'block';
     } else {
       chWrap.style.display='none';
       subTabs.style.display='flex';
@@ -7137,6 +7171,8 @@ function swMode(mode, btn){
     chWrap.style.display='none';
     subTabs.style.display='none';
     chBack.style.display='none';
+    const sWrap = document.getElementById('chapter-search-wrap');
+    if(sWrap) sWrap.style.display = 'none';
     document.getElementById('pane-sharh').classList.remove('on');
     document.getElementById('pane-mlakhs').classList.remove('on');
     document.getElementById('pane-bank').classList.remove('on');
@@ -7150,6 +7186,12 @@ function swSub(pane, btn){
   ['sharh','mlakhs','bank'].forEach(p=>{
     document.getElementById('pane-'+p).classList.toggle('on', p===pane);
   });
+
+  // Clear and re-apply search on subtab switch if needed
+  const searchInput = document.getElementById('chapter-search');
+  if(searchInput && searchInput.value) {
+    onChapterSearch(searchInput.value);
+  }
 }
 
 function renderContent(){
@@ -7243,6 +7285,10 @@ function openChapter(chId){
   document.getElementById('pane-bank').classList.remove('on');
 
   renderSharh(); renderMlakhs(); renderBank();
+
+  // Show chapter search if we are in theory mode
+  const searchWrap = document.getElementById('chapter-search-wrap');
+  if(searchWrap) searchWrap.style.display = 'block';
 }
 
 function backToChapters(){
@@ -7254,7 +7300,38 @@ function backToChapters(){
   document.getElementById('pane-sharh').classList.remove('on');
   document.getElementById('pane-mlakhs').classList.remove('on');
   document.getElementById('pane-bank').classList.remove('on');
+
+  const searchWrap = document.getElementById('chapter-search-wrap');
+  if(searchWrap) searchWrap.style.display = 'none';
+  document.getElementById('chapter-search').value = '';
+
   renderChapterSelect();
+}
+
+function onChapterSearch(val) {
+  const q = val.toLowerCase().trim();
+  const currentPaneId = ['pane-sharh', 'pane-mlakhs', 'pane-bank'].find(id => document.getElementById(id).classList.contains('on'));
+  if(!currentPaneId) return;
+
+  const pane = document.getElementById(currentPaneId);
+  // We search within ch-cards (for sharh/mlakhs) or qcards (for bank)
+  if (currentPaneId === 'pane-bank') {
+    const qcards = pane.querySelectorAll('.qcard');
+    qcards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(q) ? '' : 'none';
+    });
+  } else {
+    const cards = pane.querySelectorAll('.ch-card, .lblock');
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(q) ? '' : 'none';
+      // If it's a ch-card and it matches, make sure it's open or at least visible
+      if (text.includes(q) && card.classList.contains('ch-card')) {
+        // Maybe don't force open everything, but ensure the card itself is shown
+      }
+    });
+  }
 }
 
 function tgCh(head){ head.classList.toggle('open'); head.nextElementSibling.classList.toggle('open'); }
@@ -7273,6 +7350,10 @@ function renderSharh(){
     el.innerHTML=saved||sample;
   }
   if(window.wrapTables) setTimeout(window.wrapTables, 50);
+
+  // Apply search
+  const searchInput = document.getElementById('chapter-search');
+  if(searchInput && searchInput.value) onChapterSearch(searchInput.value);
 }
 
 // MLAKHS (ملخص)
@@ -7288,6 +7369,10 @@ function renderMlakhs(){
     el.innerHTML=saved||fallback;
   }
   if(window.wrapTables) setTimeout(window.wrapTables, 50);
+
+  // Apply search
+  const searchInput = document.getElementById('chapter-search');
+  if(searchInput && searchInput.value) onChapterSearch(searchInput.value);
 }
 
 // ═══════════ HISTOLOGY PRACTICAL DATA ═══════════
@@ -8560,6 +8645,12 @@ function renderBank(){
   const wrongCount = qs.filter(q=>{ const a=slv[CS.id+'_'+q.id]; return a!==undefined && a!==q.answer; }).length;
   const resetScope = CS_CHAPTER ? `الـ Chapter` : `المادة`;
   el.innerHTML=`<div class="qhead"><h3>❓ ${label}</h3><div class="qfilts"><button class="qf on" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button><button class="qf" onclick="fQ('wrong',this)" style="background:rgba(230,57,70,.08);color:var(--danger);border:1px solid rgba(230,57,70,.25)">🏷️ غلط قبل كده (${wrongCount})</button>${shuffleBtn}</div><button class="qf-reset-btn" onclick="confirmReset('${CS_CHAPTER?'chapter':'subject'}')">↺ Reset ${resetScope}</button></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك${CS_CHAPTER?' في الـ Chapter':' في المادة'}</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="ql">${qs.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('')}</div>`;
+
+  // Apply current search filter if any
+  const searchInput = document.getElementById('chapter-search');
+  if(searchInput && searchInput.value) {
+    onChapterSearch(searchInput.value);
+  }
 }
 
 function buildQ(q,i,saved){
@@ -8571,7 +8662,8 @@ function buildQ(q,i,saved){
     return `<div class="${c}" onclick="ansQ('${q.id}',${oi})"><span class="ol">${L[oi]}</span>${o}</div>`;
   }).join('');
   const aiBadge=q.ai?`<span style="display:inline-block;font-size:9px;font-weight:800;letter-spacing:.5px;background:linear-gradient(135deg,rgba(0,180,216,.18),rgba(124,58,237,.18));color:var(--teal);border:1px solid rgba(0,180,216,.3);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle;font-family:'Cairo',sans-serif">ai</span>`:'';
-  return `<div class="qcard${q.starred?' starred':''}" id="qc-${q.id}"><div class="qnum">سؤال ${i+1}${aiBadge}</div><div class="qtxt">${q.text}</div><div class="opts" id="opts-${q.id}">${opts}</div><div class="ans${ans?' show':''}" id="rev-${q.id}"><strong>✅ الإجابة: ${q.options[q.answer]}</strong><br><br>${q.explanation}</div><button class="bshow" onclick="showAns('${q.id}',${q.answer})">عرض الإجابة</button></div>`;
+  const starBtn = `<button onclick="toggleStar('${q.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;margin-right:auto;color:${q.starred?'var(--star)':'var(--muted)'}" title="تميز السؤال">★</button>`;
+  return `<div class="qcard${q.starred?' starred':''}" id="qc-${q.id}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="qnum">سؤال ${i+1}${aiBadge}</div>${starBtn}</div><div class="qtxt">${q.text}</div><div class="opts" id="opts-${q.id}">${opts}</div><div class="ans${ans?' show':''}" id="rev-${q.id}"><strong>✅ الإجابة: ${q.options[q.answer]}</strong><br><br>${q.explanation}</div><button class="bshow" onclick="showAns('${q.id}',${q.answer})">عرض الإجابة</button></div>`;
 }
 
 async function ansQ(qid,sel){
@@ -8587,7 +8679,39 @@ async function ansQ(qid,sel){
     else if(oi===sel)el.classList.add('wrong');
   });
   document.getElementById('rev-'+qid).classList.add('show');
-  showToast(sel===q.answer?'✅ إجابة صح! 🎉':'❌ إجابة غلط — اقرأ الشرح!');
+
+  if (sel === q.answer) {
+    // Correct answer animation (Success Bounce already handled in CSS)
+    // Add extra visual feedback
+    const optEl = document.getElementById('opts-'+qid).querySelectorAll('.opt')[sel];
+    if(optEl) {
+      optEl.style.boxShadow = '0 0 20px rgba(82, 183, 136, 0.4)';
+      setTimeout(() => { if(optEl) optEl.style.boxShadow = ''; }, 1000);
+    }
+
+    showToast('✅ إجابة صح! 🎉');
+    // Check if it was the last question
+    const allQs = QS[CS.id] || [];
+    const qs = CS_CHAPTER
+      ? allQs.filter(q=>CS_CHAPTER.qPrefixes.some(p=>q.id.startsWith(p)))
+      : allQs;
+    const solved = CU.solved || {};
+    const allDone = qs.length > 0 && qs.every(q => solved[CS.id+'_'+q.id] !== undefined);
+    const allCorrect = qs.every(q => solved[CS.id+'_'+q.id] === q.answer);
+
+    if (allDone && allCorrect && typeof confetti === 'function') {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#00b4d8', '#52b788', '#f4a261']
+      });
+      showToast('🏆 بطل! حليت كله صح! 🎉');
+    }
+  } else {
+    showToast('❌ إجابة غلط — اقرأ الشرح!');
+  }
+
   renderBank();
 }
 
@@ -9617,6 +9741,25 @@ async function admAct(uid,st){
   await updateUserDB(uid, {status: st});
   renderAdmin();
   showToast({active:'✅ تم قبول الطالب!',blocked:'🚫 تم الحظر',pending:'⏳ تم التحديث'}[st]||'تم');
+}
+
+async function toggleStar(qid){
+  const q = QS[CS.id].find(x=>x.id===qid);
+  if(!q) return;
+  q.starred = !q.starred;
+
+  // Update UI immediately
+  const card = document.getElementById('qc-'+qid);
+  if(card){
+    card.classList.toggle('starred', q.starred);
+    const btn = card.querySelector('button[onclick^="toggleStar"]');
+    if(btn) btn.style.color = q.starred ? 'var(--star)' : 'var(--muted)';
+  }
+
+  showToast(q.starred ? '⭐ تم التمييز' : '★ تم الإزالة');
+
+  // Optional: In a real app we'd save this to user-specific starred list in DB
+  // For now, it stays in session memory as requested content improvement
 }
 
 // ── Delete modal helpers ──
