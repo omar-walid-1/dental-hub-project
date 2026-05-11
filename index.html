@@ -149,6 +149,7 @@
 html,body{transition:background .3s,color .3s}
 html{overflow-x:hidden;max-width:100vw}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--teal2);border-radius:3px}
+::selection { background: var(--teal); color: #fff; }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;max-width:100vw;width:100%}
 
 /* ── IMAGE PLACEHOLDER ── */
@@ -169,7 +170,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ch-sel-card{background:var(--card);border:2px solid var(--border);border-radius:24px;padding:26px 20px 22px;cursor:pointer;transition:all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;overflow:hidden;text-align:center;display:flex;flex-direction:column;align-items:center}
 .ch-sel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:var(--csc);border-radius:24px 24px 0 0;transition:height .3s}
 .ch-sel-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,var(--csf) 0%,transparent 70%);pointer-events:none}
-.ch-sel-card:hover{border-color:var(--csc);transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--csf)}
+.ch-sel-card:hover{border-color:var(--csc);transform:translateY(-15px) scale(1.03);box-shadow:0 30px 60px rgba(0,0,0,0.5), 0 0 30px var(--csf)}
 .ch-sel-card:hover::before{height:5px}
 .cs-ico{font-size:42px;margin-bottom:14px;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3));transition: transform 0.3s ease;}
 .ch-sel-card:hover .cs-ico{transform: scale(1.1) rotate(5deg);}
@@ -273,14 +274,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ── LANDING ── */
 #landing{display:block}
-.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(0,180,216,.06) 0%,transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none}
+.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden;background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.05) 0%, transparent 70%);}
+.hero::before{content:'';position:absolute;width:100%;height:100%;background: linear-gradient(125deg, transparent 40%, rgba(0, 180, 216, 0.03) 50%, transparent 60%); background-size: 200% 200%; animation: shineBg 10s linear infinite; pointer-events:none; top: 0; left: 0;}
+@keyframes shineBg { 0% { background-position: 200% 0%; } 100% { background-position: -200% 0%; } }
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--teal-dim);border:1px solid var(--border);border-radius:40px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--teal);font-family:'Cairo',sans-serif;margin-bottom:20px}
 .hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:var(--white);letter-spacing:0;line-height:1.05;margin-bottom:16px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(32px, 8vw, 64px);font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1;margin-bottom:20px;perspective: 1000px;}
 .hero h1 .hl{color:var(--teal)}.hero h1 .hl2{color:var(--orange)}
-.hero p{font-family:'Cairo',sans-serif;font-size:15px;color:var(--muted);max-width:480px;line-height:1.9;margin-bottom:32px}
+.hero p{font-family:'Cairo',sans-serif;font-size:clamp(14px, 2vw, 18px);color:var(--muted);max-width:600px;line-height:1.8;margin-bottom:40px;opacity: 0.8;}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:52px}
 .bhero{padding:13px 28px;border-radius:var(--rsm);font-size:14px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .25s;border:none}
 .bhero-p{background:var(--teal);color:#fff;box-shadow:0 6px 20px rgba(0,180,216,.3)}
@@ -327,17 +329,17 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .dash-title{font-family:'Cairo',sans-serif;font-size:26px;font-weight:800;color:var(--white);letter-spacing:0;margin-bottom:5px}
 .dash-sub{font-size:13px;color:var(--muted);font-family:'Cairo',sans-serif;margin-bottom:32px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:32px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:11px;transition:transform .2s}
+.stat{background:rgba(7, 38, 56, 0.4);backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px);border:1px solid rgba(0, 180, 216, 0.15);border-radius:20px;padding:20px;display:flex;align-items:center;gap:14px;transition:all 0.3s ease}
 .stat:hover{transform:translateY(-2px)}
 .stat-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .stat-v{font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
 .stat-l{font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif}
 .subjs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.scard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;cursor:pointer;transition:all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;overflow:hidden}
-.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--ac);border-radius:20px 20px 0 0;transition: height 0.3s;}
+.scard{background:rgba(7, 38, 56, 0.6);backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);border:1px solid rgba(0, 180, 216, 0.2);border-radius:24px;padding:28px;cursor:pointer;transition:all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;overflow:hidden}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:0;background:var(--ac);transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
 .scard:hover::before{height: 6px;}
 .scard::after{content:'';position:absolute;top:-50px;right:-50px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,var(--af) 0%,transparent 70%);pointer-events:none}
-.scard:hover{border-color:var(--ac);transform:translateY(-8px);box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 15px var(--af);}
+.scard:hover{border-color:var(--ac);transform:translateY(-12px) scale(1.02);box-shadow: 0 25px 50px rgba(0,0,0,0.4), 0 0 30px var(--af);}
 .sj-ico{font-size:32px;margin-bottom:12px;display:block}
 .sj-name{font-family:'Cairo',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:4px}
 .sj-desc{font-size:12px;color:var(--muted);line-height:1.5;font-family:'Cairo',sans-serif;margin-bottom:16px}
@@ -416,7 +418,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .qtxt{font-size:14px;color:var(--white);line-height:1.6;margin-bottom:14px;font-weight:500}
 .opts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
 .opt{padding:10px 13px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:13px;color:var(--text);transition:all .2s;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:8px}
-.opt:hover:not(.locked){border-color:var(--teal);background:var(--teal-dim)}
+.opt:hover:not(.locked){border-color:var(--teal);background:var(--teal-dim);transform: translateX(8px) scale(1.02);box-shadow: 0 4px 15px rgba(0, 180, 216, 0.1);}
 .opt.correct{border-color:var(--green);background:rgba(82,183,136,.1);color:#a7f3d0}
 .opt.wrong{border-color:var(--danger);background:rgba(230,57,70,.08);color:#ffaaaa;animation: shake 0.4s ease-in-out;}
 .opt.correct{animation: successBounce 0.5s ease-in-out;}
@@ -945,7 +947,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .hero p{animation:slideDown .7s .2s cubic-bezier(.16,1,.3,1) both}
 .hero-btns{animation:slideDown .7s .3s cubic-bezier(.16,1,.3,1) both}
 .hero-stats{animation:slideDown .7s .4s cubic-bezier(.16,1,.3,1) both}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-30px) rotateX(-10deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
 
 /* ── NAV LOGO GLOW ── */
 .nav-brand .ico{
@@ -1224,6 +1226,63 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 }
 
 /* ── TOAST ENHANCEMENT ── */
+.fab-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+.fab-main {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.fab-main:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--teal2);
+}
+.fab-sub {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+.fab-container:hover .fab-sub {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fab-sub:hover {
+  background: var(--teal-dim);
+  color: var(--teal);
+  border-color: var(--teal);
+}
+
 .toast{
   position:fixed;bottom:32px;right:50%;transform:translateX(50%) translateY(20px);
   background:var(--card2);border:1px solid var(--border);
@@ -1398,9 +1457,10 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
    FEATURE 1 — PROGRESS TRACKER
 ════════════════════════════════════════ */
 .progress-tracker{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px 24px;
-  margin:0 0 22px;
+  background:rgba(7, 38, 56, 0.6);backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0, 180, 216, 0.2);
+  border-radius:24px;padding:24px 28px;
+  margin:0 0 24px;
 }
 .pt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .pt-title{font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;color:var(--white);display:flex;align-items:center;gap:7px}
@@ -1462,10 +1522,13 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
    FEATURE 6 — QUIZ TIMER
 ════════════════════════════════════════ */
 .quiz-timer-wrap{
-  display:flex;align-items:center;gap:10px;
-  background:var(--card2);border:1px solid var(--border);
-  border-radius:var(--rsm);padding:8px 14px;
-  margin-bottom:14px;
+  display:flex;align-items:center;gap:14px;
+  background:rgba(10, 50, 72, 0.6);
+  backdrop-filter: blur(8px);
+  border:1px solid rgba(0, 180, 216, 0.2);
+  border-radius:14px;padding:12px 18px;
+  margin-bottom:18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 .quiz-timer-toggle{
   display:flex;align-items:center;gap:7px;
@@ -7065,6 +7128,8 @@ function doLogout(){
 function showApp(u){
   document.getElementById('landing').style.display='none';
   document.getElementById('app').style.display='block';
+  const fab = document.getElementById('fab-app');
+  if(fab) fab.style.display = 'flex';
   const ini=u.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('nav-av').textContent=ini;
   document.getElementById('nav-uname').textContent=u.name.split(' ')[0];
@@ -8644,7 +8709,34 @@ function renderBank(){
   const shuffleBtn = !CS_CHAPTER && !hasChapsCfg ? `<button class="qf" onclick="fQ('shuffle',this)" style="background:rgba(167,139,250,.1);color:#c4b5fd;border:1px solid rgba(167,139,250,.25)">🔀 عشوائي</button>` : '';
   const wrongCount = qs.filter(q=>{ const a=slv[CS.id+'_'+q.id]; return a!==undefined && a!==q.answer; }).length;
   const resetScope = CS_CHAPTER ? `الـ Chapter` : `المادة`;
-  el.innerHTML=`<div class="qhead"><h3>❓ ${label}</h3><div class="qfilts"><button class="qf on" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button><button class="qf" onclick="fQ('wrong',this)" style="background:rgba(230,57,70,.08);color:var(--danger);border:1px solid rgba(230,57,70,.25)">🏷️ غلط قبل كده (${wrongCount})</button>${shuffleBtn}</div><button class="qf-reset-btn" onclick="confirmReset('${CS_CHAPTER?'chapter':'subject'}')">↺ Reset ${resetScope}</button></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك${CS_CHAPTER?' في الـ Chapter':' في المادة'}</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="ql">${qs.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('')}</div>`;
+  const pct = Math.round((done/qs.length)*100)||0;
+  el.innerHTML=`
+    <div class="qhead">
+      <h3>❓ ${label}</h3>
+      <div class="qfilts">
+        <button class="qf on" onclick="fQ('all',this)">الكل (${qs.length})</button>
+        <button class="qf" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button>
+        <button class="qf" onclick="fQ('wrong',this)" style="background:rgba(230,57,70,.08);color:var(--danger);border:1px solid rgba(230,57,70,.25)">🏷️ غلط قبل كده (${wrongCount})</button>
+        ${shuffleBtn}
+      </div>
+      <button class="qf-reset-btn" onclick="confirmReset('${CS_CHAPTER?'chapter':'subject'}')">↺ Reset ${resetScope}</button>
+    </div>
+
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:24px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-family:'Cairo',sans-serif">
+        <span style="font-size:14px;font-weight:800;color:var(--white)">📊 مستوى الإنجاز</span>
+        <span style="font-size:14px;font-weight:900;color:var(--teal)">${pct}%</span>
+      </div>
+      <div style="height:10px;background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--border)">
+        <div style="width:${pct}%;height:100%;background:linear-gradient(90deg, var(--teal), var(--green));transition:width 0.6s cubic-bezier(0.23, 1, 0.32, 1);box-shadow: 0 0 10px var(--teal);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'Cairo',sans-serif">
+        <span>أجبت ${done} سؤال</span>
+        <span>باقي ${qs.length - done} سؤال</span>
+      </div>
+    </div>
+
+    <div id="ql">${qs.map((q,i)=>buildQ(q,i,slv[CS.id+'_'+q.id])).join('')}</div>`;
 
   // Apply current search filter if any
   const searchInput = document.getElementById('chapter-search');
@@ -8659,7 +8751,7 @@ function buildQ(q,i,saved){
   const opts=q.options.map((o,oi)=>{
     let c='opt';
     if(ans){c+=' locked';if(oi===q.answer)c+=' correct';else if(oi===saved)c+=' wrong';}
-    return `<div class="${c}" onclick="ansQ('${q.id}',${oi})"><span class="ol">${L[oi]}</span>${o}</div>`;
+    return `<div class="${c}" onclick="ansQ('${q.id}',${oi})" style="transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: left;"><span class="ol">${L[oi]}</span>${o}</div>`;
   }).join('');
   const aiBadge=q.ai?`<span style="display:inline-block;font-size:9px;font-weight:800;letter-spacing:.5px;background:linear-gradient(135deg,rgba(0,180,216,.18),rgba(124,58,237,.18));color:var(--teal);border:1px solid rgba(0,180,216,.3);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle;font-family:'Cairo',sans-serif">ai</span>`:'';
   const starBtn = `<button onclick="toggleStar('${q.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;margin-right:auto;color:${q.starred?'var(--star)':'var(--muted)'}" title="تميز السؤال">★</button>`;
@@ -10815,6 +10907,12 @@ function showResetErr(msg){
 
 <!-- ══ PRINT BOOK (hidden, shown only during @media print) ══ -->
 <div id="print-book"></div>
+
+<div class="fab-container" id="fab-app" style="display:none">
+  <div class="fab-sub" onclick="swSub('mlakhs', document.querySelectorAll('.stab')[1])" title="الملخص السريع">📋</div>
+  <div class="fab-sub" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="أعلى الصفحة">↑</div>
+  <div class="fab-main">⚙️</div>
+</div>
 
 </body>
 </html>
