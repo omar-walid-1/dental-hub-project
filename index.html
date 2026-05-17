@@ -2152,6 +2152,36 @@ const CHAPTER_CONFIG = {
       color:   '#22c55e',
       fade:    'rgba(34,197,94,.1)',
       qPrefixes: ['anh']
+    },
+    {
+      id:      'nervous',
+      icon:    '🧠',
+      title:   'Nervous System',
+      titleAr: 'الجهاز العصبي',
+      desc:    'CNS/PNS · الحبل الشوكي · الأعصاب القحفية 12 زوج',
+      color:   '#8b5cf6',
+      fade:    'rgba(139,92,246,.1)',
+      qPrefixes: ['ann']
+    },
+    {
+      id:      'digestive',
+      icon:    '🫁',
+      title:   'Digestive & Urinary Systems',
+      titleAr: 'الجهاز الهضمي والبولي',
+      desc:    'القناة الهضمية · الأعضاء الملحقة · الكلى والحالب',
+      color:   '#f59e0b',
+      fade:    'rgba(245,158,11,.1)',
+      qPrefixes: ['andu']
+    },
+    {
+      id:      'serous',
+      icon:    '🫀',
+      title:   'Serous Membranes, Genital & Glands',
+      titleAr: 'الأغشية المصلية والجهاز التناسلي والغدد',
+      desc:    'Pericardium · Pleura · Peritoneum · الغدد الصماء والخارجية',
+      color:   '#ec4899',
+      fade:    'rgba(236,72,153,.1)',
+      qPrefixes: ['ansg']
     }
   ]
 };
@@ -3329,6 +3359,138 @@ Classic example: <strong>Hepatic portal circulation</strong>:<br>
 <div class="espot">⭐ High-yield: Apex = Left ventricle. Mitral = LEFT (Lt atrium → Lt ventricle). 4 Pulmonary veins → Left atrium (oxygenated). Right lung = 3 lobes + 2 fissures. Left lung = 2 lobes + 1 fissure + Cardiac notch. Larynx → Phonation (NOT gas exchange). Trachea = C-shaped rings (open posteriorly). Pulmonary trunk divides → R + L pulmonary arteries.</div>
 </div>
 `
+,'anatomy:nervous':`
+<div class="lblock">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:18px">🧠 Lec 7 — Nervous System: Complete Summary</h3>
+
+<p style="font-size:14px;font-weight:700;color:#8b5cf6;margin:14px 0 8px">🔀 تقسيم الجهاز العصبي</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(139,92,246,.12)"><th style="padding:8px;color:#8b5cf6">Division</th><th style="padding:8px;color:#8b5cf6">Basis</th><th style="padding:8px;color:#8b5cf6">Parts</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>CNS</strong></td><td style="padding:8px">Anatomical</td><td style="padding:8px">Brain (cerebrum + cerebellum + brain stem) + Spinal cord</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>PNS</strong></td><td style="padding:8px">Anatomical</td><td style="padding:8px">12 pairs cranial nerves + 31 pairs spinal nerves</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Somatic NS</strong></td><td style="padding:8px">Functional</td><td style="padding:8px">Voluntary activities (skeletal muscles)</td></tr>
+<tr><td style="padding:8px"><strong>Autonomic NS</strong></td><td style="padding:8px">Functional</td><td style="padding:8px">Involuntary → Sympathetic + Parasympathetic</td></tr>
+</tbody></table></div>
+
+<p style="font-size:14px;font-weight:700;color:#8b5cf6;margin:14px 0 8px">🔩 الحبل الشوكي — نقاط محورية</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12.5px;line-height:2.1">
+  <div>● <strong>31 شريحة: 8C + 12T + 5L + 5S + 1Co</strong></div>
+  <div>● ينتهي عند <strong style="color:#8b5cf6">L1</strong> في البالغين</div>
+  <div>● قرن خلفي = <strong style="color:#60a5fa">حسّي (Dorsal horn)</strong></div>
+  <div>● قرن أمامي = <strong style="color:var(--orange)">حركي (Ventral horn)</strong></div>
+  <div>● قرن جانبي = <strong style="color:var(--green)">لاإرادي (Lateral horn — بعض الشرائح فقط)</strong></div>
+  <div>● الجذر اللاإرادي يضم للجذر <strong>الأمامي (Ventral)</strong> — مش الخلفي</div>
+  <div>● العصب الشوكي = مختلط → Dorsal ramus (ظهر) + Ventral ramus (أمام + أطراف)</div>
+</div>
+
+<p style="font-size:14px;font-weight:700;color:#8b5cf6;margin:14px 0 8px">📊 جدول — الأعصاب القحفية الـ 12</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:11.5px">
+<thead><tr style="background:rgba(139,92,246,.12)"><th style="padding:7px;color:#8b5cf6">No.</th><th style="padding:7px;color:#8b5cf6">Name</th><th style="padding:7px;color:#8b5cf6">Type</th><th style="padding:7px;color:#8b5cf6">Key Supply</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">I</td><td style="padding:6px">Olfactory</td><td style="padding:6px">S only</td><td style="padding:6px">Smell</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">II</td><td style="padding:6px">Optic</td><td style="padding:6px">S only</td><td style="padding:6px">Vision</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">III</td><td style="padding:6px">Oculomotor</td><td style="padding:6px">M + Para</td><td style="padding:6px">All EOMs except LR &amp; SO · Intra-ocular muscles (Para)</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">IV</td><td style="padding:6px">Trochlear</td><td style="padding:6px">M only</td><td style="padding:6px">Superior Oblique (SO)</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong style="color:var(--teal)">V ⭐</strong></td><td style="padding:6px"><strong style="color:var(--teal)">Trigeminal</strong></td><td style="padding:6px"><strong style="color:var(--teal)">S + M</strong></td><td style="padding:6px"><strong style="color:var(--teal)">V1 (S only) · V2 (S only) · V3 (Mixed): face sensation + mastication muscles</strong></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">VI</td><td style="padding:6px">Abducent</td><td style="padding:6px">M only</td><td style="padding:6px">Lateral Rectus (LR)</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong style="color:var(--teal)">VII ⭐</strong></td><td style="padding:6px"><strong style="color:var(--teal)">Facial</strong></td><td style="padding:6px"><strong style="color:var(--teal)">S+M+Para</strong></td><td style="padding:6px"><strong style="color:var(--teal)">Motor: face/scalp · Sensory(taste): ant.2/3 tongue · Para: submandibular + sublingual + lacrimal</strong></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">VIII</td><td style="padding:6px">Vestibulocochlear</td><td style="padding:6px">S only</td><td style="padding:6px">Cochlear: Hearing · Vestibular: Balance</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">IX</td><td style="padding:6px">Glossopharyngeal</td><td style="padding:6px">S+M+Para</td><td style="padding:6px">Motor: stylopharyngeus · Sensory: tongue+pharynx · Para: Parotid gland</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">X</td><td style="padding:6px">Vagus</td><td style="padding:6px">S+M+Para</td><td style="padding:6px">Motor: pharynx/larynx/palate · Sensory(taste): tongue root · Para: heart+GIT+bronchi</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">XI</td><td style="padding:6px">Accessory</td><td style="padding:6px">M only</td><td style="padding:6px">Trapezius + Sternomastoid</td></tr>
+<tr><td style="padding:6px">XII</td><td style="padding:6px">Hypoglossal</td><td style="padding:6px">M only</td><td style="padding:6px">Tongue muscles</td></tr>
+</tbody></table></div>
+<div class="hint" style="font-family:'Cairo',sans-serif;font-size:12px">حسية فقط: I · II · VIII &nbsp;|&nbsp; حركية فقط: IV · VI · XI · XII &nbsp;|&nbsp; مختلطة: III · V · VII · IX · X &nbsp;|&nbsp; عندهم Para: III · VII · IX · X</div>
+<div class="espot">⭐ High-yield: CN V = sensation face (V3 also motor to mastication). CN VII = motor to FACE muscles (NOT sensation — sensation = CN V!). Parotid → CN IX. Submandibular + Sublingual + Lacrimal → CN VII. Autonomic root joins Ventral (motor) root, NOT dorsal.</div>
+</div>
+`
+,'anatomy:digestive':`
+<div class="lblock">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:18px">🫁 Lec 8 — Digestive &amp; Urinary: Complete Summary</h3>
+
+<p style="font-size:14px;font-weight:700;color:#f59e0b;margin:14px 0 8px">🔄 مقارنة — الأمعاء الدقيقة vs الغليظة</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(245,158,11,.12)"><th style="padding:8px;color:#f59e0b">Feature</th><th style="padding:8px;color:#f59e0b">Small Intestine</th><th style="padding:8px;color:#f59e0b">Large Intestine</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Length</td><td style="padding:8px"><strong>6 meters</strong></td><td style="padding:8px"><strong>~2 meters</strong></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Diameter</td><td style="padding:8px">Smaller</td><td style="padding:8px">Wider</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Tenia coli</td><td style="padding:8px">✗ Absent</td><td style="padding:8px"><strong>✓ Present</strong></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Haustrations</td><td style="padding:8px">✗ Absent</td><td style="padding:8px"><strong>✓ Present</strong></td></tr>
+<tr><td style="padding:8px">Parts</td><td style="padding:8px">Duodenum · Jejunum · Ileum</td><td style="padding:8px">Caecum · Appendix · Ascending · Transverse · Descending · Sigmoid · Rectum · Anal canal</td></tr>
+</tbody></table></div>
+
+<p style="font-size:14px;font-weight:700;color:#f59e0b;margin:14px 0 8px">🧪 الأعضاء الملحقة</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(245,158,11,.12)"><th style="padding:8px;color:#f59e0b">Organ</th><th style="padding:8px;color:#f59e0b">Location</th><th style="padding:8px;color:#f59e0b">Function / Note</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Liver</strong></td><td style="padding:8px">Upper <strong>RIGHT</strong></td><td style="padding:8px">Largest gland in body · secretes bile · exocrine only</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Gallbladder</strong></td><td style="padding:8px">Under right lobe of liver</td><td style="padding:8px">Bile reservoir → releases into duodenum after eating</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Pancreas</strong></td><td style="padding:8px">Behind stomach</td><td style="padding:8px"><strong>Mixed gland</strong>: Exocrine → enzymes to duodenum · Endocrine → insulin</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Salivary glands</strong></td><td style="padding:8px">Parotid (CN IX) · Submandibular + Sublingual (CN VII)</td><td style="padding:8px">Saliva = lubrication + salivary amylase (digestion)</td></tr>
+<tr><td style="padding:8px"><strong>Spleen</strong></td><td style="padding:8px">Upper <strong>LEFT</strong></td><td style="padding:8px">Largest lymphatic organ (NOT a digestive gland)</td></tr>
+</tbody></table></div>
+
+<p style="font-size:14px;font-weight:700;color:#f59e0b;margin:14px 0 8px">🫘 علاقات الكلى — السطح الأمامي</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(245,158,11,.12)"><th style="padding:8px;color:#f59e0b">Right Kidney</th><th style="padding:8px;color:#f59e0b">Left Kidney</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Right Suprarenal gland</td><td style="padding:8px">Left Suprarenal gland</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Liver</td><td style="padding:8px">Stomach</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Duodenum (2nd part)</td><td style="padding:8px">Pancreas</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Right colic flexure</td><td style="padding:8px">Spleen</td></tr>
+<tr><td style="padding:8px">Coils of jejunum</td><td style="padding:8px">Descending colon + jejunum</td></tr>
+</tbody></table></div>
+
+<p style="font-size:14px;font-weight:700;color:#f59e0b;margin:14px 0 8px">⚕️ الإحليل — مقارنة</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12.5px;line-height:2.1">
+  <div>● الإحليل الأنثوي = <strong style="color:#f59e0b">4 سم</strong> · على الجدار الأمامي للمهبل</div>
+  <div>● الإحليل الذكوري = <strong style="color:#f59e0b">20 سم</strong> · يمر عبر البروستاتا ثم القضيب</div>
+  <div>● الحالب = <strong>25 سم</strong> · بيوصل الكلية بالمثانة</div>
+</div>
+<div class="espot">⭐ High-yield: Appendix = part of LARGE intestine (caecum). Stomach = upper LEFT. Liver = upper RIGHT + largest gland. Spleen = upper LEFT + largest lymphatic organ. Pancreas = ONLY mixed gland. Urethra: female 4 cm · male 20 cm. Ureter = 25 cm each.</div>
+</div>
+`
+,'anatomy:serous':`
+<div class="lblock">
+<h3 style="font-size:1.15rem;font-weight:800;margin-bottom:18px">🫀 Lec 9 — Serous, Genital &amp; Glands: Complete Summary</h3>
+
+<p style="font-size:14px;font-weight:700;color:#ec4899;margin:14px 0 8px">📊 الأغشية المصلية الثلاثة</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(236,72,153,.12)"><th style="padding:8px;color:#ec4899">Membrane</th><th style="padding:8px;color:#ec4899">Covers</th><th style="padding:8px;color:#ec4899">Notes</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Pericardium</strong></td><td style="padding:8px">Heart</td><td style="padding:8px">Visceral layer = directly on heart surface</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px"><strong>Pleura</strong></td><td style="padding:8px">Lungs</td><td style="padding:8px">Visceral layer = directly on lung surface</td></tr>
+<tr><td style="padding:8px"><strong>Peritoneum</strong></td><td style="padding:8px">Abdominal viscera</td><td style="padding:8px">Kidneys are RETROPERITONEAL (behind peritoneum)</td></tr>
+</tbody></table></div>
+<div class="hint" style="font-family:'Cairo',sans-serif;font-size:12px;margin-bottom:14px">كل غشاء مصلي: طبقة جدارية (تبطن الجدار) + طبقة حشوية (تغطي العضو مباشرة) + سائل مصلي بينهم (يقلل الاحتكاك)</div>
+
+<p style="font-size:14px;font-weight:700;color:#ec4899;margin:14px 0 8px">⚤ مقارنة — الجهازان التناسليان</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(236,72,153,.12)"><th style="padding:8px;color:#ec4899">Feature</th><th style="padding:8px;color:#ec4899">Female</th><th style="padding:8px;color:#ec4899">Male</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Primary sex organ</td><td style="padding:8px"><strong>Ovaries</strong></td><td style="padding:8px"><strong>Testes</strong></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Hormone(s)</td><td style="padding:8px">Estrogen + Progesterone</td><td style="padding:8px">Testosterone</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Gametes</td><td style="padding:8px">Ova (eggs)</td><td style="padding:8px">Sperms (mature in epididymis)</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Site of fertilization</td><td style="padding:8px"><strong style="color:#ec4899">Fallopian tube ⭐</strong></td><td style="padding:8px">—</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Embryo development</td><td style="padding:8px"><strong>Uterus</strong></td><td style="padding:8px">—</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">External genitalia</td><td style="padding:8px">Vulva (labia majora + minora)</td><td style="padding:8px">Scrotum (<strong>no fat</strong> → 35°C) + Penis</td></tr>
+<tr><td style="padding:8px">Special secretion</td><td style="padding:8px">—</td><td style="padding:8px">Seminal vesicle → fructose (sperm nutrition)<br>Prostate → enzymes (sperm nutrition)</td></tr>
+</tbody></table></div>
+
+<p style="font-size:14px;font-weight:700;color:#ec4899;margin:14px 0 8px">🧬 الغدد: صماء vs خارجية</p>
+<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+<thead><tr style="background:rgba(236,72,153,.12)"><th style="padding:8px;color:#ec4899">Feature</th><th style="padding:8px;color:#ec4899">Endocrine (صماء)</th><th style="padding:8px;color:#ec4899">Exocrine (خارجية)</th></tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Secretion</td><td style="padding:8px">Hormones</td><td style="padding:8px">Enzymes / fluids</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Duct</td><td style="padding:8px"><strong>No duct (ductless)</strong></td><td style="padding:8px">Has a duct</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Route</td><td style="padding:8px">Direct → bloodstream</td><td style="padding:8px">Duct → surface / lumen</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px">Examples</td><td style="padding:8px">Pituitary · Pineal · Thyroid · Parathyroid · Adrenal · Islets of pancreas · Gonads (testes + ovaries)</td><td style="padding:8px">Salivary glands · Sweat glands · Exocrine pancreas · Liver · Prostate</td></tr>
+<tr><td style="padding:8px" colspan="3" style="text-align:center;background:rgba(236,72,153,.05)"><strong style="color:#ec4899">⭐ Mixed (both types): Pancreas ONLY!</strong></td></tr>
+</tbody></table></div>
+<div class="espot">⭐ High-yield: Pancreas = ONLY mixed gland. Liver = exocrine only. Thyroid + Adrenal + Pituitary = endocrine only. Gonads = endocrine AND primary sex organs. Scrotum has NO fat = temp control at 35°C for sperm formation. Fallopian tube = site of fertilization. Visceral pericardium directly covers heart.</div>
+</div>
+`
 };
 const QS = {
   histology:[
@@ -3660,6 +3822,88 @@ const QS = {
     {id:'anh32',starred:false,lec:'heart',text:'When comparing the two lungs, the right lung is:',options:["Longer and narrower", "Shorter and broader", "Longer and broader", "Shorter and narrower"],answer:1,explanation:'الرئة اليمنى: أقصر وأعرض (بسبب الكبد من الأسفل).'},
     {id:'anh33',starred:false,lec:'heart',text:'When comparing the two lungs, the left lung is:',options:["Shorter and broader", "Longer and narrower", "Shorter and narrower", "Longer and broader"],answer:1,explanation:'الرئة اليسرى: أطول وأضيق (بسبب القلب من الناحية الأنسية).'},
     {id:'anh34',starred:false,lec:'heart',text:'A cardiac notch is present in the:',options:["Right lung only", "Left lung only", "Both lungs", "Neither lung"],answer:1,explanation:'الثلمة القلبية (Cardiac notch) موجودة في الرئة اليسرى فقط - بسبب موضع القلب.'}
+    /* ══ NERVOUS SYSTEM ══ */
+   ,{id:'ann1',starred:true,lec:'nervous',text:'The following muscles are supplied by the mandibular nerve EXCEPT:',options:['Buccinator','Temporalis','Masseter','Medial pterygoid'],answer:0,explanation:'الـ Buccinator مش من عضلات المضغ — بيتغذى من CN VII (Facial nerve). عضلات المضغ = Temporalis + Masseter + Medial pterygoid + Lateral pterygoid، كلها CN V3.'}
+   ,{id:'ann2',starred:false,lec:'nervous',text:'Regarding the vagus nerve (CN X), which statement is FALSE?',options:['It passes through the jugular foramen','It forms the sensory component of the pharyngeal plexus','It arises from the medulla oblongata','It gives two cardiac branches'],answer:3,explanation:'الـ Vagus nerve بيدي cardiac branches لكن المعلومة دي مش خطأ — المشكلة في رقم الـ branches. الـ CN X بيمر من foramen jugulare، بيطلع من Medulla، وبيكوّن الجزء الحسي للضفيرة البلعومية.'}
+   ,{id:'ann3',starred:true,lec:'nervous',text:'The oral cavity receives sensory nerve supply from which nerve?',options:['Greater petrosal nerve','Lesser petrosal nerve','Buccal branch of the mandibular nerve','Glossopharyngeal nerve'],answer:2,explanation:'التجويف الفموي يستقبل إمداداً حسياً من الفرع الشدقي (Buccal branch) للعصب الفكي السفلي (CN V3). ده مهم جداً في طب الأسنان.'}
+   ,{id:'ann4',starred:true,lec:'nervous',text:'Regarding the tongue, which statement is FALSE?',options:['All tongue muscles are supplied by CN XII except palatoglossus','Taste from anterior 2/3 is carried by chorda tympani nerve','Inferior alveolar nerve carries general sensations from anterior 2/3 of tongue','Taste from posterior 1/3 is carried by glossopharyngeal nerve'],answer:2,explanation:'الخطأ: الإحساس العام من الثلثين الأماميين للسان يحمله الـ Lingual nerve (فرع من V3)، مش الـ Inferior alveolar nerve. الأخير للأسنان السفلية والفك السفلي.'}
+   ,{id:'ann5',starred:false,lec:'nervous',text:'Regarding innervation of the pharynx, which statement is INCORRECT?',options:['Stylopharyngeus is supplied by glossopharyngeal nerve','Constrictor muscles are supplied by cranial part of accessory nerve','Palatopharyngeus is supplied by the mandibular nerve','Oral pharynx receives sensory supply from glossopharyngeal nerve'],answer:2,explanation:'الخطأ: الـ Palatopharyngeus يتغذى من الـ Vagus nerve (CN X) عبر الضفيرة البلعومية — مش من الـ Mandibular nerve (CN V3).'}
+   ,{id:'ann6',starred:true,lec:'nervous',text:'What are the two main anatomical divisions of the nervous system?',options:['Somatic and Autonomic','Central and Peripheral','Brain and Spinal cord','Cranial nerves and Spinal nerves'],answer:1,explanation:'التقسيم التشريحي: جهاز عصبي مركزي (CNS = مخ + حبل شوكي) + جهاز عصبي طرفي (PNS = 12 زوج قحفي + 31 زوج شوكي). التقسيم الوظيفي هو الجسدي والنباتي.'}
+   ,{id:'ann7',starred:true,lec:'nervous',text:'The Central Nervous System (CNS) consists of:',options:['Cranial nerves and spinal nerves','Brain and spinal cord','Somatic and autonomic system','Gray matter and white matter'],answer:1,explanation:'الجهاز العصبي المركزي = المخ + الحبل الشوكي. الجهاز العصبي الطرفي = الأعصاب القحفية والشوكية.'}
+   ,{id:'ann8',starred:true,lec:'nervous',text:'The Peripheral Nervous System (PNS) consists of cranial nerves (___pairs) and spinal nerves (___ pairs):',options:['Brain 12, spinal cord 31','Cranial nerves 12, spinal nerves 31','Somatic 12, autonomic 31','Sensory 12, motor 31'],answer:1,explanation:'PNS = 12 زوج أعصاب قحفية + 31 زوج أعصاب شوكية.'}
+   ,{id:'ann9',starred:false,lec:'nervous',text:'Functionally, the nervous system is divided into the ___ which controls voluntary activities, and the ___ which controls involuntary activities:',options:['Autonomic, somatic','Central, peripheral','Somatic, autonomic','Brain, spinal cord'],answer:2,explanation:'وظيفياً: الجسدي (Somatic) = إرادي. اللاإرادي (Autonomic) = غير إرادي. الأخير ينقسم لـ Sympathetic (ودي) + Parasympathetic (شبه ودي).'}
+   ,{id:'ann10',starred:true,lec:'nervous',text:'What is the histological difference between gray matter and white matter?',options:['Gray matter = dense nerve fibers; white matter = nerve cell bodies','Gray matter = nerve cell bodies; white matter = dense nerve fibers','Gray matter = CNS only; white matter = PNS only','Gray matter = voluntary; white matter = involuntary'],answer:1,explanation:'المادة الرمادية = أجسام خلايا عصبية + Neuroglia. المادة البيضاء = ألياف عصبية كثيفة (Axons) + Neuroglia. اللون الأبيض من الـ Myelin sheath.'}
+   ,{id:'ann11',starred:false,lec:'nervous',text:'Anatomically, the brain consists of:',options:['Spinal cord + brain stem','Two cerebral hemispheres + two cerebellar hemispheres + brain stem','Thalamus + hypothalamus + spinal cord','Frontal + temporal + parietal lobes'],answer:1,explanation:'المخ = نصفا كرة مخية + نصفا كرة مخيخية + جذع المخ (Midbrain + Pons + Medulla oblongata).'}
+   ,{id:'ann12',starred:true,lec:'nervous',text:'What are the three parts of the brain stem?',options:['Cerebrum, cerebellum, medulla oblongata','Midbrain, pons, medulla oblongata','Thalamus, hypothalamus, spinal cord','Frontal lobe, temporal lobe, parietal lobe'],answer:1,explanation:'جذع المخ = Midbrain + Pons + Medulla oblongata. ده اللي بيربط المخ بالحبل الشوكي.'}
+   ,{id:'ann13',starred:true,lec:'nervous',text:'The spinal cord ends at the level of ___ in adults:',options:['T12 vertebra','Lower border of L1 (first lumbar vertebra)','Sacrum','Coccyx'],answer:1,explanation:'الحبل الشوكي في البالغين ينتهي عند الحافة السفلية للفقرة القطنية الأولى (L1). عند الأطفال حديثي الولادة بينتهي عند L3 تقريباً.'}
+   ,{id:'ann14',starred:true,lec:'nervous',text:'The spinal cord is segmented into ___ segments:',options:['31: 8C, 12T, 5L, 5S, 1Co','30: 7C, 12T, 5L, 5S, 1Co','31: 8C, 10T, 5L, 5S, 1Co','30: 7C, 10T, 5L, 5S, 1Co'],answer:0,explanation:'31 شريحة: 8 عنقية (C) + 12 صدرية (T) + 5 قطنية (L) + 5 عجزية (S) + 1 عصعصية (Co). كل شريحة بتدي زوج واحد من الأعصاب الشوكية.'}
+   ,{id:'ann15',starred:false,lec:'nervous',text:'What are the components of gray matter in a cross-section of the spinal cord?',options:['Dorsal horns, ventral horns, lateral horns (in some segments)','Peripheral white matter','Dense nerve fibers','Collected nerve cells only'],answer:0,explanation:'المادة الرمادية في الحبل الشوكي: قرن خلفي (Dorsal horn = حسي) + قرن أمامي (Ventral horn = حركي) + قرن جانبي (Lateral horn = لاإرادي، في بعض الشرائح فقط).'}
+   ,{id:'ann16',starred:true,lec:'nervous',text:'The dorsal horn of the spinal cord gives rise to a ___ root, while the ventral horn gives rise to a ___ root:',options:['Motor, sensory','Sensory, motor','Autonomic, mixed','Mixed, autonomic'],answer:1,explanation:'القرن الخلفي (Dorsal) = حسي. القرن الأمامي (Ventral) = حركي. الجذر اللاإرادي من القرن الجانبي يضم للجذر الأمامي (Ventral root) — مش الخلفي.'}
+   ,{id:'ann17',starred:true,lec:'nervous',text:'What type of root does the lateral horn give rise to, and what does it join?',options:['Sensory root, joins the dorsal root','Motor root, joins the ventral root','Autonomic root, joins the ventral root','Mixed root, joins the spinal nerve'],answer:2,explanation:'القرن الجانبي = جذر لاإرادي. يضم للجذر الأمامي (Ventral root/Motor root). النقطة دي بتيجي في الامتحانات كتير!'}
+   ,{id:'ann18',starred:true,lec:'nervous',text:'The ___ and ___ roots unite to form the spinal nerve (mixed nerve):',options:['Autonomic, motor','Sensory, autonomic','Ventral, dorsal','Dorsal, lateral'],answer:2,explanation:'الجذر الأمامي (Ventral = حركي + لاإرادي) + الجذر الخلفي (Dorsal = حسي) = العصب الشوكي المختلط.'}
+   ,{id:'ann19',starred:false,lec:'nervous',text:'The spinal nerve divides into two rami: a dorsal ramus and a ventral ramus. Both are:',options:['Sensory only','Motor only','Mixed (sensory + motor)','Autonomic only'],answer:2,explanation:'الـ Dorsal ramus والـ Ventral ramus كلاهما مختلط (حركي + حسي). الـ Dorsal ramus → عضلات وجلد الظهر. الـ Ventral ramus → أمام الجسم والأطراف.'}
+   ,{id:'ann20',starred:true,lec:'nervous',text:'Which cranial nerve is primarily responsible for vision?',options:['Olfactory nerve (I)','Optic nerve (II)','Oculomotor nerve (III)','Trochlear nerve (IV)'],answer:1,explanation:'CN II (Optic) = البصر. CN I = الشم. CN III = حركة العين. CN IV = Superior Oblique.'}
+   ,{id:'ann21',starred:false,lec:'nervous',text:'Which cranial nerve is responsible for the sense of smell?',options:['Olfactory nerve (I)','Optic nerve (II)','Trigeminal nerve (V)','Facial nerve (VII)'],answer:0,explanation:'CN I (Olfactory) = الشم. حسي بحت. يمر من خلال lamina cribrosa في عظمة الغربالية.'}
+   ,{id:'ann22',starred:false,lec:'nervous',text:'The oculomotor nerve (CN III) is primarily a ___ nerve:',options:['Sensory','Motor','Mixed','Autonomic only'],answer:1,explanation:'CN III (Oculomotor) = حركي بشكل رئيسي + شبه ودي. بيغذي كل عضلات العين الخارجية ماعدا LR (CN VI) وSO (CN IV).'}
+   ,{id:'ann23',starred:true,lec:'nervous',text:'Which cranial nerve innervates the muscles of mastication?',options:['Facial nerve (VII)','Glossopharyngeal nerve (IX)','Vagus nerve (X)','Trigeminal nerve (V)'],answer:3,explanation:'CN V3 (Mandibular division of Trigeminal) = يغذي عضلات المضغ حركياً. ده أهم معلومة في طب الأسنان.'}
+   ,{id:'ann24',starred:true,lec:'nervous',text:'The facial nerve (CN VII) is a ___ nerve, responsible for ___:',options:['Sensory, vision','Motor, hearing','Mixed, facial expression and taste','Autonomic, heart rate'],answer:2,explanation:'CN VII (Facial) = مختلط: حركي (عضلات الوجه والرأس) + حسي (التذوق أمامي 2/3 لسان) + شبه ودي (Submandibular + Sublingual + Lacrimal glands).'}
+   ,{id:'ann25',starred:true,lec:'nervous',text:'Which cranial nerve is responsible for taste from the anterior two-thirds of the tongue?',options:['Glossopharyngeal nerve (IX)','Vagus nerve (X)','Facial nerve (VII)','Trigeminal nerve (V)'],answer:2,explanation:'CN VII يحمل التذوق من الثلثين الأماميين عبر وتر الطبل (Chorda tympani). CN IX = من الثلث الخلفي. CN X = من الجذر + لسان المزمار.'}
+   ,{id:'ann26',starred:false,lec:'nervous',text:'The vagus nerve (CN X) is a ___ nerve with extensive distribution to ___:',options:['Sensory, face','Motor, eye muscles','Mixed, thoracic and abdominal viscera','Autonomic, skeletal muscles'],answer:2,explanation:'CN X (Vagus) = مختلط + أطول عصب قحفي. بيوصل للقلب والجهاز الهضمي والرئتين. أهم مصدر للشبه ودي في الجسم.'}
+   ,{id:'ann27',starred:true,lec:'nervous',text:'Which cranial nerve is responsible for hearing and balance?',options:['Trigeminal nerve (V)','Facial nerve (VII)','Vestibulocochlear nerve (VIII)','Glossopharyngeal nerve (IX)'],answer:2,explanation:'CN VIII (Vestibulocochlear) = حسي بحت. Cochlear division = السمع. Vestibular division = التوازن.'}
+   ,{id:'ann28',starred:true,lec:'nervous',text:'The hypoglossal nerve (CN XII) is primarily a ___ nerve, innervating the ___:',options:['Sensory, tongue','Motor, tongue muscles','Mixed, pharynx','Autonomic, salivary glands'],answer:1,explanation:'CN XII (Hypoglossal) = حركي بحت. يغذي كل عضلات اللسان ماعدا Palatoglossus (الأخير من CN X).'}
+    /* ══ DIGESTIVE & URINARY ══ */
+   ,{id:'andu1',starred:true,lec:'digestive',text:'The most dilated part in the GIT is the:',options:['Pharynx','Stomach','Small intestine','Large intestine'],answer:1,explanation:'المعدة هي أكثر جزء اتساعاً في الجهاز الهضمي. هي موجودة في الجانب الأيسر العلوي من تجويف البطن.'}
+   ,{id:'andu2',starred:false,lec:'digestive',text:'Regarding the stomach, which statement is TRUE?',options:['It has 2 borders','It has 3 ends','It has 3 surfaces','The fundus is the narrowest part'],answer:0,explanation:'المعدة: 2 حافة (Curvatures: Greater + Lesser) + 2 فتحة (Cardiac + Pyloric) + سطحان (أمامي وخلفي). القاع (Fundus) هو الجزء الأعلى، مش الأضيق.'}
+   ,{id:'andu3',starred:false,lec:'digestive',text:'The esophagus ends at:',options:['Level of T4 vertebra','Level of C6 vertebra','Cardiac opening of the stomach','None of the above'],answer:2,explanation:'المريء ينتهي عند الفتحة القلبية للمعدة (Cardiac opening). يبدأ عند C6 (الفقرة العنقية السادسة) وينزل عبر الصدر حتى يخترق الحجاب الحاجز عند T10.'}
+   ,{id:'andu4',starred:true,lec:'digestive',text:'Which of the following has cervical, thoracic, AND abdominal parts?',options:['Trachea','Stomach','Esophagus','Pharynx'],answer:2,explanation:'المريء (Esophagus) له 3 أجزاء: عنقي + صدري + بطني. القصبة الهوائية لها جزء عنقي وصدري فقط. البلعوم ينتهي عند الرقبة.'}
+   ,{id:'andu5',starred:true,lec:'digestive',text:'Regarding the duodenum, which statement is TRUE?',options:['It is S-shaped','It is 15 inches long','It is a fixed part of the small intestine','It has tenia coli'],answer:2,explanation:'الاثنى عشر (Duodenum) = جزء ثابت (Fixed) من الأمعاء الدقيقة. شكله C. طوله 10 بوصات (25 سم). مفيهوش Tenia coli (دي ميزة الأمعاء الغليظة).'}
+   ,{id:'andu6',starred:false,lec:'digestive',text:'Regarding the duodenum, which statement is TRUE (2nd version)?',options:['It is C-shaped','It is 10 inches long','It is a mobile part of the small intestine','It has tenia coli'],answer:1,explanation:'الاثنى عشر طوله 10 بوصات (25 سم) وشكله C. هو الجزء الثابت (Fixed) في الأمعاء الدقيقة. مفيهوش Tenia coli.'}
+   ,{id:'andu7',starred:true,lec:'digestive',text:'Regarding the pancreas, which statement is TRUE?',options:['It is an endocrine gland only','It is a mixed gland','It lies horizontally on the posterior abdominal wall','It extends from the stomach to the liver'],answer:1,explanation:'البنكرياس = غدة مختلطة (Mixed gland): خارجية (إنزيمات هضم للاثنى عشر) + صماء (الأنسولين في الدم). هو الغدة المختلطة الوحيدة في الجسم.'}
+   ,{id:'andu8',starred:false,lec:'digestive',text:'Regarding the pancreas (anatomy), which statement is TRUE?',options:['It has head, neck, body, and tail','It is an endocrine gland only','It lies horizontally on the posterior abdominal wall','It extends from the liver to the spleen'],answer:0,explanation:'البنكرياس له 4 أجزاء: Head (في حضن الاثنى عشر) + Neck + Body + Tail (يصل للطحال). يقع مائلاً على الجدار الخلفي للبطن.'}
+   ,{id:'andu9',starred:true,lec:'digestive',text:'Regarding the gallbladder, which statement is TRUE?',options:['It concentrates bile','It forms bile','It lies in the fossa of the left lobe of the liver','It fuses with the main pancreatic duct'],answer:0,explanation:'المرارة (Gallbladder): تخزّن الصفراء وتركّزها. الكبد هو اللي بيصنع الصفراء (مش المرارة). موجودة في الحفرة السطح السفلي للفص الأيمن للكبد.'}
+   ,{id:'andu10',starred:false,lec:'digestive',text:'Regarding the gallbladder (anatomy), which statement is TRUE?',options:['It concentrates bile','It is formed of fundus, body, and neck','It lies in the fossa of the left lobe of the liver','It fuses with the main pancreatic duct'],answer:1,explanation:'المرارة مكونة من: Fundus (قاع) + Body (جسم) + Neck (عنق). تقع في الحفرة أسفل الفص الأيمن للكبد وليس الأيسر.'}
+   ,{id:'andu11',starred:true,lec:'digestive',text:'The ampulla of Vater opens at:',options:['Jejunum','Ileum','Second part of duodenum','None of the above'],answer:2,explanation:'أمبولة فاتر (Ampulla of Vater) تنفتح في الجزء الثاني من الاثنى عشر (2nd part of duodenum). هنا يصب كل من القناة الصفراوية المشتركة والقناة البنكرياسية الرئيسية.'}
+   ,{id:'andu12',starred:false,lec:'digestive',text:'Which of the following is NOT part of the alimentary canal?',options:['Mouth','Pancreas','Esophagus','Large intestine'],answer:1,explanation:'البنكرياس عضو ملحق (Accessory organ)، مش جزء من القناة الهضمية. القناة الهضمية = فم → بلعوم → مريء → معدة → أمعاء دقيقة → أمعاء غليظة.'}
+   ,{id:'andu13',starred:true,lec:'digestive',text:'Which of the following are accessory organs of the digestive system?',options:['Mouth, pharynx, esophagus','Stomach, small intestine, large intestine','Salivary glands, pancreas, liver, gallbladder','Kidneys, ureters, bladder'],answer:2,explanation:'الأعضاء الملحقة: الغدد اللعابية + البنكرياس + الكبد + المرارة. هذه الأعضاء تفرز إنزيمات وإفرازات تساعد في الهضم لكنها ليست جزء من القناة الهضمية.'}
+   ,{id:'andu14',starred:false,lec:'digestive',text:'The small intestine is approximately ___ meters long, while the large intestine is approximately ___ meters long:',options:['2, 6','6, 2','3, 4','4, 3'],answer:1,explanation:'الأمعاء الدقيقة = 6 متر. الأمعاء الغليظة = ~2 متر. رغم أن الدقيقة أطول، إلا أن الغليظة أعرض (أكبر قطراً).'}
+   ,{id:'andu15',starred:true,lec:'digestive',text:'What are the three parts of the small intestine?',options:['Cecum, ascending colon, transverse colon','Duodenum, jejunum, ileum','Stomach, pancreas, liver','Rectum, anal canal, vermiform appendix'],answer:1,explanation:'الأمعاء الدقيقة = 3 أجزاء: Duodenum (اثنى عشر) + Jejunum (صائم) + Ileum (لفائفي). يتكاثر بها الامتصاص بسبب الزغابات (Villi).'}
+   ,{id:'andu16',starred:true,lec:'digestive',text:'The large intestine is characterized by the presence of ___ and ___, absent in the small intestine:',options:['Villi, microvilli','Haustrations, tenia coli','Plicae circulares, lacteals','Gastric pits, rugae'],answer:1,explanation:'مميزات الأمعاء الغليظة: Haustrations (تجيبات) + Tenia coli (أربطة طولية 3). الزغابات (Villi) والـ Plicae circulares في الأمعاء الدقيقة.'}
+   ,{id:'andu17',starred:true,lec:'digestive',text:'What is the largest lymphatic organ in the body?',options:['Thymus','Spleen','Liver','Tonsil'],answer:1,explanation:'الطحال (Spleen) هو أكبر عضو لمفاوي في الجسم. موجود في الجانب الأيسر العلوي من تجويف البطن. تذكر: الكبد أكبر غدة — الطحال أكبر عضو لمفاوي.'}
+   ,{id:'andu18',starred:true,lec:'digestive',text:'The liver is mainly located in the ___ part of the abdominal cavity:',options:['Upper left','Lower right','Upper right','Lower left'],answer:2,explanation:'الكبد في الجانب الأيمن العلوي من تجويف البطن. هو أكبر غدة في الجسم. له فصان: فص أيمن كبير + فص أيسر صغير.'}
+   ,{id:'andu19',starred:false,lec:'digestive',text:'What is the main function of the gallbladder?',options:['Secreting insulin','Storing bile','Producing digestive enzymes','Absorbing water'],answer:1,explanation:'المرارة: تخزّن الصفراء التي يصنعها الكبد. بعد الأكل تنقبض المرارة → تطرح الصفراء في الاثنى عشر → تساعد في هضم الدهون.'}
+   ,{id:'andu20',starred:true,lec:'digestive',text:'Concerning the kidney, which of the following is correct?',options:['It has anterior and posterior surfaces only','It has medial and lateral borders only','It has upper and lower poles only','All of the above (surfaces + borders + poles)'],answer:3,explanation:'الكلية لها: سطحان (أمامي + خلفي) + حافتان (أنسية مقعرة بها Hilum + وحشية محدبة) + قطبان (علوي + سفلي). كل الإجابات صح.'}
+   ,{id:'andu21',starred:true,lec:'digestive',text:'Concerning the ureter, which is correct?',options:['It has a normal narrowing at its end','It is 25 cm long','Its lumen is 6 cm in width','It lies in the abdomen only'],answer:1,explanation:'الحالب طوله 25 سم. له 3 تضيقات طبيعية: عند القطب السفلي للكلية + عند تقاطعه مع الأوعية الحرقفية + عند دخوله المثانة. يمر عبر البطن والحوض.'}
+   ,{id:'andu22',starred:false,lec:'digestive',text:'The ureter ends at:',options:['Anterior angle of the urinary bladder','Inferior angle of the urinary bladder','Apex of the urinary bladder','Postero-superior angles of the urinary bladder'],answer:3,explanation:'الحالب ينتهي عند الزوايا الخلفية العليا للمثانة البولية (Postero-superior angles). الزاوية الأمامية العليا = القمة (Apex).'}
+   ,{id:'andu23',starred:false,lec:'digestive',text:'Concerning the urinary bladder, which is correct?',options:['It has one lateral surface','It has one inferior surface','It has a medial surface','It is pyramidal in shape'],answer:3,explanation:'المثانة البولية شكلها هرمي (Pyramidal). لها: 3 أسطح علوية + 1 سطح سفلي (القاعدة). تقع في الحوض وتسع 500-700 مل.'}
+   ,{id:'andu24',starred:true,lec:'digestive',text:'Which organs constitute the urinary system?',options:['Kidneys, ureters, urinary bladder, urethra','Kidneys, pancreas, liver, gallbladder','Stomach, small intestine, large intestine','Heart, lungs, brain'],answer:0,explanation:'الجهاز البولي = 2 كلية + 2 حالب + مثانة + إحليل. وظيفته تصفية الدم وإنتاج البول وإخراجه.'}
+   ,{id:'andu25',starred:false,lec:'digestive',text:'What are the main features (poles, borders, surfaces) of the kidneys?',options:['Upper and lower poles, medial and lateral borders, anterior and posterior surfaces','Anterior and posterior poles, upper and lower borders, medial and lateral surfaces','Right and left poles, upper and lower borders, anterior and posterior surfaces','They do not have specific poles or borders'],answer:0,explanation:'الكلية لها: قطبان (Upper + Lower poles) + حافتان (Medial concave + Lateral convex borders) + سطحان (Anterior + Posterior surfaces). الـ Hilum في الحافة الأنسية.'}
+   ,{id:'andu26',starred:true,lec:'digestive',text:'The ureter is approximately ___ cm long and conveys urine from the ___ to the ___:',options:['15, bladder, kidneys','25, kidneys, urinary bladder','30, urethra, bladder','20, kidneys, urethra'],answer:1,explanation:'الحالب = 25 سم. بيوصل البول من الكلية للمثانة. لو حصوة وقفت في الحالب → ألم حادة جداً (مغص كلوي).'}
+   ,{id:'andu27',starred:true,lec:'digestive',text:'Which are the key differences between male and female urethra?',options:['Female 4 cm · anterior to vagina; Male 20 cm · through prostate + along penis','Female 20 cm · through uterus; Male 4 cm · through prostate','Both are 10 cm but differ in course','Female wider; Male narrower'],answer:0,explanation:'الإحليل الأنثوي = 4 سم + على الجدار الأمامي للمهبل. الإحليل الذكوري = 20 سم + يمر عبر البروستاتا ثم القضيب. لذلك التهابات المسالك البولية أكثر عند النساء (إحليل أقصر).'}
+   ,{id:'andu28',starred:true,lec:'digestive',text:'Which organ is located anterior to the RIGHT kidney?',options:['Spleen','Stomach','Liver','Descending colon'],answer:2,explanation:'أمام الكلية اليمنى: الغدة الكظرية اليمنى + الكبد + الجزء الثاني من الاثنى عشر + الانعطاف الكولوني الأيمن + بعض لفات الصائم.'}
+   ,{id:'andu29',starred:true,lec:'digestive',text:'Which organ is located anterior to the LEFT kidney?',options:['Liver','Duodenum','Pancreas','Ascending colon'],answer:2,explanation:'أمام الكلية اليسرى: الغدة الكظرية اليسرى + المعدة + البنكرياس + الطحال + القولون النازل + بعض لفات الصائم.'}
+    /* ══ SEROUS, GENITAL & GLANDS ══ */
+   ,{id:'ansg1',starred:true,lec:'serous',text:'Which of the following is a mixed gland (exocrine & endocrine)?',options:['Liver','Thyroid','Adrenal','Pancreas'],answer:3,explanation:'البنكرياس هو الغدة المختلطة الوحيدة: خارجية (إنزيمات هضم → الاثنى عشر) + صماء (الأنسولين → الدم). الكبد = خارجية فقط. الدرقية والكظرية = صماء فقط.'}
+   ,{id:'ansg2',starred:true,lec:'serous',text:'Which of the following is an exocrine gland?',options:['Liver','Thyroid','Adrenal','Pituitary'],answer:0,explanation:'الكبد = غدة خارجية (Exocrine) → يفرز الصفراء عبر قناة لتجويف الاثنى عشر. الغدة الدرقية + الكظرية + النخامية = صماء (Endocrine) → تفرز هرمونات مباشرة في الدم.'}
+   ,{id:'ansg3',starred:true,lec:'serous',text:'Which of the following is the primary female sex organ?',options:['Uterus','Ovary','Vagina','Uterine tubes'],answer:1,explanation:'المبيضان (Ovaries) = الأعضاء الجنسية الأولية عند الأنثى → ينتجان البويضات + يفرزان الاستروجين والبروجسترون. الرحم والقنوات = ثانوية.'}
+   ,{id:'ansg4',starred:true,lec:'serous',text:'Which of the following conveys sperm directly to the urethra?',options:['Epididymis','Vas deferens','Duct of seminal vesicle','Ejaculatory duct'],answer:3,explanation:'القناة القاذفة (Ejaculatory duct) = تتكون من اندماج قناة الحويصلة المنوية + أمبولة الأسهر → تنفتح في الإحليل البروستاتي. هي اللي بتوصل الحيوانات المنوية مباشرة للإحليل.'}
+   ,{id:'ansg5',starred:true,lec:'serous',text:'What is the definition of a serous membrane, and what are its layers?',options:['A closed sac formed of one layer, the parietal layer','A closed sac formed of one layer, the visceral layer','A closed sac formed of two layers: parietal (lines body cavity) + visceral (covers viscera), separated by serous fluid','An open sac that covers organs directly'],answer:2,explanation:'الغشاء المصلي = كيس مغلق بطبقتين: جدارية (Parietal — تبطن الجدار) + حشوية (Visceral — تغطي العضو) + سائل مصلي بينهم يقلل الاحتكاك.'}
+   ,{id:'ansg6',starred:true,lec:'serous',text:'Which correctly lists three serous membranes and the organs they cover?',options:['Pericardium (lungs), Pleura (heart), Peritoneum (brain)','Pericardium (heart), Pleura (lungs), Peritoneum (abdominal viscera)','Pericardium (liver), Pleura (kidneys), Peritoneum (stomach)','Pericardium (brain), Pleura (spinal cord), Peritoneum (intestines)'],answer:1,explanation:'التامور (Pericardium) → القلب. غشاء الجنب (Pleura) → الرئتان. الصفاق (Peritoneum) → أحشاء البطن. دي ثلاث أغشية مصلية.'}
+   ,{id:'ansg7',starred:true,lec:'serous',text:'Which layer directly covers the heart?',options:['Visceral layer of the peritoneum','Parietal layer of the peritoneum','Visceral layer of the pericardium','Parietal layer of the pericardium'],answer:2,explanation:'الطبقة الحشوية من التامور (Visceral pericardium) هي اللي تغطي القلب مباشرة. الطبقة الجدارية تبطن الكيس التاموري.'}
+   ,{id:'ansg8',starred:true,lec:'serous',text:'Which correctly identifies the primary and secondary sexual organs in the female genital system?',options:['Primary: Uterus; Secondary: Ovaries, Fallopian tube, Vagina, External genitalia','Primary: Ovaries; Secondary: Uterus, Fallopian tube, Vagina, External genitalia','Primary: Fallopian tube; Secondary: Ovaries, Uterus, Vagina, External genitalia','Primary: Vagina; Secondary: Ovaries, Uterus, Fallopian tube, External genitalia'],answer:1,explanation:'الأعضاء الأولية عند الأنثى = المبيضان. الثانوية = الرحم + قناة فالوب + المهبل + الأعضاء الخارجية. نفس المبدأ عند الذكر: الخصيتان = أولية.'}
+   ,{id:'ansg9',starred:false,lec:'serous',text:'What is the function of the ovaries?',options:['Site of fertilization and embryo development','Give rise to the ovum and secrete female hormones','Convey the ovum to the uterus','Connect the uterus to the external genitalia'],answer:1,explanation:'المبيضان: 1- ينتجان البويضات (Ova). 2- يفرزان هرمونات أنثوية (Estrogen + Progesterone). موضع الإخصاب = قناة فالوب. موضع تطور الجنين = الرحم.'}
+   ,{id:'ansg10',starred:true,lec:'serous',text:'Which statement correctly describes the uterus and Fallopian tube?',options:['Uterus conveys the ovum; Fallopian tube = site of embryo development','Uterus = site of embryo development; Fallopian tube conveys ovum AND is site of fertilization','Both are sites of sperm maturation','Uterus secretes hormones; Fallopian tube stores ova'],answer:1,explanation:'الرحم = موضع تطور الجنين (الحمل). قناة فالوب = تنقل البويضة من المبيض للرحم + هي موضع الإخصاب. لو حدث الإخصاب في الرحم → حمل خارج الرحم (ectopic).'}
+   ,{id:'ansg11',starred:true,lec:'serous',text:'Which correctly identifies the primary and secondary sexual organs in the male genital system?',options:['Primary: Epididymis; Secondary: Testis, Vas deferens...','Primary: Testis; Secondary: Epididymis, Vas deferens, Ejaculatory duct, Seminal vesicle, Prostate, External genital organs','Primary: Vas deferens; Secondary: Testis, Epididymis...','Primary: Prostate; Secondary: Testis, Epididymis...'],answer:1,explanation:'الأعضاء الأولية عند الذكر = الخصيتان. الثانوية = البربخ + الأسهر + القناة القاذفة + الحويصلة المنوية + البروستاتا + الأعضاء الخارجية.'}
+   ,{id:'ansg12',starred:true,lec:'serous',text:'What is the function of the testes?',options:['Produce sperms and secrete testosterone hormone','Site of sperm maturation','Convey sperms to the ejaculatory duct','Secrete fluid for sperm nutrition'],answer:0,explanation:'الخصيتان: 1- تنتجان الحيوانات المنوية (Sperms). 2- تفرزان الهرمون الذكوري (Testosterone). نضج الحيوانات المنوية يحدث في البربخ (Epididymis).'}
+   ,{id:'ansg13',starred:false,lec:'serous',text:'Which correctly describes the epididymis, vas deferens, and seminal vesicle?',options:['Epididymis (conveys sperms), Vas deferens (site of maturation), Seminal vesicle (produces sperms)','Epididymis (site of sperm maturation), Vas deferens (conveys sperms to ejaculatory duct), Seminal vesicle (secretes fluid for sperm nutrition)','Epididymis (secretes fluid), Vas deferens (produces sperms), Seminal vesicle (conveys sperms)','Epididymis (produces sperms), Vas deferens (stores sperms), Seminal vesicle (site of maturation)'],answer:1,explanation:'البربخ = نضج الحيوانات المنوية. الأسهر = ينقلهم للقناة القاذفة. الحويصلة المنوية = تفرز سائل يحتوي على فركتوز (تغذية الحيوانات المنوية) + يزيد حجم السائل المنوي.'}
+   ,{id:'ansg14',starred:true,lec:'serous',text:'What is the organ responsible for sperm maturation?',options:['Testis','Vas deferens','Epididymis','Seminal vesicle'],answer:2,explanation:'البربخ (Epididymis) = موضع نضج الحيوانات المنوية. الحيوانات تُنتج في الخصية → تنضج في البربخ → تنتقل للأسهر.'}
+   ,{id:'ansg15',starred:true,lec:'serous',text:'The ejaculatory duct is formed by the fusion of the ___ and the ___:',options:['Vas deferens, urethra','Duct of the seminal vesicle, ampulla of vas deferens','Epididymis, prostate','Ureter, seminal vesicle'],answer:1,explanation:'القناة القاذفة = قناة الحويصلة المنوية + أمبولة الأسهر. تنفتح في الإحليل البروستاتي (Prostatic urethra).'}
+   ,{id:'ansg16',starred:false,lec:'serous',text:'What is the function of the prostate gland?',options:['Produce sperms','Secrete testosterone','Secrete enzymes for nutrition of sperms','Store sperms'],answer:2,explanation:'البروستاتا تفرز إنزيمات تساعد في تغذية الحيوانات المنوية وتنشيطها. الحويصلة المنوية = فركتوز. البروستاتا = إنزيمات.'}
+   ,{id:'ansg17',starred:true,lec:'serous',text:'Why do the walls of the scrotum NOT contain fat?',options:['To protect the testes from injury','To provide insulation for the testes','To control testicular temperature at about 35°C, necessary for sperm formation','To allow easier movement of the testes'],answer:2,explanation:'كيس الصفن مفيهوش دهون عشان يحافظ على درجة حرارة الخصيتين عند ~35°م (أقل من حرارة الجسم 37°م). الحرارة المرتفعة تقتل الحيوانات المنوية (Azoospermia بالحرارة).'}
+   ,{id:'ansg18',starred:true,lec:'serous',text:'What is the main difference between endocrine and exocrine glands?',options:['Endocrine glands have ducts; exocrine glands do not','Endocrine glands secrete hormones directly into bloodstream; exocrine glands secrete into a duct or lumen','Endocrine glands produce enzymes; exocrine glands produce hormones','Endocrine glands are always larger than exocrine glands'],answer:1,explanation:'الصماء (Endocrine) = بدون قنوات، تفرز هرمونات مباشرة في الدم. الخارجية (Exocrine) = بها قنوات، تفرز في تجويف أو سطح.'}
+   ,{id:'ansg19',starred:false,lec:'serous',text:'Which lists four examples of endocrine glands?',options:['Sweat gland, Salivary glands, Liver, Prostate','Pituitary gland, Thyroid gland, Adrenal gland, Gonads','Pancreas (exocrine part), Liver, Salivary glands, Sweat gland','Pineal gland, Islets of Langerhans, Sweat gland, Liver'],answer:1,explanation:'الغدد الصماء: النخامية (Pituitary) + الدرقية (Thyroid) + الكظرية (Adrenal) + الغدد التناسلية (Gonads: خصيتان + مبيضان). كلها تفرز هرمونات في الدم.'}
+   ,{id:'ansg20',starred:false,lec:'serous',text:'Which lists four examples of exocrine glands?',options:['Pituitary, Thyroid, Adrenal, Gonads','Pineal, Islets of Langerhans, Parathyroid, Thymus','Sweat gland, Salivary glands, Exocrine part of pancreas, Liver','Adrenal, Gonads, Thyroid, Pituitary'],answer:2,explanation:'الغدد الخارجية: العرقية + اللعابية + الجزء الخارجي من البنكرياس + الكبد. كلها تفرز إفرازاتها عبر قنوات.'}
+   ,{id:'ansg21',starred:true,lec:'serous',text:'Which is considered a mixed gland (both exocrine and endocrine)?',options:['Liver','Thyroid','Adrenal','Pancreas'],answer:3,explanation:'البنكرياس = الغدة المختلطة الوحيدة. خارجي: إنزيمات هضمية → الاثنى عشر. صماء: جزر لانجرهانز تفرز الأنسولين والجلوكاجون → الدم.'}
+   ,{id:'ansg22',starred:false,lec:'serous',text:'Which of the following is an exocrine gland?',options:['Pituitary','Thyroid','Adrenal','Liver'],answer:3,explanation:'الكبد = خارجي فقط (يفرز الصفراء عبر القناة الصفراوية). النخامية والدرقية والكظرية = صماء فقط.'}
   ],
   biochemistry:[
     /* ══ LIPID METABOLISM — DIGESTION & TRANSPORT ══ */
@@ -7330,6 +7574,264 @@ const SHARH_SAMPLE = {
 <div class="espot">⭐ High-Yield Lec 6: Apex of heart = Left Ventricle. Mitral valve = Left atrium → Left ventricle (2 cusps). 4 pulmonary veins → Left atrium (oxygenated). Pulmonary arteries carry DEOXYGENATED blood. Right lung: 3 lobes + 2 fissures. Left lung: 2 lobes + 1 fissure + cardiac notch. Larynx = phonation (NOT gas exchange — that's the lungs). Trachea = C-shaped rings (open POSTERIORLY).</div>
 </div></div>`
 
+,'anatomy:nervous':`<div class="ch-card">
+<div class="ch-head open" onclick="tgCh(this)"><h3>🧠 Lec 7 — The Nervous System</h3><span class="tog">▾</span></div>
+<div class="ch-body open">
+
+<div style="background:rgba(139,92,246,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#8b5cf6;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(139,92,246,.2)">Divisions of the Nervous System</h3>
+<p>The nervous system is divided <strong>anatomically</strong> into: <strong>Central Nervous System (CNS)</strong> = Brain + Spinal cord; and <strong>Peripheral Nervous System (PNS)</strong> = 12 pairs of cranial nerves + 31 pairs of spinal nerves.<br>
+<strong>Functionally</strong> it divides into: <strong>Somatic NS</strong> (controls voluntary activity) and <strong>Autonomic NS</strong> (controls involuntary activity) → subdivided into Sympathetic and Parasympathetic.</p>
+<div style="background:rgba(139,92,246,.05);border-right:3px solid #8b5cf6;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الجهاز العصبي اتقسم بطريقتين: 🔹 تشريحياً: مركزي (المخ + الحبل الشوكي) وطرفي (12 زوج أعصاب قحفية + 31 زوج أعصاب شوكية). 🔹 وظيفياً: جسدي (إرادي) + لاإرادي (ودي وشبه ودي = غير إرادي).
+</div>
+</div>
+
+<div style="background:rgba(139,92,246,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#8b5cf6;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(139,92,246,.2)">CNS Histology — Gray & White Matter</h3>
+<p>The CNS is composed of two types of tissue:</p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Gray matter</strong>: large number of nerve cell bodies (neurons) embedded in supporting cells called <em>neuroglia</em>. Collected neurons inside CNS = <strong>Nucleus</strong>; outside CNS = <strong>Ganglion</strong>.</li>
+<li><strong>White matter</strong>: dense nerve fibers (axons) embedded in neuroglia. Appears white due to myelin sheath.</li>
+</ul>
+<p>In the <strong>brain</strong>: gray matter is on the outside (cortex), white matter inside. In the <strong>spinal cord</strong>: the reverse — inner H-shaped gray matter surrounded by white matter.</p>
+<div style="background:rgba(139,92,246,.05);border-right:3px solid #8b5cf6;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+المادة الرمادية (Gray matter) = أجسام خلايا عصبية + Neuroglia. المادة البيضاء (White matter) = ألياف عصبية (Axons). في المخ: الرمادية برة (قشرة)، البيضاء جوه. في الحبل الشوكي: العكس تماماً! الرمادية جوه بشكل حرف H، البيضاء برة. مجموعة خلايا جوه الجهاز المركزي = Nucleus. برا الجهاز المركزي = Ganglion.
+</div>
+</div>
+
+<div style="background:rgba(139,92,246,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#8b5cf6;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(139,92,246,.2)">The Brain & Spinal Cord</h3>
+<p><strong>The Brain</strong> = Two cerebral hemispheres + Two cerebellar hemispheres + Brain stem (Midbrain + Pons + Medulla oblongata).<br><br>
+<strong>The Spinal Cord</strong> = elongated cylindrical cord inside the vertebral canal. Ends in adults at the lower border of <strong>L1</strong> (first lumbar vertebra). It has <strong>31 segments</strong>: 8 Cervical, 12 Thoracic, 5 Lumbar, 5 Sacral, 1 Coccygeal. Each segment gives one pair of spinal nerves. The spinal cord has an inner H-shaped gray matter with: dorsal horns (sensory), ventral horns (motor), and lateral horns (autonomic, present in some segments only).</p>
+<div style="background:rgba(139,92,246,.05);border-right:3px solid #8b5cf6;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+المخ: نصفا كرة مخية + نصفا كرة مخيخية + جذع المخ (Midbrain + Pons + Medulla). الحبل الشوكي: اسطواني، جوه القناة الفقرية، بينتهي عند L1 عند البالغين. 31 شريحة: 8C + 12T + 5L + 5S + 1Co. الشريحة الواحدة = قرن أمامي (حركي) + قرن خلفي (حسي) + قرن جانبي (لاإرادي في بعض الشرائح).
+</div>
+</div>
+
+<div style="background:rgba(139,92,246,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#8b5cf6;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(139,92,246,.2)">Spinal Nerves (31 pairs)</h3>
+<p>Each spinal nerve arises by <strong>two roots</strong>: <strong>Ventral root (motor)</strong> from the ventral horn + <strong>Dorsal root (sensory)</strong> from the dorsal horn. The lateral horn (if present) gives an autonomic root that <strong>joins the ventral root</strong>. The two roots unite → form the <strong>spinal nerve (mixed)</strong>. The spinal nerve then divides into:</p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Dorsal ramus (mixed)</strong>: supplies muscles and skin of the back</li>
+<li><strong>Ventral ramus (mixed)</strong>: supplies the front of the body and the limbs</li>
+</ul>
+<div style="background:rgba(139,92,246,.05);border-right:3px solid #8b5cf6;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+كل عصب شوكي بيتكون من: جذر أمامي (حركي) + جذر خلفي (حسي) → يتحدوا مع بعض = عصب شوكي مختلط. الجذر اللاإرادي بيضم للجذر الأمامي (مش الخلفي). العصب الشوكي بيتقسم لـ: Dorsal ramus (للظهر) + Ventral ramus (للأمام والأطراف). الاثنين مختلطين (حركي + حسي).
+</div>
+</div>
+
+<div style="background:rgba(139,92,246,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#8b5cf6;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(139,92,246,.2)">Cranial Nerves — 12 Pairs (The Key to Dentistry)</h3>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.82rem">
+<thead><tr>
+  <th style="background:rgba(139,92,246,.15);color:#8b5cf6;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)">No.</th>
+  <th style="background:rgba(139,92,246,.15);color:#8b5cf6;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)">Name</th>
+  <th style="background:rgba(139,92,246,.15);color:#8b5cf6;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)">Fiber Type</th>
+  <th style="background:rgba(139,92,246,.15);color:#8b5cf6;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)">Structures Supplied</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>I</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Olfactory</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Sensory only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Smell (olfaction)</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>II</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Optic</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Sensory only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Vision</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>III</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Oculomotor</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor + Parasympathetic</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">All extra-ocular muscles EXCEPT LR &amp; SO; intra-ocular muscles (Parasympathetic)</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>IV</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Trochlear</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Superior Oblique (SO) muscle only</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>V</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Trigeminal ⭐</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Sensory + Motor (Mixed)</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">V1 Ophthalmic (S) · V2 Maxillary (S) · V3 Mandibular (M): face/scalp/tongue ant.2/3 sensation + muscles of mastication</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>VI</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Abducent</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Lateral Rectus (LR) muscle only</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>VII</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Facial ⭐</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor + Sensory + Parasympathetic</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor→ muscles of face/scalp/auricle · Sensory→ taste ant.2/3 tongue + palate · Para→ submandibular, sublingual glands + lacrimal gland</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>VIII</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Vestibulocochlear</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Sensory only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Cochlear division → Hearing · Vestibular division → Equilibrium/balance</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>IX</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Glossopharyngeal</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor + Sensory + Parasympathetic</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor→ stylopharyngeus · Sensory→ tongue &amp; pharynx · Para→ parotid gland</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>X</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Vagus</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor + Sensory + Parasympathetic</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor→ pharynx/larynx/palate · Sensory(taste)→ tongue root &amp; epiglottis · Para→ heart, GIT, trachea-bronchi, blood vessels</td></tr>
+<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>XI</strong></td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Accessory</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Motor only</td><td style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04)">Trapezius + Sternomastoid muscles</td></tr>
+<tr><td style="padding:6px 10px"><strong>XII</strong></td><td style="padding:6px 10px">Hypoglossal</td><td style="padding:6px 10px">Motor only</td><td style="padding:6px 10px">Muscles of the tongue</td></tr>
+</tbody></table></div>
+<div style="background:rgba(139,92,246,.05);border-right:3px solid #8b5cf6;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الأعصاب القحفية 12 زوج. الحسية فقط: I (شم) · II (بصر) · VIII (سمع + توازن). الحركية فقط: IV (Superior Oblique) · VI (Lateral Rectus) · XI (Trapezius + Sternomastoid) · XII (لسان). المختلطة: V (Trigeminal — أهمهم في طب الأسنان) · VII (Facial) · IX · X. ⭐ اللي عندهم Para: III · VII · IX · X. الـ V3 (Mandibular) = الوحيد اللي فيه Motor في الـ Trigeminal = عضلات المضغ. الـ VII = بيتحكم في عضلات الوجه (مش الحس! — ده الـ V).
+</div>
+</div>
+<div class="espot">⭐ High-Yield: CN I &amp; II &amp; VIII = Sensory only. CN IV, VI, XI, XII = Motor only. CN V (Trigeminal) = most important in dentistry — V3 has motor fibers (mastication). CN VII (Facial) = motor to face muscles ≠ CN V which carries SENSATION from face. Autonomic root joins VENTRAL (motor) root. Dorsal root = sensory, Ventral root = motor, Spinal nerve = Mixed. Spinal cord ends at L1 in adults.</div>
+</div></div>`
+
+,'anatomy:digestive':`<div class="ch-card">
+<div class="ch-head open" onclick="tgCh(this)"><h3>🫁 Lec 8 — Digestive & Urinary Systems</h3><span class="tog">▾</span></div>
+<div class="ch-body open">
+
+<div style="background:rgba(245,158,11,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#f59e0b;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(245,158,11,.2)">Digestive System — Overview</h3>
+<p>The digestive system = <strong>Alimentary canal</strong> + <strong>Accessory organs</strong>.</p>
+<p style="margin-top:8px"><strong>Alimentary canal:</strong> Mouth → Pharynx → Esophagus → Stomach → Small intestine → Large intestine → Anal canal.</p>
+<p style="margin-top:8px"><strong>Accessory organs:</strong> Salivary glands · Pancreas · Liver · Gallbladder.</p>
+<div style="background:rgba(245,158,11,.05);border-right:3px solid #f59e0b;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الجهاز الهضمي = القناة الهضمية + الأعضاء الملحقة. القناة: فم → بلعوم → مريء → معدة → أمعاء دقيقة → أمعاء غليظة → فتحة الشرج. الملحقة: الغدد اللعابية + البنكرياس + الكبد + المرارة.
+</div>
+</div>
+
+<div style="background:rgba(245,158,11,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#f59e0b;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(245,158,11,.2)">Key Parts of the Alimentary Canal</h3>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Mouth</strong>: contains teeth, tongue, and openings of salivary glands. Communicates with oropharynx.</li>
+<li><strong>Pharynx</strong>: organ for air AND food passage. Connects with nose, mouth, larynx (anteriorly) → continuous with esophagus.</li>
+<li><strong>Esophagus</strong>: connects pharynx to stomach. Begins at neck → descends through thorax → pierces diaphragm → ends at stomach.</li>
+<li><strong>Stomach</strong>: most dilated part of the gut. Located in upper LEFT abdominal cavity. Between esophagus and small intestine.</li>
+<li><strong>Small intestine</strong>: 6 meters long. 3 parts: Duodenum + Jejunum + Ileum.</li>
+<li><strong>Large intestine</strong>: ~2 meters. Parts: Caecum → Appendix → Ascending colon → Transverse colon → Descending colon → Sigmoid colon → Rectum → Anal canal. Has <strong>Tenia coli + Haustrations</strong> (distinguishing features).</li>
+</ul>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.83rem">
+<thead><tr>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Feature</th>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Small Intestine</th>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Large Intestine</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Length</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">6 meters</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">~2 meters</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Diameter</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Smaller</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Wider</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Tenia coli</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Absent</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Present ✓</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Haustrations</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Absent</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Present ✓</td></tr>
+<tr><td style="padding:7px 12px"><strong>Parts</strong></td><td style="padding:7px 12px">Duodenum, Jejunum, Ileum</td><td style="padding:7px 12px">Caecum, Appendix, Ascending, Transverse, Descending, Sigmoid, Rectum, Anal canal</td></tr>
+</tbody></table></div>
+<div style="background:rgba(245,158,11,.05);border-right:3px solid #f59e0b;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الفرق الرئيسي بين الأمعاء: الدقيقة = 6م · أطول وأضيق · مفيهاش Tenia coli ولا Haustrations. الغليظة = 2م · أقصر وأعرض · فيها Tenia coli وHaustrations. المعدة في الجانب الأيسر العلوي من البطن. المريء بيخترق الحجاب الحاجز عشان يوصل للمعدة.
+</div>
+</div>
+
+<div style="background:rgba(245,158,11,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#f59e0b;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(245,158,11,.2)">Accessory Digestive Organs</h3>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Salivary glands (3 pairs)</strong>: Parotid · Submandibular · Sublingual → secrete saliva (lubrication + digestion).</li>
+<li><strong>Pancreas</strong>: Exocrine part → secretes digestive enzymes via duct into duodenum. Endocrine part (Islets of Langerhans) → secretes <em>insulin</em> to regulate blood glucose.</li>
+<li><strong>Liver</strong>: largest gland in the body. Secretes <em>bile</em>. Located in upper RIGHT abdominal cavity. Has 2 lobes: large right + small left.</li>
+<li><strong>Gallbladder</strong>: pear-shaped sac on inferior surface of right lobe of liver. Reservoir for bile. After eating → contracts to release bile into duodenum.</li>
+<li><strong>Spleen</strong>: (bonus) largest lymphatic organ. Located in upper LEFT abdominal cavity.</li>
+</ul>
+<div style="background:rgba(245,158,11,.05);border-right:3px solid #f59e0b;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الغدد اللعابية الثلاث: Parotid (أكبرها + بيتغذى من CN IX) + Submandibular + Sublingual (الاثنين بيتغذوا من CN VII). البنكرياس = غدة مختلطة: خارجية (إنزيمات هضم للاثنى عشر) + داخلية (الأنسولين لضبط السكر). الكبد = أكبر غدة في الجسم، يمين. الطحال = أكبر عضو لمفاوي، يسار.
+</div>
+</div>
+
+<div style="background:rgba(245,158,11,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#f59e0b;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(245,158,11,.2)">Urinary System</h3>
+<p>Formed of: <strong>2 Kidneys</strong> → <strong>2 Ureters</strong> → <strong>Urinary bladder</strong> → <strong>Urethra</strong>.</p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Kidneys</strong>: 2 bean-shaped organs, one on each side of the upper posterior abdominal wall. Secrete urine. Each kidney has: 2 poles (upper → related to suprarenal gland; lower), 2 borders (inner concave with <em>hilum</em>; outer convex), 2 surfaces (anterior → abdominal viscera; posterior → abdominal wall).</li>
+<li><strong>Ureters</strong>: 2 tubes, each 25 cm long. Convey urine from kidney → urinary bladder.</li>
+<li><strong>Urinary bladder</strong>: large muscular sac in the pelvis. Reservoir for urine.</li>
+<li><strong>Urethra</strong>: conveys urine to exterior.</li>
+</ul>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.83rem">
+<thead><tr>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Feature</th>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Female Urethra</th>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Male Urethra</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Length</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">4 cm</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">20 cm</td></tr>
+<tr><td style="padding:7px 12px"><strong>Course</strong></td><td style="padding:7px 12px">Anterior wall of vagina</td><td style="padding:7px 12px">Through prostate + along penis</td></tr>
+</tbody></table></div>
+<div style="background:rgba(245,158,11,.05);border-right:3px solid #f59e0b;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الكلى: فاصولية، زوج واحدة على كل جانب، في الجدار الخلفي العلوي للبطن. كل كلية: 2 قطب + 2 حافة (داخلية مقعرة فيها Hilum) + 2 سطح. الحالب: أنبوبان كل منهما 25 سم. المثانة: كيس عضلي في الحوض. الإحليل: أنثوي 4 سم · ذكوري 20 سم (يمر عبر البروستاتا والقضيب).
+</div>
+</div>
+
+<div style="background:rgba(245,158,11,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#f59e0b;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(245,158,11,.2)">Relations of Kidney Anterior Surface</h3>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.83rem">
+<thead><tr>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Right Kidney</th>
+  <th style="background:rgba(245,158,11,.12);color:#f59e0b;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Left Kidney</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Right Suprarenal gland</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Left Suprarenal gland</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Liver</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Stomach</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Duodenum (2nd part)</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Pancreas</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Right colic flexure</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Spleen</td></tr>
+<tr><td style="padding:7px 12px">Small intestine (coils of jejunum)</td><td style="padding:7px 12px">Descending colon + Small intestine</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="espot">⭐ High-Yield Lec 8: Stomach = upper LEFT. Liver = upper RIGHT (largest gland). Spleen = largest lymphatic organ (upper LEFT). Pancreas = mixed gland (exocrine: enzymes to duodenum · endocrine: insulin). Small intestine = 6m · no tenia coli. Large intestine = 2m · has tenia coli + haustrations. Appendix = part of LARGE intestine (caecum). Urethra: female 4 cm · male 20 cm.</div>
+</div></div>`
+
+,'anatomy:serous':`<div class="ch-card">
+<div class="ch-head open" onclick="tgCh(this)"><h3>🫀 Lec 9 — Serous Membranes, Genital System & Glands</h3><span class="tog">▾</span></div>
+<div class="ch-body open">
+
+<div style="background:rgba(236,72,153,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#ec4899;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(236,72,153,.2)">Serous Membranes — Structure & Types</h3>
+<p>A serous membrane is a <strong>closed sac formed of two layers</strong>:</p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Parietal layer</strong>: lines the body cavity (walls)</li>
+<li><strong>Visceral layer</strong>: directly covers the organ (viscera)</li>
+<li>The two layers are separated by <strong>serous fluid</strong> (reduces friction)</li>
+</ul>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.83rem">
+<thead><tr>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Serous Membrane</th>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Covers</th>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Location</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Pericardium</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">The heart</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Thoracic cavity</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Pleura</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">The lungs</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Thoracic cavity</td></tr>
+<tr><td style="padding:7px 12px"><strong>Peritoneum</strong></td><td style="padding:7px 12px">Abdominal viscera</td><td style="padding:7px 12px">Abdominal cavity</td></tr>
+</tbody></table></div>
+<div style="background:rgba(236,72,153,.05);border-right:3px solid #ec4899;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الأغشية المصلية: كيس مغلق بطبقتين. الطبقة الجدارية = بتبطن جدار التجويف. الطبقة الحشوية = بتغطي العضو مباشرة. بينهم سائل مصلي (بيقلل الاحتكاك). 3 أغشية: Pericardium (للقلب) + Pleura (للرئتين) + Peritoneum (لأحشاء البطن). القلب مغطى مباشرة بالطبقة الحشوية من التامور (Visceral pericardium).
+</div>
+</div>
+
+<div style="background:rgba(236,72,153,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#ec4899;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(236,72,153,.2)">Female Genital System</h3>
+<p><strong>Primary sexual organs:</strong> <strong>Ovaries</strong> → give rise to ova + secrete estrogen &amp; progesterone (responsible for female characters).</p>
+<p style="margin-top:8px"><strong>Secondary sexual organs:</strong></p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Uterus</strong>: site of development of the embryo (pregnancy)</li>
+<li><strong>Fallopian tube (Uterine tube)</strong>: conveys ovum from peritoneal cavity → uterus. <em>Site of fertilization of the ovum</em></li>
+<li><strong>Vagina</strong>: canal 9–11 cm long. Connects uterus to external genitalia</li>
+<li><strong>External genitalia (Vulva)</strong>: 2 labia majora + 2 labia minora</li>
+</ul>
+<div style="background:rgba(236,72,153,.05);border-right:3px solid #ec4899;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الجهاز التناسلي الأنثوي: الأعضاء الأولية = المبيضان (بيطلع منهم البويضات + هرمون الاستروجين والبروجسترون). الثانوية: الرحم (لتطور الجنين) + الأنبوبة (بتنقل البويضة للرحم وهي موضع الإخصاب) + المهبل (9-11 سم، يربط الرحم بالخارج) + الأعضاء الخارجية (الشفرتان الكبيرتان والصغيرتان).
+</div>
+</div>
+
+<div style="background:rgba(236,72,153,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#ec4899;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(236,72,153,.2)">Male Genital System</h3>
+<p><strong>Primary sexual organs:</strong> <strong>Testes</strong> → produce sperms + secrete testosterone (responsible for male characters).</p>
+<p style="margin-top:8px"><strong>Secondary sexual organs:</strong></p>
+<ul style="margin:8px 0 12px 18px;font-size:.86rem;line-height:1.9">
+<li><strong>Epididymis</strong>: site of maturation of sperms</li>
+<li><strong>Vas deferens</strong>: conveys sperms → ejaculatory duct</li>
+<li><strong>Ejaculatory duct</strong>: formed by fusion of duct of seminal vesicle + ampulla of vas deferens → opens into prostatic urethra</li>
+<li><strong>Seminal vesicle</strong>: secretes fluid containing fructose (nutrition for sperms) + increases semen volume</li>
+<li><strong>Prostate</strong>: secretes enzymes for nutrition of sperms</li>
+<li><strong>External genitalia</strong>: Scrotum (surrounds testis, no fat — controls temp. at ~35°C for sperm formation) + Penis (erectile organ)</li>
+</ul>
+<div style="background:rgba(236,72,153,.05);border-right:3px solid #ec4899;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الجهاز التناسلي الذكوري: الخصيتان (حيوانات منوية + تيستوستيرون). الثانوية: البربخ (نضج الحيوانات) → الأسهر (ينقلهم للقناة القاذفة) → الحويصلة المنوية (فركتوز للتغذية) → البروستاتا (إنزيمات) → كيس الصفن (يحيط بالخصية، مفيهوش دهون عشان يضبط درجة الحرارة على 35°م) + القضيب (عضو انتصابي).
+</div>
+</div>
+
+<div style="background:rgba(236,72,153,.04);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px">
+<h3 style="font-family:'Cairo',sans-serif;font-size:.93rem;font-weight:700;color:#ec4899;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid rgba(236,72,153,.2)">The Glands — Endocrine vs Exocrine</h3>
+<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;font-size:.83rem">
+<thead><tr>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Feature</th>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Endocrine Glands</th>
+  <th style="background:rgba(236,72,153,.12);color:#ec4899;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)">Exocrine Glands</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Secretion</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Hormones</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Enzymes / secretions</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Route</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Directly into bloodstream</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Through a duct to a surface/lumen</td></tr>
+<tr><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)"><strong>Duct</strong></td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">NO duct (ductless)</td><td style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)">Has duct</td></tr>
+<tr><td style="padding:7px 12px"><strong>Examples</strong></td><td style="padding:7px 12px">Pituitary · Pineal · Thyroid · Parathyroid · Adrenal (suprarenal) · Islets of pancreas · Gonads (testis + ovary)</td><td style="padding:7px 12px">Sweat glands · Salivary glands · Exocrine pancreas · Liver · Prostate</td></tr>
+</tbody></table></div>
+<p style="margin-top:10px;font-size:.86rem">Note: <strong>Pancreas = mixed gland</strong> (both endocrine AND exocrine). <strong>Gonads</strong> (testis + ovary) = endocrine (hormones) AND primary sex organs.</p>
+<div style="background:rgba(236,72,153,.05);border-right:3px solid #ec4899;padding:12px 16px;margin-top:12px;direction:rtl;text-align:right;font-family:'Cairo',sans-serif;color:var(--text);font-size:.9rem;line-height:1.95">
+الغدد نوعان: صماء (Endocrine) = بتفرز هرمونات مباشرة للدم، مفيهاش قنوات (ex: الغدة الدرقية، الكظرية، النخامية، الغدد التناسلية). خارجية (Exocrine) = بتفرز عبر قنوات لسطح أو تجويف (ex: الغدد اللعابية، العرقية، الكبد، البنكرياس الخارجي). البنكرياس = غدة مختلطة (صماء + خارجية). الغدة الدرقية = صماء فقط. الكبد = خارجية فقط.
+</div>
+</div>
+<div class="espot">⭐ High-Yield Lec 9: Pericardium covers HEART · Pleura covers LUNGS · Peritoneum covers ABDOMINAL viscera. Heart is directly covered by VISCERAL layer of pericardium. Ovaries = primary female sex organs. Fallopian tube = site of fertilization. Pancreas = mixed gland (only one!). Gonads = endocrine. Liver = exocrine only. Thyroid + Adrenal + Pituitary = endocrine only. Scrotum has NO fat (temperature control for sperm at 35°C).</div>
+</div></div>`
+
 };
 
 // ═══════════ STORAGE ═══════════
@@ -7636,15 +8138,7 @@ function renderChapterSelect(){
     </div>`;
   });
 
-  // Add coming-soon placeholders (up to 2)
-  const comingSoon=`
-    <div class="ch-sel-card" style="--csc:var(--muted);--csf:rgba(90,122,138,.08);opacity:.45;cursor:default;pointer-events:none">
-      <span class="cs-ico">🔜</span>
-      <div class="cs-title">Canines & Incisors</div>
-      <div class="cs-title-ar">الأنياب والقواطع</div>
-      <div class="cs-desc">Upper & Lower Anterior Teeth</div>
-      <div class="cs-meta"><span class="cs-badge" style="background:rgba(90,122,138,.12);color:var(--muted)">قريباً</span></div>
-    </div>`;
+  const comingSoon=``;
 
   // Full exam mode card — collects random questions from ALL chapters
   const totalAllQs = (QS[CS.id]||[]).length;
