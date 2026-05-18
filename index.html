@@ -1017,6 +1017,25 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
   background:var(--teal-dim);border-color:var(--teal);
   color:var(--teal);transform:rotate(180deg);
 }
+/* ── AI Explain Button ── */
+.ai-explain-btn{
+  margin-right:auto;margin-left:6px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(0,212,184,.12));
+  border:1px solid rgba(139,92,246,.35);color:#a78bfa;
+  border-radius:7px;padding:4px 11px;font-size:.72rem;
+  font-family:'Cairo',sans-serif;font-weight:800;cursor:pointer;
+  white-space:nowrap;letter-spacing:.3px;
+  transition:all .2s;
+}
+.ai-explain-btn:hover{background:linear-gradient(135deg,rgba(139,92,246,.3),rgba(0,212,184,.2));border-color:#a78bfa}
+.ai-explain-btn.loading{opacity:.6;cursor:wait;pointer-events:none}
+.ai-panel{border-top:1px solid rgba(139,92,246,.15);background:rgba(139,92,246,.03);display:none}
+.ai-panel.show{display:block}
+.ai-loading{padding:18px 20px;font-family:'Cairo',sans-serif;color:#a78bfa;font-size:.9rem;text-align:right;direction:rtl}
+.ai-resp-header{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-bottom:1px solid rgba(139,92,246,.12);background:rgba(139,92,246,.05)}
+.ai-resp-header span{font-family:'Cairo',sans-serif;font-weight:800;font-size:.83rem;color:#a78bfa}
+.ai-close-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:2px 8px;cursor:pointer;font-size:.8rem}
+.ai-resp-body{padding:16px 18px;font-family:'Cairo',sans-serif;font-size:.91rem;line-height:2.1;color:var(--text);direction:rtl;text-align:right}
 .ch-body{
   border-top:1px solid var(--border);
   background:linear-gradient(180deg,var(--bg2) 0%,var(--card) 100%);
@@ -1095,37 +1114,114 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 
 /* ── ESPOT & HINT REDESIGN ── */
 .espot{
-  background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(244,162,97,.06));
+  background:linear-gradient(135deg,rgba(255,214,10,.11),rgba(244,162,97,.06));
   border:1px solid rgba(255,214,10,.3);
+  border-left:3px solid #ffd60a;
   border-radius:12px;
-  padding:12px 16px;
+  padding:14px 20px 14px 16px;
+  margin-top:16px;
+  font-family:'Cairo',sans-serif;
+  font-size:13.5px;
+  color:#ffd60a;
+  direction:rtl;text-align:right;
+  line-height:2;
+  position:relative;
+}
+.espot::before{content:'⭐ مهم للامتحان';display:block;font-size:10px;font-weight:900;letter-spacing:.5px;opacity:.7;margin-bottom:5px;color:#ffd60a}
+.hint{
+  background:linear-gradient(135deg,rgba(82,183,136,.09),rgba(82,183,136,.03));
+  border:1px solid rgba(82,183,136,.22);
+  border-left:3px solid rgba(82,183,136,.6);
+  border-radius:12px;
+  padding:12px 18px 12px 16px;
   margin-top:12px;
   font-family:'Cairo',sans-serif;
-  font-size:13px;
-  color:#ffd60a;
-  direction:rtl;
-  text-align:right;
-  line-height:1.8;
-  position:relative;
-  padding-right:40px;
-}
-.espot::before{content:'⭐';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px}
-.hint{
-  background:linear-gradient(135deg,rgba(82,183,136,.08),rgba(82,183,136,.03));
-  border:1px solid rgba(82,183,136,.25);
-  border-radius:12px;
-  padding:12px 16px;
-  margin-top:10px;
-  font-family:'Cairo',sans-serif;
-  font-size:12px;
+  font-size:12.5px;
   color:#a3e4c1;
-  direction:rtl;
-  text-align:right;
-  line-height:1.8;
+  direction:rtl;text-align:right;
+  line-height:1.95;
   position:relative;
-  padding-right:40px;
 }
-.hint::before{content:'💡';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:15px}
+.hint::before{content:'💡 ملاحظة';display:block;font-size:10px;font-weight:900;letter-spacing:.5px;opacity:.7;margin-bottom:4px;color:#52b788}
+
+/* ══ OPTION B — CONTENT REDESIGN ══ */
+/* ch-body general */
+.ch-body{padding:28px 26px 32px}
+
+/* Section headings inside ch-body */
+.ch-body>div>h3,.ch-body h3[style]{
+  font-size:.93rem !important;
+  font-weight:800 !important;
+  margin:18px 0 11px !important;
+  padding-bottom:8px !important;
+  border-bottom:1px solid var(--border) !important;
+}
+.ch-body>div>h3:first-child{margin-top:0 !important}
+
+/* Paragraphs */
+.ch-body p{font-size:.87rem;line-height:2;margin-bottom:11px}
+
+/* Lists */
+.ch-body ul{margin:8px 0 14px;padding-left:0;list-style:none}
+.ch-body ul li{
+  font-size:.86rem;line-height:1.9;
+  padding:5px 0 5px 20px;position:relative;
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+.ch-body ul li::before{content:'▸';position:absolute;left:0;color:var(--teal);font-size:.8rem;top:7px}
+.ch-body ul li:last-child{border-bottom:none}
+
+/* Tables */
+.ch-body table,.lblock table{
+  width:100%;border-collapse:collapse;
+  font-size:.83rem;margin:14px 0;
+  border-radius:10px;overflow:hidden;
+}
+.ch-body table thead tr,.lblock table thead tr{
+  background:rgba(0,180,216,.08);
+}
+.ch-body table th,.lblock table th{
+  padding:10px 14px;text-align:left;
+  font-weight:800;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+.ch-body table td,.lblock table td{
+  padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);
+  vertical-align:top;line-height:1.7;
+}
+.ch-body table tr:last-child td,.lblock table tr:last-child td{border-bottom:none}
+.ch-body table tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+
+/* Arabic explanation boxes */
+.arabic-box{
+  border-radius:12px !important;
+  font-size:.91rem !important;
+  line-height:2.05 !important;
+  padding:14px 18px !important;
+  margin-top:14px !important;
+  border-right-width:4px !important;
+  position:relative;
+  overflow:hidden;
+}
+.arabic-box::before{
+  content:'شرح';
+  position:absolute;left:10px;top:8px;
+  font-size:9px;font-weight:900;
+  letter-spacing:.5px;opacity:.4;
+  font-family:'Cairo',sans-serif;
+}
+
+/* card-level inner content boxes */
+.ch-body>div[style*="background"]{
+  border-radius:12px !important;
+  margin-bottom:14px !important;
+}
+
+/* strong inside ch-body */
+.ch-body strong{color:var(--white);font-weight:800}
+
+/* em */
+.ch-body em{color:var(--teal);font-style:normal;font-weight:600}
 
 /* ── PROGRESS INDICATOR FOR LECTURES ── */
 .lec-num-badge{
@@ -1393,6 +1489,80 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
 .pt-mini-bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
 .pt-mini-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.16,1,.3,1)}
 .pt-subj-nums{font-family:'Cairo',sans-serif;font-size:10px;color:var(--muted);margin-top:4px}
+
+/* ══ ANALYTICS PANEL ══ */
+.analytics-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin:0 0 22px;animation:fadeUp .35s ease}
+.analytics-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.analytics-toggle-title{font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;color:var(--white);display:flex;align-items:center;gap:7px}
+.analytics-toggle-btn{font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px 12px;cursor:pointer;transition:all .2s}
+.analytics-toggle-btn:hover{border-color:var(--teal);color:var(--teal)}
+.analytics-body{margin-top:16px}
+.analytics-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.atab-btn{font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--muted);cursor:pointer;transition:all .2s}
+.atab-btn.on{background:var(--teal-dim);border-color:var(--teal);color:var(--teal)}
+.analytics-section{display:none}
+.analytics-section.on{display:block}
+
+/* Weakness cards */
+.weak-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:4px}
+.weak-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:13px 15px;position:relative;overflow:hidden;transition:all .2s}
+.weak-card:hover{border-color:var(--danger);transform:translateY(-2px)}
+.weak-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--wc-color)}
+.wc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.wc-label{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--white)}
+.wc-subj{font-family:'Cairo',sans-serif;font-size:10px;color:var(--muted);margin-bottom:6px}
+.wc-pct-badge{font-family:'Cairo',sans-serif;font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;background:rgba(230,57,70,.12);color:var(--danger);border:1px solid rgba(230,57,70,.25)}
+.wc-bar-wrap{background:var(--bg);border-radius:4px;height:5px;overflow:hidden}
+.wc-bar-fill{height:100%;border-radius:4px;background:var(--danger);transition:width .6s cubic-bezier(.16,1,.3,1)}
+.wc-stats{display:flex;justify-content:space-between;margin-top:6px}
+.wc-stat{font-family:'Cairo',sans-serif;font-size:9px;color:var(--muted)}
+.wc-stat span{color:var(--white);font-weight:700}
+.no-weak{text-align:center;padding:24px;font-family:'Cairo',sans-serif;font-size:13px;color:var(--green)}
+
+/* Subject breakdown */
+.subj-breakdown{display:flex;flex-direction:column;gap:8px}
+.sb-row{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .2s}
+.sb-row:hover{border-color:var(--teal);background:var(--teal-dim)}
+.sb-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sb-ico{font-size:15px}
+.sb-name{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--white);flex:1}
+.sb-pct{font-family:'Cairo',sans-serif;font-size:12px;font-weight:800}
+.sb-acc{font-family:'Cairo',sans-serif;font-size:10px;color:var(--muted);margin-right:auto}
+.sb-bar-row{display:flex;gap:6px;align-items:center}
+.sb-bar-bg{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.sb-bar-correct{height:100%;border-radius:3px;background:var(--green);transition:width .6s}
+.sb-bar-wrong{height:100%;border-radius:3px;background:var(--danger);float:right}
+.sb-nums{font-family:'Cairo',sans-serif;font-size:10px;color:var(--muted)}
+.sb-chips{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.sb-chip{font-family:'Cairo',sans-serif;font-size:9px;padding:2px 8px;border-radius:8px;font-weight:700}
+
+/* Topic breakdown inside subject */
+.topic-rows{display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.tr-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;background:var(--bg2)}
+.tr-name{font-family:'Cairo',sans-serif;font-size:10px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr-bar{width:80px;height:4px;background:var(--bg);border-radius:2px;overflow:hidden;flex-shrink:0}
+.tr-fill{height:100%;border-radius:2px;transition:width .5s}
+.tr-pct{font-family:'Cairo',sans-serif;font-size:9px;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
+
+/* ══ SHARH ENHANCEMENTS ══ */
+.sharh-reading-bar{position:sticky;top:0;z-index:10;height:3px;background:var(--bg2);margin:-22px -22px 16px;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden}
+.sharh-reading-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));width:0%;transition:width .1s linear;border-radius:inherit}
+.kw-highlight{background:linear-gradient(120deg,rgba(0,180,216,.18) 0%,rgba(0,180,216,.08) 100%);border-radius:4px;padding:1px 4px;color:var(--teal);font-weight:600;border-bottom:1px solid rgba(0,180,216,.3)}
+.kw-highlight-orange{background:linear-gradient(120deg,rgba(244,162,97,.18) 0%,rgba(244,162,97,.08) 100%);border-radius:4px;padding:1px 4px;color:var(--orange);font-weight:600;border-bottom:1px solid rgba(244,162,97,.3)}
+.kw-highlight-green{background:linear-gradient(120deg,rgba(82,183,136,.18) 0%,rgba(82,183,136,.08) 100%);border-radius:4px;padding:1px 4px;color:var(--green);font-weight:600;border-bottom:1px solid rgba(82,183,136,.3)}
+.kw-highlight-red{background:linear-gradient(120deg,rgba(230,57,70,.15) 0%,rgba(230,57,70,.07) 100%);border-radius:4px;padding:1px 4px;color:#f87171;font-weight:600;border-bottom:1px solid rgba(230,57,70,.25)}
+.sharh-toc{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-family:'Cairo',sans-serif}
+.sharh-toc-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase}
+.sharh-toc-list{display:flex;flex-direction:column;gap:4px}
+.sharh-toc-item{font-size:12px;color:var(--teal);cursor:pointer;padding:3px 6px;border-radius:5px;transition:background .15s;display:flex;align-items:center;gap:6px}
+.sharh-toc-item:hover{background:var(--teal-dim)}
+.sharh-toc-item::before{content:'▸';font-size:9px;opacity:.6}
+
+@media(max-width:600px){
+  .weak-grid{grid-template-columns:1fr}
+  .analytics-tabs{gap:4px}
+  .atab-btn{font-size:10px;padding:4px 10px}
+}
 
 /* ════════════════════════════════════════
    FEATURE 3 — SEARCH BAR
@@ -1855,6 +2025,20 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:32px;te
       </div>
       <!-- Progress Tracker -->
       <div class="progress-tracker" id="progress-tracker"></div>
+      <div class="analytics-panel" id="analytics-panel" style="display:none">
+        <div class="analytics-toggle" onclick="toggleAnalytics()">
+          <div class="analytics-toggle-title">🔬 تحليل أداءك التفصيلي</div>
+          <button class="analytics-toggle-btn" id="analytics-toggle-btn">▴ إخفاء</button>
+        </div>
+        <div class="analytics-body" id="analytics-body">
+          <div class="analytics-tabs">
+            <button class="atab-btn on" onclick="switchAnalyticsTab('weak',this)">⚠️ نقاط ضعفك</button>
+            <button class="atab-btn" onclick="switchAnalyticsTab('breakdown',this)">📊 تفصيل المواد</button>
+          </div>
+          <div class="analytics-section on" id="atab-weak"></div>
+          <div class="analytics-section" id="atab-breakdown"></div>
+        </div>
+      </div>
       <!-- Search Bar -->
       <div class="search-wrap" id="dash-search-wrap">
         <input class="search-input" id="dash-search" placeholder="🔍  ابحث في مادة أو فصل..." autocomplete="off" oninput="onSearch(this.value)" onfocus="onSearch(this.value)">
@@ -6584,6 +6768,197 @@ const SHARH_SAMPLE = {
   </div>
 </div>`,
   anatomy:`<div style='font-family:Cairo,sans-serif;color:var(--muted);padding:20px;text-align:center;font-size:13px'>اختر محاضرة من القائمة لعرض الشرح التفصيلي</div>`,
+  biochemistry:`
+<div class="lblock">
+<h3>🧬 ملخص — Lipid & Amino Acid Metabolism</h3>
+
+<!-- ══ LIPID TYPES ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--teal);margin:16px 0 8px">🧪 Types of Lipids</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:var(--teal-dim)">
+    <th style="padding:9px 12px;text-align:left;color:var(--teal);border-bottom:1px solid var(--border)">Type</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Key Feature</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--orange)">TAG (Triacylglycerol)</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Main dietary lipid + main storage form in adipose tissue</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Membranes, hormones, Vit D₃, bile acids</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Cholesteryl Ester</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cholesterol + Fatty acid</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--orange)">Phospholipids</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cell membrane structure</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ LIPOPROTEINS COMPARISON ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--orange);margin:16px 0 8px">🚗 Lipoproteins — Quick Comparison</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:rgba(244,162,97,.2)">
+    <th style="padding:9px 12px;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Lipoprotein</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Origin</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Cargo</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Direction</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--orange);border-bottom:1px solid rgba(244,162,97,.3)">Label</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:#f4a261">Chylomicrons</td><td style="padding:8px 12px;text-align:center">Intestine</td><td style="padding:8px 12px;text-align:center">Dietary TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gut → Lymph → Blood</td><td style="padding:8px 12px;text-align:center">—</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--teal)">VLDL</td><td style="padding:8px 12px;text-align:center">Liver</td><td style="padding:8px 12px;text-align:center">Liver TAG</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center">Pre-β</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--danger)">LDL</td><td style="padding:8px 12px;text-align:center">From VLDL</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Liver → Tissues</td><td style="padding:8px 12px;text-align:center;color:var(--danger);font-weight:700">❌ Bad</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--green)">HDL</td><td style="padding:8px 12px;text-align:center">Liver/Intestine</td><td style="padding:8px 12px;text-align:center">Cholesterol</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Tissues → Liver</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅ Good</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ β-OXIDATION PATHWAY ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--green);margin:16px 0 8px">⚡ β-Oxidation — Pathway Summary</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;font-family:'Cairo',sans-serif;font-size:13px;line-height:2.2">
+  <div style="color:var(--orange);font-weight:700">Stage I — Activation (Cytosol)</div>
+  <div>FFA + CoA-SH + ATP <span style="color:var(--teal)">→(Thiokinase)→</span> Acyl-CoA + AMP + PPi &nbsp;<span style="color:var(--muted)">[Cost: 2 ATP]</span></div>
+  <div style="color:var(--orange);font-weight:700;margin-top:8px">Stage II — Transport (Carnitine Shuttle)</div>
+  <div>Acyl-CoA <span style="color:var(--teal)">→(CPT-I)→</span> Acyl-Carnitine <span style="color:var(--teal)">→ crosses inner membrane →</span> Acyl-CoA (inside matrix)</div>
+  <div style="color:var(--orange);font-weight:700;margin-top:8px">Stage III — Oxidation Cycles (Mitochondrial Matrix)</div>
+  <div>Acyl-CoA <span style="color:var(--teal)">→(×n cycles)→</span> n Acetyl-CoA + n FADH₂ + n NADH <span style="color:var(--teal)">→ TCA + ETC →</span> ATP</div>
+  <div style="margin-top:10px;background:rgba(0,180,216,.07);border-radius:8px;padding:10px">
+    <strong style="color:var(--teal)">Palmitic Acid (C16) Example:</strong><br>
+    7 cycles → 7 FADH₂ (×5=35 ATP) + 8 Acetyl-CoA (×12=96 ATP) − 2 (activation) = <strong style="color:#ffd60a">129 ATP</strong>
+  </div>
+</div>
+
+<!-- ══ KETONE BODIES ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--danger);margin:16px 0 8px">🔥 Ketone Bodies — Quick Facts</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
+  <div style="background:var(--card2);border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:14px">
+    <div style="font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:var(--danger);margin-bottom:8px">Ketogenesis</div>
+    <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:12px;color:var(--text);line-height:2">
+      <li>📍 Site: Liver mitochondria</li>
+      <li>🧱 Building unit: Acetyl-CoA</li>
+      <li>🔑 Key enzyme: HMG-CoA Synthase</li>
+      <li>📋 3 bodies: Acetoacetate, β-OH Butyrate, Acetone</li>
+    </ul>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.2);border-radius:12px;padding:14px">
+    <div style="font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:var(--green);margin-bottom:8px">Ketolysis</div>
+    <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:12px;color:var(--text);line-height:2">
+      <li>📍 Site: Extrahepatic tissues</li>
+      <li>❌ Liver CANNOT do ketolysis!</li>
+      <li>🔑 Requires: Succinyl-CoA (TCA)</li>
+      <li>🔑 Enzyme: Thiophorase (CoA Transferase)</li>
+    </ul>
+  </div>
+</div>
+<div class="espot">Ketosis causes: Uncontrolled DM, Starvation, Low CHO diet, High fat diet, Renal glucosuria. Predominant ketone in blood/urine = β-Hydroxybutyrate. Acetone = breath.</div>
+
+<!-- ══ CHOLESTEROL ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:#ffd60a;margin:16px 0 8px">💛 Cholesterol — Key Points</p>
+<div style="background:var(--card2);border:1px solid rgba(255,214,10,.2);border-radius:12px;padding:14px;margin-bottom:18px">
+  <ul style="list-style:none;font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);line-height:2.2">
+    <li>🧱 Building unit: <strong style="color:#ffd60a">Acetyl-CoA</strong> (ALL 27 carbons)</li>
+    <li>📍 Synthesis site: Cytosol + ER (liver & intestine for plasma cholesterol)</li>
+    <li>🔑 Key enzyme: <strong style="color:#ffd60a">HMG-CoA Reductase</strong> — target of Statins</li>
+    <li>✅ Active form = Dephosphorylated &nbsp;|&nbsp; ❌ Inactive = Phosphorylated</li>
+    <li>⬆️ Inducers: Insulin, Thyroid hormones &nbsp;|&nbsp; ⬇️ Repressor: Glucagon</li>
+    <li>🎯 Importance: Membranes, <strong>Vit D₃</strong>, Steroid hormones, Bile acids</li>
+    <li>💩 Excretion: → Bile acids → Coprostanol (intestinal bacteria)</li>
+    <li>📊 Normal: <strong>150–230 mg%</strong></li>
+  </ul>
+</div>
+
+<!-- ══ AA CLASSIFICATION TABLE ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--teal);margin:16px 0 8px">🔬 Amino Acid Classification — Quick Reference</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:var(--teal-dim)">
+    <th style="padding:9px 12px;text-align:left;color:var(--teal);border-bottom:1px solid var(--border)">AA</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Essential?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Sulfur?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Aromatic?</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--teal);border-bottom:1px solid var(--border)">Metabolic Fate</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Glycine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Glutamic Acid</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Cysteine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅ (–SH)</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Methionine</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Glucogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Phenylalanine</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Tyrosine</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Tryptophan</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;color:var(--danger)">✗</td><td style="padding:8px 12px;text-align:center;color:var(--green);font-weight:700">✅</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Gluco + Ketogenic</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ KEY PATHWAYS ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--orange);margin:16px 0 8px">🗺️ Key Metabolic Pathways (Text Flowcharts)</p>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;font-family:'Cairo',sans-serif;font-size:12px;line-height:2.2">
+  <div style="color:var(--teal);font-weight:700;margin-bottom:4px">Glycine → Heme:</div>
+  <div>Glycine + Succinyl-CoA <span style="color:var(--orange)">→(ALA Synthase+PLP)→</span> δ-ALA <span style="color:var(--orange)">→→</span> Heme</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Creatine Synthesis:</div>
+  <div>Glycine + Arginine <span style="color:var(--orange)">→(Kidney:Transamidase)→</span> Guanidinoacetate <span style="color:var(--orange)">→(Liver:SAM)→</span> Creatine <span style="color:var(--orange)">→(Muscle:CPK+ATP)→</span> Creatine-Phosphate</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">PHE / TYR Pathway:</div>
+  <div>Phenylalanine <span style="color:var(--orange)">→(Phe Hydroxylase)→</span> Tyrosine</div>
+  <div>Tyrosine <span style="color:var(--orange)">→(Tyrosinase)→</span> Melanin</div>
+  <div>Tyrosine <span style="color:var(--orange)">→(+Iodine)→</span> MIT <span style="color:var(--orange)">→</span> DIT <span style="color:var(--orange)">→</span> T3 / T4</div>
+  <div>Tyrosine <span style="color:var(--orange)">→</span> DOPA <span style="color:var(--orange)">→</span> Dopamine <span style="color:var(--orange)">→</span> Norepinephrine <span style="color:var(--orange)">→</span> Epinephrine</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Tryptophan Products:</div>
+  <div>TRP <span style="color:var(--orange)">→</span> Nicotinic Acid (Vit B3) &nbsp;|&nbsp; TRP <span style="color:var(--orange)">→</span> Serotonin <span style="color:var(--orange)">→</span> Melatonin (pineal gland)</div>
+
+  <div style="color:var(--teal);font-weight:700;margin-top:10px;margin-bottom:4px">Purine Catabolism:</div>
+  <div>Adenine / Guanine <span style="color:var(--orange)">→</span> Xanthine <span style="color:var(--orange)">→(Xanthine Oxidase)→</span> Uric Acid &nbsp;<span style="color:var(--danger)">[ &gt;7 mg% → GOUT ]</span></div>
+</div>
+
+<!-- ══ GENETIC DISEASES ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--danger);margin:16px 0 8px">⚠️ Genetic Diseases — Comparison Table</p>
+<div style="overflow-x:auto;margin-bottom:18px">
+<table style="width:100%;border-collapse:collapse;font-family:'Cairo',sans-serif;font-size:13px">
+  <thead><tr style="background:rgba(230,57,70,.15)">
+    <th style="padding:9px 12px;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Disease</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Deficient Enzyme</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Accumulated</th>
+    <th style="padding:9px 12px;text-align:center;color:var(--danger);border-bottom:1px solid rgba(230,57,70,.3)">Key Feature</th>
+  </tr></thead>
+  <tbody>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">PKU</td><td style="padding:8px 12px;text-align:center">Phe Hydroxylase</td><td style="padding:8px 12px;text-align:center">Phenylalanine</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Mental retardation — Low PHE diet</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Albinism</td><td style="padding:8px 12px;text-align:center">Tyrosinase</td><td style="padding:8px 12px;text-align:center">Tyrosine</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">No pigmentation</td></tr>
+    <tr style="background:var(--card2)"><td style="padding:8px 12px;font-weight:700;color:var(--white)">Gout</td><td style="padding:8px 12px;text-align:center">↑ Uric acid production / ↓ excretion</td><td style="padding:8px 12px;text-align:center">Uric acid crystals</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Joint inflammation — Colchicine</td></tr>
+    <tr><td style="padding:8px 12px;font-weight:700;color:var(--white)">Lesch-Nyhan</td><td style="padding:8px 12px;text-align:center">HGPRT (↑ PRPP)</td><td style="padding:8px 12px;text-align:center">Uric acid</td><td style="padding:8px 12px;text-align:center;font-family:'Cairo',sans-serif">Cerebral palsy, self-mutilation</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ NORMAL VALUES ══ -->
+<p style="font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;color:var(--green);margin:16px 0 8px">📊 Normal Values to Memorize</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:18px">
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Urea (plasma)</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--green)">20–40 mg/dL</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Urea (urine)</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--green)">20–40 g/day</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Uric Acid (normal)</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--green)">3–6 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Gout Threshold</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--danger)">&gt;7 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Cholesterol</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--green)">150–230 mg%</div>
+  </div>
+  <div style="background:var(--card2);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:12px;text-align:center">
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted)">Ketone bodies (normal)</div>
+    <div style="font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;color:var(--green)">1.5–2 mg%</div>
+  </div>
+</div>
+
+<div class="espot">⭐ أهم نقط: TAG = main storage + dietary lipid | LDL = bad | HDL = good | HMG-CoA Reductase = key for cholesterol (Statins target) | β-Oxidation in Mitochondria, Synthesis in Cytosol | Carnitine = transport | β-OH Butyrate = predominant ketone in blood | PKU = no Phe Hydroxylase | PHE + TYR + TRP = Aromatic | CYS + MET = Sulfur</div>
+
+</div>`,
 'dentition:premolars': `
 <div style="padding:4px 0">
 
@@ -8134,7 +8509,7 @@ function goHome(){
   document.getElementById('dash-page').style.display='block';
   document.getElementById('subj-page').style.display='none';
   document.getElementById('admin-page').style.display='none';
-  window._navStack = [{page:'home'}];
+  _hPush({page:'home'},'#');
   renderDash();
 }
 function goAdmin(){
@@ -8142,8 +8517,7 @@ function goAdmin(){
   document.getElementById('dash-page').style.display='none';
   document.getElementById('subj-page').style.display='none';
   document.getElementById('admin-page').style.display='block';
-  if(!window._navStack) window._navStack=[];
-  window._navStack.push({page:'admin'});
+  _hPush({page:'admin'},'#admin');
   renderAdmin();
 }
 
@@ -8180,8 +8554,7 @@ function openSubj(id){
   document.getElementById('s-ico').textContent=CS.icon;
   document.getElementById('s-name').textContent=CS.name;
   document.getElementById('s-desc').textContent=CS.desc;
-  if(!window._navStack) window._navStack=[];
-  window._navStack.push({page:'subj',id});
+  _hPush({page:'subj',id},'#'+id);
 
   // Show/hide practice tab
   const mtPrac=document.getElementById('mt-practice');
@@ -8342,6 +8715,214 @@ function backToChapters(){
 
 function tgCh(head){ head.classList.toggle('open'); head.nextElementSibling.classList.toggle('open'); }
 
+// ═══════════ CONTENT ENHANCER (Option B) ═══════════
+function enhanceContent(){
+  // Tag Arabic explanation boxes
+  document.querySelectorAll('.ch-body [style*="direction:rtl"], .ch-body [style*="direction: rtl"]').forEach(el=>{
+    if(!el.classList.contains('arabic-box')) el.classList.add('arabic-box');
+  });
+  // Make strong inside Arabic boxes pop
+  document.querySelectorAll('.arabic-box strong').forEach(el=>{
+    el.style.color='#fff';
+  });
+  // Add row-hover to tables
+  document.querySelectorAll('.ch-body table tr,.lblock table tr').forEach(tr=>{
+    tr.addEventListener('mouseenter',()=>tr.style.background='rgba(0,180,216,.05)');
+    tr.addEventListener('mouseleave',()=>tr.style.background='');
+  });
+  // ── NEW: keyword highlighting ──
+  applyKeywordHighlights();
+  // ── NEW: reading progress bar ──
+  injectReadingProgressBar();
+  // ── NEW: auto TOC ──
+  injectSharhTOC();
+}
+
+// ── KEYWORD HIGHLIGHT ENGINE ──
+const KW_TEAL   = ['Acetyl-CoA','HMG-CoA','NADPH','FADH','NADH','ATP','AMP','CoA','CPT-I','CPT-II',
+  'Carnitine','Mitochondri','Cytosol','β-Oxidation','TCA','ETC','LDL','HDL','VLDL','Chylomicron',
+  'Lipoprotein','Lipase','Statin','HbA','HbF','pH','RBC','WBC','Hb','DNA','RNA','mRNA',
+  'CN I','CN II','CN III','CN IV','CN V','CN VI','CN VII','CN VIII','CN IX','CN X','CN XI','CN XII'];
+const KW_ORANGE = ['TAG','Triacylglycerol','Palmitic','Stearic','Oleic','Cholesterol','Phospholipid',
+  'Fatty acid','Glycine','Methionine','Cysteine','Phenylalanine','Tyrosine','Tryptophan',
+  'Albumin','Globulin','Fibrinogen','Prothrombin','Insulin','Glucagon','Epinephrine','Cortisol',
+  'Collagen','Keratin','Myosin','Actin','Hemoglobin','Bilirubin'];
+const KW_GREEN  = ['✅','صح','Normal','Healthy','Protective','Good','HDL','Antidote','Vitamin','Ca²⁺',
+  'Succinyl','Active','Dephosphorylated'];
+const KW_RED    = ['❌','Deficiency','Disease','غلط','Abnormal','Toxic','Dangerous','LDL','Steatorrhea',
+  'Ketoacidosis','Atherosclerosis','Jaundice','Anemia','Thrombosis','Infarction','Phosphorylated'];
+
+function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+function highlightInNode(node, kwList, cls){
+  if(!kwList.length) return;
+  const pattern = new RegExp('('+kwList.map(escapeRegex).join('|')+')','g');
+  // Only text nodes inside safe elements
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      const p = n.parentElement;
+      if(!p) return NodeFilter.FILTER_REJECT;
+      const tag = p.tagName;
+      if(['SCRIPT','STYLE','TEXTAREA','INPUT'].includes(tag)) return NodeFilter.FILTER_REJECT;
+      if(p.classList.contains('kw-highlight')||p.classList.contains('kw-highlight-orange')||
+         p.classList.contains('kw-highlight-green')||p.classList.contains('kw-highlight-red'))
+        return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes=[];
+  let n;
+  while((n=walker.nextNode())) nodes.push(n);
+  nodes.forEach(tn=>{
+    if(!pattern.test(tn.textContent)) return;
+    pattern.lastIndex=0;
+    const span=document.createElement('span');
+    span.innerHTML=tn.textContent.replace(pattern,`<span class="${cls}">$1</span>`);
+    tn.parentNode.replaceChild(span,tn);
+  });
+}
+
+function applyKeywordHighlights(){
+  const containers = document.querySelectorAll('#c-sharh .ch-body, #c-sharh .lblock, #c-sharh .exp-block');
+  if(!containers.length) return;
+  containers.forEach(c=>{
+    // Only run once per container
+    if(c.dataset.kwDone) return;
+    c.dataset.kwDone='1';
+    highlightInNode(c, KW_TEAL,   'kw-highlight');
+    highlightInNode(c, KW_ORANGE, 'kw-highlight-orange');
+    highlightInNode(c, KW_GREEN,  'kw-highlight-green');
+    highlightInNode(c, KW_RED,    'kw-highlight-red');
+  });
+}
+
+// ── READING PROGRESS BAR ──
+function injectReadingProgressBar(){
+  const pane = document.getElementById('pane-sharh');
+  if(!pane || pane.querySelector('.sharh-reading-bar')) return;
+  const bar = document.createElement('div');
+  bar.className='sharh-reading-bar';
+  bar.innerHTML='<div class="sharh-reading-fill" id="sharh-rfill"></div>';
+  pane.insertBefore(bar, pane.firstChild);
+
+  const content = document.getElementById('c-sharh');
+  function onScroll(){
+    if(!content) return;
+    const rect = content.getBoundingClientRect();
+    const total = content.scrollHeight - window.innerHeight;
+    if(total<=0){ document.getElementById('sharh-rfill').style.width='100%'; return; }
+    const scrolled = Math.min(Math.max(-rect.top, 0), total);
+    const pct = Math.round((scrolled/total)*100);
+    const fill = document.getElementById('sharh-rfill');
+    if(fill) fill.style.width=pct+'%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+}
+
+// ── AUTO TABLE OF CONTENTS ──
+function injectSharhTOC(){
+  const sharh = document.getElementById('c-sharh');
+  if(!sharh || sharh.querySelector('.sharh-toc')) return;
+  const headers = sharh.querySelectorAll('.ch-head h3, .lblock h3, p[style*="font-weight:700"]');
+  if(headers.length < 3) return; // only if enough sections
+  const items = [];
+  headers.forEach((h,i)=>{
+    const text = h.innerText.replace(/[▾▸🤖]/g,'').replace(/اشرحلي/g,'').trim();
+    if(!text || text.length>80) return;
+    h.id = h.id || 'sharh-sec-'+i;
+    items.push({id: h.id || 'sharh-sec-'+i, text, el:h});
+  });
+  if(items.length < 3) return;
+  const toc = document.createElement('div');
+  toc.className='sharh-toc';
+  toc.innerHTML=`<div class="sharh-toc-title">📑 محتويات الشرح</div>
+    <div class="sharh-toc-list">
+      ${items.slice(0,8).map(item=>`
+        <div class="sharh-toc-item" onclick="document.getElementById('${item.id}').scrollIntoView({behavior:'smooth',block:'start'})">${item.text.slice(0,55)}${item.text.length>55?'…':''}</div>
+      `).join('')}
+    </div>`;
+  sharh.insertBefore(toc, sharh.firstChild);
+}
+
+
+// ═══════════ AI EXPLAIN ═══════════
+function injectAIButtons(){
+  document.querySelectorAll('.ch-card').forEach(card=>{
+    const head=card.querySelector('.ch-head');
+    if(!head||head.querySelector('.ai-explain-btn')) return;
+    const title=head.querySelector('h3')?.innerText?.replace(/[▾▸]/g,'').trim()||'هذا الموضوع';
+    const btn=document.createElement('button');
+    btn.className='ai-explain-btn';
+    btn.textContent='🤖 اشرحلي';
+    btn.onclick=(e)=>{ e.stopPropagation(); explainWithAI(card,title,btn); };
+    head.querySelector('h3').appendChild(btn);
+  });
+}
+
+async function explainWithAI(card,title,btn){
+  // toggle: if panel already shown, hide it
+  let panel=card.querySelector('.ai-panel');
+  if(panel&&panel.classList.contains('show')&&panel.dataset.done==='1'){
+    panel.classList.remove('show'); return;
+  }
+  if(!panel){
+    panel=document.createElement('div');
+    panel.className='ai-panel';
+    card.appendChild(panel);
+  }
+  // get topic text (body content, max 3000 chars)
+  const bodyEl=card.querySelector('.ch-body');
+  const topicText=(bodyEl?.innerText||title).substring(0,3000);
+
+  btn.classList.add('loading');
+  btn.textContent='⏳ جاري...';
+  panel.dataset.done='0';
+  panel.classList.add('show');
+  panel.innerHTML=`<div class="ai-loading">🤖 Claude بيفكر في الشرح...</div>`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`أنت مدرس لطالب في كلية طب أسنان في مصر. اشرح الموضوع المعطى بأسلوب سلس وواضح.
+قواعد الشرح:
+- اكتب بالعربية العامية المصرية المفهومة
+- حافظ على المصطلحات العلمية الإنجليزية كما هي
+- حسب طبيعة المحتوى:
+  • لو المفهوم صعب → استخدم تشبيه أو مثال من الحياة
+  • لو فيه قائمة أو مقارنة → نظّم بـ bullet points
+  • لو تعريف → اشرحه ببساطة وبعدين وضّح ليه مهم
+- في آخر الشرح: اذكر النقطة الأهم للامتحان في جملة واحدة
+- لا تطول — شرح مركّز ومفيد`,
+        messages:[{role:'user',content:`اشرحلي الموضوع ده:\n\nالعنوان: ${title}\n\nالمحتوى:\n${topicText}`}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'حصل خطأ، حاول تاني.';
+    const formatted=text
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g,'<em>$1</em>')
+      .replace(/^[-•]\s+(.+)$/gm,'<div style="margin:4px 0;padding-right:12px">◀ $1</div>')
+      .replace(/\n\n/g,'<br><br>')
+      .replace(/\n/g,'<br>');
+    panel.innerHTML=`
+      <div class="ai-resp-header">
+        <span>🤖 شرح Claude — ${title.substring(0,40)}</span>
+        <button class="ai-close-btn" onclick="this.closest('.ai-panel').classList.remove('show')">✕ إخفاء</button>
+      </div>
+      <div class="ai-resp-body">${formatted}</div>`;
+    panel.dataset.done='1';
+  } catch(err){
+    panel.innerHTML=`<div class="ai-resp-body" style="color:#f87171">❌ مفيش اتصال بالـ API. تأكد من الإنترنت وحاول تاني.</div>`;
+  }
+  btn.classList.remove('loading');
+  btn.textContent='🤖 اشرحلي';
+}
+
 // SHARH (شرح)
 function renderSharh(){
   const el=document.getElementById('c-sharh');
@@ -8356,6 +8937,8 @@ function renderSharh(){
     el.innerHTML=saved||sample;
   }
   if(window.wrapTables) setTimeout(window.wrapTables, 50);
+  setTimeout(injectAIButtons, 80);
+  setTimeout(enhanceContent, 100);
 }
 
 // MLAKHS (ملخص)
@@ -10820,6 +11403,76 @@ window.addEventListener('scroll', function(){
 // ══════════════════════════════════════════════════════
 // FEATURE 1 — PROGRESS TRACKER
 // ══════════════════════════════════════════════════════
+// ══ LECTURE LABEL MAP ══
+const LEC_LABELS = {
+  // Histology
+  endo:'Endocrine Glands', lymphatic:'Lymphatic System', med_app:'Medical Applications',
+  respiratory:'Respiratory System', skin:'Skin & Appendages', vascular:'Vascular Tissue',
+  // Physiology / shared
+  autonomic:'Autonomic NS', bone:'Bone', muscle:'Muscle', joints:'Joints',
+  nervous:'Nervous System', heart:'Heart & Respiratory', digestive:'Digestive & Urinary',
+  serous:'Serous & Glands', terminology:'Terminology'
+};
+
+// ══ TOPIC GROUPING — for subjects WITHOUT lec field ══
+function getQuestionTopic(subjectId, q){
+  if(q.lec) return q.lec;
+  if(subjectId==='biochemistry'){
+    if(q.id.startsWith('lip')) return 'Lipid Metabolism';
+    if(q.id.startsWith('aa'))  return 'Amino Acid Metabolism';
+    return 'General Biochemistry';
+  }
+  if(subjectId==='physiology'){
+    const n=parseInt(q.id.replace(/\D/g,''));
+    if(n<=20)  return 'Blood & Plasma';
+    if(n<=40)  return 'Hemostasis';
+    if(n<=60)  return 'Blood Groups';
+    if(n<=90)  return 'Nerve Physiology';
+    return 'ANS';
+  }
+  return 'General';
+}
+
+function getTopicLabel(subjectId, topicKey){
+  if(LEC_LABELS[topicKey]) return LEC_LABELS[topicKey];
+  return topicKey; // already a readable string for biochem/physio
+}
+
+// ══ ANALYTICS DATA BUILDER ══
+function buildAnalyticsData(){
+  const solved = (CU&&CU.solved)||{};
+  const result = [];
+  SUBJECTS.forEach(s=>{
+    const qs = QS[s.id]||[];
+    const topicMap = {}; // topicKey -> {correct, wrong, total}
+    qs.forEach(q=>{
+      const key = getQuestionTopic(s.id, q);
+      if(!topicMap[key]) topicMap[key]={correct:0,wrong:0,total:0,label:getTopicLabel(s.id,key)};
+      topicMap[key].total++;
+      const ans = solved[s.id+'_'+q.id];
+      if(ans!==undefined){
+        if(ans===q.answer) topicMap[key].correct++;
+        else topicMap[key].wrong++;
+      }
+    });
+    const topics = Object.entries(topicMap).map(([k,v])=>({
+      key:k, ...v,
+      attempted: v.correct+v.wrong,
+      accuracy: v.correct+v.wrong>0 ? Math.round((v.correct/(v.correct+v.wrong))*100) : null,
+      wrongPct: v.total>0 ? Math.round((v.wrong/v.total)*100) : 0
+    })).sort((a,b)=>b.wrongPct-a.wrongPct);
+
+    const totalAttempted = qs.filter(q=>solved[s.id+'_'+q.id]!==undefined).length;
+    const totalCorrect   = qs.filter(q=>{ const a=solved[s.id+'_'+q.id]; return a!==undefined&&a===q.answer; }).length;
+    const totalWrong     = totalAttempted - totalCorrect;
+    result.push({
+      s, topics, totalQ:qs.length, totalAttempted, totalCorrect, totalWrong,
+      accuracy: totalAttempted>0 ? Math.round((totalCorrect/totalAttempted)*100) : null
+    });
+  });
+  return result;
+}
+
 function renderProgressTracker(){
   const el = document.getElementById('progress-tracker');
   if(!el || !CU) return;
@@ -10834,8 +11487,6 @@ function renderProgressTracker(){
   });
   const overall = totalQ ? Math.round((totalSolved/totalQ)*100) : 0;
   const barColor = overall<30?'var(--danger)':overall<60?'var(--orange)':overall<85?'var(--teal)':'var(--green)';
-
-  // ── Streak calculation ──
   const streak = calcStreak();
 
   el.innerHTML=`
@@ -10844,6 +11495,7 @@ function renderProgressTracker(){
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <div class="pt-pct">${overall}%<span> (${totalSolved}/${totalQ} سؤال)</span></div>
         <div class="pt-streak" title="كام يوم متتالي بتذاكر">🔥 <strong>${streak}</strong> يوم Streak</div>
+        <button onclick="showAnalyticsPanel()" style="font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--muted);cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">🔬 تحليل الأداء</button>
       </div>
     </div>
     <div class="pt-bar-wrap">
@@ -10865,17 +11517,18 @@ function renderProgressTracker(){
           </div>
         </div>`).join('')}
     </div>`;
+
+  // Render analytics panel if visible
+  const ap = document.getElementById('analytics-panel');
+  if(ap && ap.style.display!=='none') renderAnalyticsContent();
 }
 
 function calcStreak(){
-  // Track daily activity via localStorage
   const today = new Date().toISOString().slice(0,10);
   let streakData = {};
   try{ streakData = JSON.parse(localStorage.getItem('dh_streak_'+CU.id)||'{}'); }catch(e){}
-  // Mark today as active
   streakData[today] = true;
   try{ localStorage.setItem('dh_streak_'+CU.id, JSON.stringify(streakData)); }catch(e){}
-  // Count consecutive days going back from today
   let count = 0;
   let d = new Date();
   while(true){
@@ -10885,6 +11538,123 @@ function calcStreak(){
     if(count>365) break;
   }
   return count;
+}
+
+function showAnalyticsPanel(){
+  const ap = document.getElementById('analytics-panel');
+  if(!ap) return;
+  ap.style.display = 'block';
+  ap.scrollIntoView({behavior:'smooth', block:'nearest'});
+  renderAnalyticsContent();
+}
+
+function toggleAnalytics(){
+  const body = document.getElementById('analytics-body');
+  const btn  = document.getElementById('analytics-toggle-btn');
+  if(!body||!btn) return;
+  const hidden = body.style.display==='none';
+  body.style.display = hidden ? 'block' : 'none';
+  btn.textContent = hidden ? '▴ إخفاء' : '▾ عرض';
+}
+
+function switchAnalyticsTab(tab, btnEl){
+  document.querySelectorAll('.atab-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.analytics-section').forEach(s=>s.classList.remove('on'));
+  if(btnEl) btnEl.classList.add('on');
+  const sec = document.getElementById('atab-'+tab);
+  if(sec) sec.classList.add('on');
+}
+
+function renderAnalyticsContent(){
+  const data = buildAnalyticsData();
+  renderWeaknessTab(data);
+  renderBreakdownTab(data);
+}
+
+function renderWeaknessTab(data){
+  const el = document.getElementById('atab-weak');
+  if(!el) return;
+
+  // Collect all topics with wrong answers across all subjects
+  const allWeak = [];
+  data.forEach(({s, topics})=>{
+    topics.forEach(t=>{
+      if(t.wrong > 0) allWeak.push({...t, subj:s});
+    });
+  });
+
+  // Sort by wrong count desc, take top 6
+  allWeak.sort((a,b)=>b.wrong-a.wrong);
+  const top = allWeak.slice(0,6);
+
+  if(top.length===0){
+    el.innerHTML=`<div class="no-weak">🎉 ما عندكش نقاط ضعف لحد دلوقتي!<br><span style="font-size:11px;color:var(--muted)">حل أسئلة أكتر عشان يظهر التحليل</span></div>`;
+    return;
+  }
+
+  el.innerHTML=`
+    <div style="font-family:'Cairo',sans-serif;font-size:11px;color:var(--muted);margin-bottom:10px">المواضيع اللي محتاج تراجعها أكتر — مرتبة حسب عدد الإجابات الغلط</div>
+    <div class="weak-grid">
+      ${top.map(t=>{
+        const wrongPct = t.attempted>0 ? Math.round((t.wrong/t.attempted)*100) : 0;
+        const color = wrongPct>60?'#e63946':wrongPct>35?'#f4a261':'#ffd60a';
+        return `<div class="weak-card" style="--wc-color:${color}" onclick="openSubj('${t.subj.id}')">
+          <div class="wc-top">
+            <span class="wc-label">${t.label}</span>
+            <span class="wc-pct-badge">${wrongPct}% غلط</span>
+          </div>
+          <div class="wc-subj">${t.subj.icon} ${t.subj.name}</div>
+          <div class="wc-bar-wrap"><div class="wc-bar-fill" style="width:${wrongPct}%;background:${color}"></div></div>
+          <div class="wc-stats">
+            <div class="wc-stat">❌ غلط: <span>${t.wrong}</span></div>
+            <div class="wc-stat">✅ صح: <span>${t.correct}</span></div>
+            <div class="wc-stat">📝 كل: <span>${t.total}</span></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderBreakdownTab(data){
+  const el = document.getElementById('atab-breakdown');
+  if(!el) return;
+
+  el.innerHTML=`<div class="subj-breakdown">
+    ${data.map(({s, topics, totalQ, totalAttempted, totalCorrect, totalWrong, accuracy})=>{
+      const pct = totalQ>0 ? Math.round((totalAttempted/totalQ)*100) : 0;
+      const correctPct = totalAttempted>0 ? Math.round((totalCorrect/totalAttempted)*100) : 0;
+      const accColor = accuracy===null?'var(--muted)':accuracy>=75?'var(--green)':accuracy>=50?'var(--orange)':'var(--danger)';
+      return `<div class="sb-row" onclick="openSubj('${s.id}')">
+        <div class="sb-top">
+          <span class="sb-ico">${s.icon}</span>
+          <span class="sb-name">${s.name}</span>
+          ${accuracy!==null?`<span style="font-family:'Cairo',sans-serif;font-size:11px;font-weight:800;color:${accColor}">${accuracy}% صح</span>`:'<span style="font-family:\'Cairo\',sans-serif;font-size:10px;color:var(--muted)">لم تُجَب</span>'}
+        </div>
+        <div class="sb-bar-row">
+          <div class="sb-bar-bg">
+            <div class="sb-bar-correct" style="width:${correctPct}%"></div>
+          </div>
+          <span class="sb-nums">${totalAttempted}/${totalQ}</span>
+        </div>
+        <div class="sb-chips">
+          <span class="sb-chip" style="background:var(--green-dim);color:var(--green)">✅ ${totalCorrect}</span>
+          <span class="sb-chip" style="background:rgba(230,57,70,.1);color:var(--danger)">❌ ${totalWrong}</span>
+          <span class="sb-chip" style="background:var(--teal-dim);color:var(--teal)">📝 ${totalQ-totalAttempted} لم تُجَب</span>
+        </div>
+        ${topics.length>1?`<div class="topic-rows">
+          ${topics.slice(0,5).map(t=>{
+            const fillColor = t.accuracy===null?'var(--muted)':t.accuracy>=75?'var(--green)':t.accuracy>=50?'var(--orange)':'var(--danger)';
+            const fillPct = t.accuracy!==null?t.accuracy:(t.attempted/Math.max(t.total,1)*100);
+            return `<div class="tr-row">
+              <span class="tr-name">${t.label}</span>
+              <div class="tr-bar"><div class="tr-fill" style="width:${fillPct}%;background:${fillColor}"></div></div>
+              <span class="tr-pct">${t.accuracy!==null?t.accuracy+'%':'—'}</span>
+            </div>`;
+          }).join('')}
+        </div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
 }
 
 // ══════════════════════════════════════════════════════
@@ -11723,29 +12493,19 @@ function showResetErr(msg){
   setTimeout(()=>e.style.display='none',3500);
 }
 
-// ═══════════ BACK BUTTON (Internal Nav Stack — no History API) ═══════════
-if(!window._navStack) window._navStack = [{page:'home'}];
+// ═══════════ BACK BUTTON (History API) ═══════════
+const _canHistory=(()=>{try{history.replaceState({page:'home'},'','#');return true;}catch(e){return false;}})();
 
-window._navBack = function(){
-  if(!CU) return;
-  if(!window._navStack || window._navStack.length <= 1){
-    CS_CHAPTER=null;
-    document.getElementById('dash-page').style.display='block';
-    document.getElementById('subj-page').style.display='none';
-    document.getElementById('admin-page').style.display='none';
-    window._navStack=[{page:'home'}];
-    renderDash();
-    return;
-  }
-  window._navStack.pop();
-  const st = window._navStack[window._navStack.length-1];
-  if(!st || st.page==='home'){
+window.addEventListener('popstate', function(e){
+  if(!_canHistory||!CU) return;
+  const st=e.state;
+  if(!st||st.page==='home'){
     CS_CHAPTER=null;
     document.getElementById('dash-page').style.display='block';
     document.getElementById('subj-page').style.display='none';
     document.getElementById('admin-page').style.display='none';
     renderDash();
-  } else if(st.page==='subj' && st.id){
+  } else if(st.page==='subj'&&st.id){
     CS=SUBJECTS.find(s=>s.id===st.id);
     if(!CS) return;
     CS_CHAPTER=null;
@@ -11757,10 +12517,13 @@ window._navBack = function(){
     document.getElementById('s-desc').textContent=CS.desc;
     const mtPrac=document.getElementById('mt-practice');
     mtPrac.style.display=CS.hasPractical?'block':'none';
-    swMode('theory', document.getElementById('mt-theory'));
+    swMode('theory',document.getElementById('mt-theory'));
     renderContent();
   }
-};
+});
+
+function _hPush(state,url){if(!_canHistory)return;try{history.pushState(state,'',url);}catch(e){}}
+function _hReplace(state,url){if(!_canHistory)return;try{history.replaceState(state,'',url);}catch(e){}}
 </script>
 
 <!-- ══ PRINT SELECT MODAL ══ -->
