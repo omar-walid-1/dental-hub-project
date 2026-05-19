@@ -8879,16 +8879,13 @@ async function explainWithAI(card,title,btn){
   btn.textContent='⏳ جاري...';
   panel.dataset.done='0';
   panel.classList.add('show');
-  panel.innerHTML=`<div class="ai-loading">🤖 Claude بيفكر في الشرح...</div>`;
+  panel.innerHTML=`<div class="ai-loading">🤖 Gemini بيفكر في الشرح...</div>`;
 
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:`أنت مدرس لطالب في كلية طب أسنان في مصر. اشرح الموضوع المعطى بأسلوب سلس وواضح.
+  // ══ CLOUDFLARE WORKER PROXY (Gemini) ══
+  // غيّر الـ URL ده بعد ما تعمل الـ Worker على Cloudflare
+  const PROXY_URL = 'https://super-forest-b358.alphacubo-com.workers.dev';
+
+  const systemPrompt = `أنت مدرس لطالب في كلية طب أسنان في مصر. اشرح الموضوع المعطى بأسلوب سلس وواضح.
 قواعد الشرح:
 - اكتب بالعربية العامية المصرية المفهومة
 - حافظ على المصطلحات العلمية الإنجليزية كما هي
@@ -8897,12 +8894,22 @@ async function explainWithAI(card,title,btn){
   • لو فيه قائمة أو مقارنة → نظّم بـ bullet points
   • لو تعريف → اشرحه ببساطة وبعدين وضّح ليه مهم
 - في آخر الشرح: اذكر النقطة الأهم للامتحان في جملة واحدة
-- لا تطول — شرح مركّز ومفيد`,
-        messages:[{role:'user',content:`اشرحلي الموضوع ده:\n\nالعنوان: ${title}\n\nالمحتوى:\n${topicText}`}]
+- لا تطول — شرح مركّز ومفيد`;
+
+  try{
+    const res=await fetch(PROXY_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{
+          parts:[{
+            text: systemPrompt + '\n\n' + `اشرحلي الموضوع ده:\n\nالعنوان: ${title}\n\nالمحتوى:\n${topicText}`
+          }]
+        }]
       })
     });
     const data=await res.json();
-    const text=data.content?.[0]?.text||'حصل خطأ، حاول تاني.';
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'حصل خطأ، حاول تاني.';
     const formatted=text
       .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
       .replace(/\*(.*?)\*/g,'<em>$1</em>')
@@ -8911,7 +8918,7 @@ async function explainWithAI(card,title,btn){
       .replace(/\n/g,'<br>');
     panel.innerHTML=`
       <div class="ai-resp-header">
-        <span>🤖 شرح Claude — ${title.substring(0,40)}</span>
+        <span>🤖 شرح Gemini — ${title.substring(0,40)}</span>
         <button class="ai-close-btn" onclick="this.closest('.ai-panel').classList.remove('show')">✕ إخفاء</button>
       </div>
       <div class="ai-resp-body">${formatted}</div>`;
