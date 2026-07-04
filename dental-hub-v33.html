@@ -104,12 +104,6 @@
 
   window.dispatchEvent(new Event('fb-ready'));
   console.log('✅ Firebase connected');
-  window.addEventListener('load', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('action') === 'login' && !localStorage.getItem('dh_session')) {
-      if (typeof openModal === 'function') openModal('login');
-    }
-  });
 </script>
 <style>
 :root{
@@ -4695,7 +4689,13 @@ const QS = {
   anatomy:[
     /* ══ WRITTEN EXAM — ESSAY QUESTIONS BANK ══ */
     /* Section 1 — Muscles */
-    {id:'anmW1',starred:true,lec:'muscle',type:'essay',text:'Compare the three types of muscle tissue. Mention: <strong>Striation, Control, Nerve supply, and Location</strong> for each.',explanation:'<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="background:rgba(2,132,199,.12)"><th style="padding:7px;border-bottom:1px solid var(--border)">Feature</th><th style="padding:7px;border-bottom:1px solid var(--border)">Cardiac</th><th style="padding:7px;border-bottom:1px solid var(--border)">Smooth</th><th style="padding:7px;border-bottom:1px solid var(--border)">Skeletal</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Striation</strong></td><td style="padding:6px">Striated (cross-striations)</td><td style="padding:6px">Non-striated</td><td style="padding:6px">Striated (cross-striations)</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Control</strong></td><td style="padding:6px">Involuntary</td><td style="padding:6px">Involuntary</td><td style="padding:6px">Voluntary</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Nerve supply</strong></td><td style="padding:6px">Autonomic (sympathetic &amp; parasympathetic)</td><td style="padding:6px">Autonomic</td><td style="padding:6px">Somatic (voluntary)</td></tr><tr><td style="padding:6px"><strong>Location</strong></td><td style="padding:6px">Heart wall (myocardium)</td><td style="padding:6px">Walls of hollow viscera, vessels</td><td style="padding:6px">Attached to bones (locomotion)</td></tr></tbody></table>'}
+    {id:'anjW1',starred:true,lec:'joints',type:'essay',text:'Enumerate the types of fibrous joints, and give ONE example for each.',explanation:'<strong>1. Suture:</strong> Found between the bones of the skull.<br><br><strong>2. Gomphosis:</strong> Between the teeth and their sockets.<br><br><strong>3. Syndesmosis:</strong> Interosseous radio-ulnar joint (or interosseous tibio-fibular joint).'}
+   ,{id:'anjW2',starred:true,lec:'joints',type:'essay',text:'Compare between <strong>Primary</strong> and <strong>Secondary Cartilaginous</strong> joints: Example, Duration, Binding tissue, and Movement.',explanation:'<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="background:rgba(2,132,199,.12)"><th style="padding:7px;border-bottom:1px solid var(--border)">Feature</th><th style="padding:7px;border-bottom:1px solid var(--border)">Primary</th><th style="padding:7px;border-bottom:1px solid var(--border)">Secondary</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Example</strong></td><td style="padding:6px">Epiphyseal plate</td><td style="padding:6px">Midline joints: Intervertebral joints, Symphysis Pubis</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Duration</strong></td><td style="padding:6px">Temporary joint</td><td style="padding:6px">Permanent</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Binding tissue</strong></td><td style="padding:6px">Hyaline cartilage binds the bones</td><td style="padding:6px">Fibrocartilage</td></tr><tr><td style="padding:6px"><strong>Movement</strong></td><td style="padding:6px">No movement allowed</td><td style="padding:6px">Little degree of movement</td></tr></tbody></table>'}
+   ,{id:'anjW3',starred:true,lec:'joints',type:'essay',text:'Mention the criteria of a synovial joint.',explanation:'• Articular surfaces are lined with hyaline cartilage<br>• Joint has a fibrous capsule<br>• Capsule is lined with synovial membrane<br>• Joint cavity contains synovial fluid<br>• Joint is supported by ligaments<br>• Joint may contain fibrocartilage plates (intra-articular discs)'}
+   ,{id:'anjW4',starred:true,lec:'joints',type:'essay',text:'Classify the synovial joints, and give ONE example for each type.',explanation:'<strong>Nonaxial:</strong> Plane — Intercarpal, Intertarsal joints<br><br><strong>Uniaxial:</strong> Pivot — Superior radioulnar, Atlanto-axial &nbsp;|&nbsp; Hinge — Elbow joint, Ankle joint<br><br><strong>Biaxial:</strong> Condyloid — Knee joint &nbsp;|&nbsp; Ellipsoid — Wrist joint &nbsp;|&nbsp; Saddle — Carpometacarpal joint of the thumb<br><br><strong>Polyaxial:</strong> Ball and socket — Shoulder joint, Hip joint'}
+   ,{id:'anjW5',starred:false,lec:'joints',type:'essay',text:'Define the Joint, then give ONE example of each of the following types: Fibrous, Cartilaginous, and Synovial joints.',explanation:'<strong>Definition:</strong> A joint is the site of meeting between two or more bones. Not all joints permit movement.<br><br><table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="background:rgba(2,132,199,.12)"><th style="padding:7px;border-bottom:1px solid var(--border)">Type</th><th style="padding:7px;border-bottom:1px solid var(--border)">Example</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Fibrous joint</strong></td><td style="padding:6px">Suture (skull)</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Cartilaginous joint</strong></td><td style="padding:6px">Epiphyseal plate (Primary)</td></tr><tr><td style="padding:6px"><strong>Synovial joint</strong></td><td style="padding:6px">Elbow joint (Hinge), Ankle joint (Hinge)</td></tr></tbody></table>'}
+   ,{id:'anjW6',starred:false,lec:'joints',type:'essay',text:'Give ONE example for each of the following synovial joints: a) Hinge joint &nbsp; b) Condyloid joint',explanation:'<strong>a) Hinge joint:</strong> Elbow joint (or Ankle joint)<br><br><strong>b) Condyloid joint:</strong> Knee joint'}
+   ,{id:'anmW1',starred:true,lec:'muscle',type:'essay',text:'Compare the three types of muscle tissue. Mention: <strong>Striation, Control, Nerve supply, and Location</strong> for each.',explanation:'<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="background:rgba(2,132,199,.12)"><th style="padding:7px;border-bottom:1px solid var(--border)">Feature</th><th style="padding:7px;border-bottom:1px solid var(--border)">Cardiac</th><th style="padding:7px;border-bottom:1px solid var(--border)">Smooth</th><th style="padding:7px;border-bottom:1px solid var(--border)">Skeletal</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Striation</strong></td><td style="padding:6px">Striated (cross-striations)</td><td style="padding:6px">Non-striated</td><td style="padding:6px">Striated (cross-striations)</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Control</strong></td><td style="padding:6px">Involuntary</td><td style="padding:6px">Involuntary</td><td style="padding:6px">Voluntary</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Nerve supply</strong></td><td style="padding:6px">Autonomic (sympathetic &amp; parasympathetic)</td><td style="padding:6px">Autonomic</td><td style="padding:6px">Somatic (voluntary)</td></tr><tr><td style="padding:6px"><strong>Location</strong></td><td style="padding:6px">Heart wall (myocardium)</td><td style="padding:6px">Walls of hollow viscera, vessels</td><td style="padding:6px">Attached to bones (locomotion)</td></tr></tbody></table>'}
    ,{id:'anmW2',starred:false,lec:'muscle',type:'essay',text:'Define each of the following muscle attachment types and give ONE example: a) Tendon &nbsp; b) Aponeurosis &nbsp; c) Raphe &nbsp; d) Intermediate Tendon &nbsp; e) Cutaneous Attachment',explanation:'<strong>a) Tendon:</strong> Cord-like fibrous tissue connecting muscle to bone. <em>Example: Achilles tendon</em><br><br><strong>b) Aponeurosis:</strong> Flat sheet-like fibrous tissue connecting muscle to bone or other muscles. <em>Example: External oblique aponeurosis</em><br><br><strong>c) Raphe:</strong> Fibrous union between two muscles meeting in midline. <em>Example: Pterygomandibular raphe (between buccinator &amp; superior constrictor)</em><br><br><strong>d) Intermediate Tendon:</strong> Tendon interrupting the muscle belly (found in digastric muscle). <em>Example: Digastric muscle intermediate tendon</em><br><br><strong>e) Cutaneous (Fleshy) Attachment:</strong> Direct attachment of muscle fibers to skin. <em>Example: Muscles of facial expression</em>'}
    ,{id:'anmW3',starred:false,lec:'muscle',type:'essay',text:'What is the difference between the <strong>Origin</strong> and <strong>Insertion</strong> of a skeletal muscle?',explanation:'<strong>Origin:</strong> The fixed attachment of the muscle — the bone that does NOT move during muscle contraction. Usually proximal.<br><br><strong>Insertion:</strong> The movable attachment of the muscle — the bone that MOVES during muscle contraction. Usually distal.<br><br><em>Note:</em> Origin and insertion can be reversed when the distal part is fixed (e.g., during push-ups, the insertion becomes fixed and the origin moves).'}
    ,{id:'anmW4',starred:false,lec:'muscle',type:'essay',text:'List and describe the four functional roles of muscles. Give one example for each.',explanation:'<strong>1. Prime Mover (Agonist):</strong> The muscle that performs the main action. <em>Example: Biceps brachii in elbow flexion</em><br><br><strong>2. Antagonist:</strong> The muscle that opposes the prime mover. <em>Example: Triceps brachii opposing biceps</em><br><br><strong>3. Synergist:</strong> The muscle that assists the prime mover or prevents unwanted movement. <em>Example: Brachioradialis assisting biceps in flexion</em><br><br><strong>4. Fixator:</strong> The muscle that stabilizes the origin bone so the prime mover can act effectively. <em>Example: Trapezius fixing the scapula during deltoid contraction</em>'}
@@ -4770,21 +4770,21 @@ const QS = {
     {id:'ant35',starred:false,lec:'terminology',text:'Eversion of the foot means the sole faces:',options:["Medially (inward)", "Superiorly (upward)", "Laterally (outward)", "Posteriorly (backward)"],answer:2,explanation:'Eversion = باطن القدم يتجه للخارج (Laterally). Inversion = باطن القدم يتجه للداخل (Medially).'},
     {id:'ant36',starred:false,lec:'terminology',text:'Which anatomical direction term means \'toward the top / toward the head\'?',options:["Inferior (Caudal)", "Superior (Cephalic)", "Medial", "Proximal"],answer:1,explanation:'Superior/Cephalic = ناحية الرأس/فوق. Inferior/Caudal = ناحية الرجل/تحت.'},
     {id:'ant37',starred:false,lec:'terminology',text:'The Coronal (Frontal) plane divides the body into:',options:["Equal right and left halves", "Upper and lower parts", "Anterior and posterior parts", "Medial and lateral parts"],answer:2,explanation:'Coronal/Frontal plane = يقسم الجسم لأمامي وخلفي. Median sagittal = يمين وشمال. Transverse = علوي وسفلي.'},
-    {id:'ann29',starred:false,lec:'nervous',text:'Which of the following cranial nerves is concerned with olfaction (smell)?',options:["Optic nerve", "Olfactory nerve", "Vagus nerve", "Facial nerve"],answer:1,explanation:'العصب الشمي (Olfactory - CN I) = المسؤول عن حاسة الشم.'},
-    {id:'ann30',starred:false,lec:'nervous',text:'The Optic nerve (2nd cranial nerve) is classified as which type of nerve?',options:["Purely motor", "Purely sensory", "Mixed (motor and sensory)", "Parasympathetic only"],answer:1,explanation:'CN II (Optic) = حسي بحت - يحمل إشارات البصر من الشبكية للمخ.'},
-    {id:'ann31',starred:false,lec:'nervous',text:'The Oculomotor nerve (3rd cranial nerve) supplies all of the following extra-ocular muscles EXCEPT:',options:["Superior Rectus", "Medial Rectus", "Lateral Rectus", "Inferior Oblique"],answer:2,explanation:'CN III يغذي كل عضلات العين الخارجية ماعدا Lateral Rectus (→ CN VI) وSuperior Oblique (→ CN IV).'},
-    {id:'ann32',starred:false,lec:'nervous',text:'Which cranial nerve is responsible for supplying the Superior Oblique extra-ocular muscle?',options:["3rd cranial nerve (Oculomotor)", "4th cranial nerve (Trochlear)", "5th cranial nerve (Trigeminal)", "6th cranial nerve (Abducent)"],answer:1,explanation:'CN IV (Trochlear) = يغذي Superior Oblique فقط. تذكر: SO4 - Superior Oblique CN 4.'},
-    {id:'ann33',starred:false,lec:'nervous',text:'The Abducent nerve (6th cranial nerve) provides motor fibers to which muscle?',options:["Lateral Rectus", "Superior Oblique", "Intra-ocular muscles", "Muscles of mastication"],answer:0,explanation:'CN VI (Abducent) = يغذي Lateral Rectus فقط. تذكر: LR6 - Lateral Rectus CN 6.'},
-    {id:'ann34',starred:false,lec:'nervous',text:'The Trigeminal nerve (5th cranial nerve) is divided into three divisions. Which of the following divisions contains BOTH sensory and motor fibers?',options:["Ophthalmic", "Maxillary", "Mandibular", "Vestibular"],answer:2,explanation:'CN V3 (Mandibular) = حسي وحركي. V1 وV2 حسيان فقط. V3 بيغذي عضلات المضغ.'},
-    {id:'ann35',starred:false,lec:'nervous',text:'Which of the following cranial nerves is responsible for supplying the muscles of mastication?',options:["Facial nerve", "Trigeminal nerve", "Vagus nerve", "Hypoglossal nerve"],answer:1,explanation:'CN V (Trigeminal) - الشعبة الثالثة V3 - تغذي عضلات المضغ حركياً.'},
-    {id:'ann36',starred:false,lec:'nervous',text:'The Facial nerve (7th cranial nerve) provides parasympathetic supply to which of the following glands?',options:["Parotid gland only", "Submandibular, sublingual, and lacrimal glands", "Thyroid gland", "Sweat glands of the face"],answer:1,explanation:'CN VII يغذي بنظام شبه الودي: الغدد تحت الفك والتحت لسانية والدمعية. الغدة النكفية = CN IX.'},
-    {id:'ann37',starred:false,lec:'nervous',text:'Taste sensation from the anterior two-thirds of the tongue is carried by which cranial nerve?',options:["Trigeminal nerve", "Facial nerve", "Glossopharyngeal nerve", "Vagus nerve"],answer:1,explanation:'CN VII (Facial) يحمل التذوق من الثلثين الأماميين للسان. CN IX من الثلث الخلفي.'},
-    {id:'ann38',starred:false,lec:'nervous',text:'The Vestibulocochlear nerve (8th cranial nerve) consists of two divisions. What is the function of the vestibular division?',options:["Hearing", "Vision", "Equilibrium", "Olfaction"],answer:2,explanation:'CN VIII ينقسم لـ: Cochlear (السمع) وVestibular (التوازن).'},
-    {id:'ann39',starred:false,lec:'nervous',text:'Which of the following cranial nerves supplies motor fibers to the stylopharyngeus muscle and parasympathetic fibers to the parotid gland?',options:["Facial nerve (7th)", "Glossopharyngeal nerve (9th)", "Vagus nerve (10th)", "Accessory nerve (11th)"],answer:1,explanation:'CN IX (Glossopharyngeal) يغذي Stylopharyngeus حركياً ويعطي شبه ودي للنكفية.'},
-    {id:'ann40',starred:false,lec:'nervous',text:'The Vagus nerve (10th cranial nerve) carries parasympathetic fibers to all of the following EXCEPT:',options:["Heart and blood vessels", "Gastrointestinal tract (GIT)", "Trachea and bronchi", "Lacrimal gland"],answer:3,explanation:'CN X (Vagus) يغذي القلب، الجهاز الهضمي، القصبة والشعب. الغدة الدمعية = CN VII.'},
-    {id:'ann41',starred:false,lec:'nervous',text:'The Accessory nerve (11th cranial nerve) is purely motor. Which two muscles does it supply?',options:["Trapezius and Sternomastoid", "Masseter and Temporalis", "Lateral Rectus and Superior Oblique", "Stylopharyngeus and Palatoglossus"],answer:0,explanation:'CN XI يغذي عضلتين فقط: Trapezius وSternocleidomastoid (Sternomastoid).'},
-    {id:'ann42',starred:false,lec:'nervous',text:'Which cranial nerve provides motor supply to the muscles of the tongue?',options:["Trigeminal (5th)", "Facial (7th)", "Glossopharyngeal (9th)", "Hypoglossal (12th)"],answer:3,explanation:'CN XII (Hypoglossal) = الحركي للسان. تذكر: 12 = اثنا عشر = اللسان!'},
-    {id:'ann43',starred:false,lec:'nervous',text:'Which of the following nerves carries sensory (taste) fibers from the root of the tongue and epiglottis?',options:["Facial nerve", "Glossopharyngeal nerve", "Vagus nerve", "Hypoglossal nerve"],answer:2,explanation:'CN X (Vagus) يحمل التذوق من جذر اللسان والحنجرة. CN IX من الثلث الخلفي.'},
+    {id:'anm1',starred:false,lec:'muscle',text:'Which of the following cranial nerves is concerned with olfaction (smell)?',options:["Optic nerve", "Olfactory nerve", "Vagus nerve", "Facial nerve"],answer:1,explanation:'العصب الشمي (Olfactory - CN I) = المسؤول عن حاسة الشم.'},
+    {id:'anm2',starred:false,lec:'muscle',text:'The Optic nerve (2nd cranial nerve) is classified as which type of nerve?',options:["Purely motor", "Purely sensory", "Mixed (motor and sensory)", "Parasympathetic only"],answer:1,explanation:'CN II (Optic) = حسي بحت - يحمل إشارات البصر من الشبكية للمخ.'},
+    {id:'anm3',starred:false,lec:'muscle',text:'The Oculomotor nerve (3rd cranial nerve) supplies all of the following extra-ocular muscles EXCEPT:',options:["Superior Rectus", "Medial Rectus", "Lateral Rectus", "Inferior Oblique"],answer:2,explanation:'CN III يغذي كل عضلات العين الخارجية ماعدا Lateral Rectus (→ CN VI) وSuperior Oblique (→ CN IV).'},
+    {id:'anm4',starred:false,lec:'muscle',text:'Which cranial nerve is responsible for supplying the Superior Oblique extra-ocular muscle?',options:["3rd cranial nerve (Oculomotor)", "4th cranial nerve (Trochlear)", "5th cranial nerve (Trigeminal)", "6th cranial nerve (Abducent)"],answer:1,explanation:'CN IV (Trochlear) = يغذي Superior Oblique فقط. تذكر: SO4 - Superior Oblique CN 4.'},
+    {id:'anm5',starred:false,lec:'muscle',text:'The Abducent nerve (6th cranial nerve) provides motor fibers to which muscle?',options:["Lateral Rectus", "Superior Oblique", "Intra-ocular muscles", "Muscles of mastication"],answer:0,explanation:'CN VI (Abducent) = يغذي Lateral Rectus فقط. تذكر: LR6 - Lateral Rectus CN 6.'},
+    {id:'anm6',starred:false,lec:'muscle',text:'The Trigeminal nerve (5th cranial nerve) is divided into three divisions. Which of the following divisions contains BOTH sensory and motor fibers?',options:["Ophthalmic", "Maxillary", "Mandibular", "Vestibular"],answer:2,explanation:'CN V3 (Mandibular) = حسي وحركي. V1 وV2 حسيان فقط. V3 بيغذي عضلات المضغ.'},
+    {id:'anm7',starred:false,lec:'muscle',text:'Which of the following cranial nerves is responsible for supplying the muscles of mastication?',options:["Facial nerve", "Trigeminal nerve", "Vagus nerve", "Hypoglossal nerve"],answer:1,explanation:'CN V (Trigeminal) - الشعبة الثالثة V3 - تغذي عضلات المضغ حركياً.'},
+    {id:'anm8',starred:false,lec:'muscle',text:'The Facial nerve (7th cranial nerve) provides parasympathetic supply to which of the following glands?',options:["Parotid gland only", "Submandibular, sublingual, and lacrimal glands", "Thyroid gland", "Sweat glands of the face"],answer:1,explanation:'CN VII يغذي بنظام شبه الودي: الغدد تحت الفك والتحت لسانية والدمعية. الغدة النكفية = CN IX.'},
+    {id:'anm9',starred:false,lec:'muscle',text:'Taste sensation from the anterior two-thirds of the tongue is carried by which cranial nerve?',options:["Trigeminal nerve", "Facial nerve", "Glossopharyngeal nerve", "Vagus nerve"],answer:1,explanation:'CN VII (Facial) يحمل التذوق من الثلثين الأماميين للسان. CN IX من الثلث الخلفي.'},
+    {id:'anm10',starred:false,lec:'muscle',text:'The Vestibulocochlear nerve (8th cranial nerve) consists of two divisions. What is the function of the vestibular division?',options:["Hearing", "Vision", "Equilibrium", "Olfaction"],answer:2,explanation:'CN VIII ينقسم لـ: Cochlear (السمع) وVestibular (التوازن).'},
+    {id:'anm11',starred:false,lec:'muscle',text:'Which of the following cranial nerves supplies motor fibers to the stylopharyngeus muscle and parasympathetic fibers to the parotid gland?',options:["Facial nerve (7th)", "Glossopharyngeal nerve (9th)", "Vagus nerve (10th)", "Accessory nerve (11th)"],answer:1,explanation:'CN IX (Glossopharyngeal) يغذي Stylopharyngeus حركياً ويعطي شبه ودي للنكفية.'},
+    {id:'anm12',starred:false,lec:'muscle',text:'The Vagus nerve (10th cranial nerve) carries parasympathetic fibers to all of the following EXCEPT:',options:["Heart and blood vessels", "Gastrointestinal tract (GIT)", "Trachea and bronchi", "Lacrimal gland"],answer:3,explanation:'CN X (Vagus) يغذي القلب، الجهاز الهضمي، القصبة والشعب. الغدة الدمعية = CN VII.'},
+    {id:'anm13',starred:false,lec:'muscle',text:'The Accessory nerve (11th cranial nerve) is purely motor. Which two muscles does it supply?',options:["Trapezius and Sternomastoid", "Masseter and Temporalis", "Lateral Rectus and Superior Oblique", "Stylopharyngeus and Palatoglossus"],answer:0,explanation:'CN XI يغذي عضلتين فقط: Trapezius وSternocleidomastoid (Sternomastoid).'},
+    {id:'anm14',starred:false,lec:'muscle',text:'Which cranial nerve provides motor supply to the muscles of the tongue?',options:["Trigeminal (5th)", "Facial (7th)", "Glossopharyngeal (9th)", "Hypoglossal (12th)"],answer:3,explanation:'CN XII (Hypoglossal) = الحركي للسان. تذكر: 12 = اثنا عشر = اللسان!'},
+    {id:'anm15',starred:false,lec:'muscle',text:'Which of the following nerves carries sensory (taste) fibers from the root of the tongue and epiglottis?',options:["Facial nerve", "Glossopharyngeal nerve", "Vagus nerve", "Hypoglossal nerve"],answer:2,explanation:'CN X (Vagus) يحمل التذوق من جذر اللسان والحنجرة. CN IX من الثلث الخلفي.'},
     {id:'anm16',starred:false,lec:'muscle',text:'Muscles are classified into how many types?',options:["Two types only", "Three types", "Four types", "Five types"],answer:1,explanation:'العضلات 3 أنواع: Cardiac (قلبية) + Smooth (ملساء) + Skeletal (هيكلية).'},
     {id:'anm17',starred:false,lec:'muscle',text:'Which type of muscle forms the wall of the heart?',options:["Smooth muscle", "Skeletal muscle", "Cardiac muscle", "Voluntary muscle"],answer:2,explanation:'Cardiac muscle = عضلة القلب. مخططة (striated)، لا إرادية، تنقبض إيقاعياً وتلقائياً.'},
     {id:'anm18',starred:false,lec:'muscle',text:'The blood supply of cardiac muscle is provided by:',options:["Pulmonary arteries", "Coronary arteries", "Aortic branches", "Portal vessels"],answer:1,explanation:'الشرايين التاجية (Coronary arteries) هي مصدر الدم للعضلة القلبية. انسدادها → نخر العضلة (Heart attack).'},
@@ -4800,19 +4800,19 @@ const QS = {
     {id:'anm28',starred:false,lec:'muscle',text:'Which type of muscle fiber arrangement gives the strongest contraction?',options:["Oblique (pennate) fibers", "Parallel fibers", "Unipennate fibers", "Circumpennate fibers"],answer:1,explanation:'الألياف المتوازية (Parallel) تعطي انقباضاً أقوى. العدد الأكبر من الألياف = قوة أكبر.'},
     {id:'anm29',starred:false,lec:'muscle',text:'The muscle which opposes the action of the prime mover is called:',options:["Synergist", "Fixator", "Antagonist", "Agonist"],answer:2,explanation:'Antagonist = العضلة المعاكسة للعضلة الرئيسية (Prime mover). مثال: Biceps vs Triceps.'},
     {id:'anm30',starred:false,lec:'muscle',text:'Which of the following describes a \'Synergist\' muscle?',options:["Opposes the prime mover", "Fixes the origin of the prime mover", "Contracts with the prime mover to make movement efficient", "Initiates the movement alone"],answer:2,explanation:'Synergist = يتقلص مع الـ Prime mover لجعل الحركة أكثر كفاءة. مثال: Wrist extensors مع finger extensors.'},
-    {id:'anj27',starred:false,lec:'joints',text:'Skull bones are fixed together by:',options:["Synovial joints", "Fibrous joints (sutures)", "Cartilaginous joints", "Ligaments only"],answer:1,explanation:'عظام الجمجمة مترابطة بـ Sutures - نوع من الـ Fibrous joints (Synarthrosis).'},
-    {id:'anj28',starred:false,lec:'joints',text:'Teeth socket joints are:',options:["Synarthrosis", "Syndesmosis", "Gomphosis", "Synovial"],answer:2,explanation:'Gomphosis = ربط الأسنان بالحويصلات السنية. نوع من الـ Fibrous joints.'},
-    {id:'anj29',starred:false,lec:'joints',text:'Interosseous membrane joint is an example of:',options:["Synchondrosis", "Syndesmosis", "Synarthrosis", "Gomphosis"],answer:1,explanation:'Syndesmosis = ربط بالنسيج الليفي مع حركة محدودة. مثال: الغشاء بين العظمي.'},
-    {id:'anj30',starred:false,lec:'joints',text:'Immobile hyaline cartilage joint:',options:["Symphyses", "Synchondrosis (Primary cartilaginous)", "Diarthrosis", "Syndesmosis"],answer:1,explanation:'Synchondrosis = مفصل غضروفي هياليني ثابت. مثال: مشاش العظام الطويلة عند الأطفال.'},
-    {id:'anj31',starred:false,lec:'joints',text:'Which of the following joints is a temporary one?',options:["Plan synovial", "Epiphysis of long bone (Primary cartilaginous)", "Secondary cartilaginous", "Syndesmosis"],answer:1,explanation:'الـ Primary cartilaginous عند مشاش العظام الطويلة مؤقت - يختفي عند اكتمال النمو.'},
-    {id:'anj32',starred:false,lec:'joints',text:'Slightly mobile fibrocartilage joint:',options:["Synchondrosis", "Gomphosis", "Symphyses (Secondary cartilaginous)", "Synarthrosis"],answer:2,explanation:'Symphyses = مفاصل غضروفية ليفية ذات حركة محدودة. مثال: ارتفاق العانة والأقراص الفقرية.'},
-    {id:'anj33',starred:false,lec:'joints',text:'Intervertebral disc joint is an example of:',options:["Synchondrosis", "Symphyses", "Syndesmosis", "Synarthrosis"],answer:1,explanation:'الأقراص الفقرية = Symphyses (Secondary cartilaginous joints).'},
-    {id:'anj34',starred:false,lec:'joints',text:'Which of the following is a criteria of synovial joints?',options:["Bones covered are connected with fibrous tissue", "Has cavity", "Bones covered with fibrocartilage", "Allow limited movement"],answer:1,explanation:'الـ Synovial joints لها تجويف مفصلي (cavity) وغضروف زجاجي وكبسولة وسائل زلالي.'},
-    {id:'anj35',starred:false,lec:'joints',text:'Most movable joints with cavity are:',options:["Fibrous", "Cartilaginous", "Synovial", "Fixed"],answer:2,explanation:'الـ Synovial joints هي الأكثر حركة وتحتوي على تجويف مفصلي مملوء بالسائل الزلالي.'},
-    {id:'anj36',starred:false,lec:'joints',text:'Which of the following joints is a hinge joint?',options:["Knee", "Shoulder", "Wrist", "Elbow"],answer:3,explanation:'Elbow = Hinge joint (حركة في محور واحد). Shoulder = Ball & socket. Wrist = Ellipsoid.'},
-    {id:'anj37',starred:false,lec:'joints',text:'Which of the following is an ellipsoid (condyloid) joint?',options:["Knee", "Ankle", "Wrist", "Elbow"],answer:2,explanation:'Wrist = Ellipsoid joint. يسمح بحركتين: Flexion/Extension وAbduction/Adduction.'},
-    {id:'anj38',starred:false,lec:'joints',text:'Which of the following joints is a saddle joint?',options:["Interosseous radioulnar", "Inferior tibiofibular", "Epiphysis of long bone", "Carpometacarpal of thumb"],answer:3,explanation:'الـ Carpometacarpal joint للإبهام = Saddle joint. يسمح بحركة الإبهام المميزة.'},
-    {id:'anj39',starred:false,lec:'joints',text:'Select the joint that is classified as a polyaxial (ball and socket) joint:',options:["Elbow", "Shoulder", "Knee", "Teeth"],answer:1,explanation:'Shoulder = Ball & socket joint (Polyaxial). أكثر المفاصل حركة في الجسم.'},
+    {id:'anb1',starred:false,lec:'bone',text:'Skull bones are fixed together by:',options:["Synovial joints", "Fibrous joints (sutures)", "Cartilaginous joints", "Ligaments only"],answer:1,explanation:'عظام الجمجمة مترابطة بـ Sutures - نوع من الـ Fibrous joints (Synarthrosis).'},
+    {id:'anb2',starred:false,lec:'bone',text:'Teeth socket joints are:',options:["Synarthrosis", "Syndesmosis", "Gomphosis", "Synovial"],answer:2,explanation:'Gomphosis = ربط الأسنان بالحويصلات السنية. نوع من الـ Fibrous joints.'},
+    {id:'anb3',starred:false,lec:'bone',text:'Interosseous membrane joint is an example of:',options:["Synchondrosis", "Syndesmosis", "Synarthrosis", "Gomphosis"],answer:1,explanation:'Syndesmosis = ربط بالنسيج الليفي مع حركة محدودة. مثال: الغشاء بين العظمي.'},
+    {id:'anb4',starred:false,lec:'bone',text:'Immobile hyaline cartilage joint:',options:["Symphyses", "Synchondrosis (Primary cartilaginous)", "Diarthrosis", "Syndesmosis"],answer:1,explanation:'Synchondrosis = مفصل غضروفي هياليني ثابت. مثال: مشاش العظام الطويلة عند الأطفال.'},
+    {id:'anb5',starred:false,lec:'bone',text:'Which of the following joints is a temporary one?',options:["Plan synovial", "Epiphysis of long bone (Primary cartilaginous)", "Secondary cartilaginous", "Syndesmosis"],answer:1,explanation:'الـ Primary cartilaginous عند مشاش العظام الطويلة مؤقت - يختفي عند اكتمال النمو.'},
+    {id:'anb6',starred:false,lec:'bone',text:'Slightly mobile fibrocartilage joint:',options:["Synchondrosis", "Gomphosis", "Symphyses (Secondary cartilaginous)", "Synarthrosis"],answer:2,explanation:'Symphyses = مفاصل غضروفية ليفية ذات حركة محدودة. مثال: ارتفاق العانة والأقراص الفقرية.'},
+    {id:'anb7',starred:false,lec:'bone',text:'Intervertebral disc joint is an example of:',options:["Synchondrosis", "Symphyses", "Syndesmosis", "Synarthrosis"],answer:1,explanation:'الأقراص الفقرية = Symphyses (Secondary cartilaginous joints).'},
+    {id:'anb8',starred:false,lec:'bone',text:'Which of the following is a criteria of synovial joints?',options:["Bones covered are connected with fibrous tissue", "Has cavity", "Bones covered with fibrocartilage", "Allow limited movement"],answer:1,explanation:'الـ Synovial joints لها تجويف مفصلي (cavity) وغضروف زجاجي وكبسولة وسائل زلالي.'},
+    {id:'anb9',starred:false,lec:'bone',text:'Most movable joints with cavity are:',options:["Fibrous", "Cartilaginous", "Synovial", "Fixed"],answer:2,explanation:'الـ Synovial joints هي الأكثر حركة وتحتوي على تجويف مفصلي مملوء بالسائل الزلالي.'},
+    {id:'anb10',starred:false,lec:'bone',text:'Which of the following joints is a hinge joint?',options:["Knee", "Shoulder", "Wrist", "Elbow"],answer:3,explanation:'Elbow = Hinge joint (حركة في محور واحد). Shoulder = Ball & socket. Wrist = Ellipsoid.'},
+    {id:'anb11',starred:false,lec:'bone',text:'Which of the following is an ellipsoid (condyloid) joint?',options:["Knee", "Ankle", "Wrist", "Elbow"],answer:2,explanation:'Wrist = Ellipsoid joint. يسمح بحركتين: Flexion/Extension وAbduction/Adduction.'},
+    {id:'anb12',starred:false,lec:'bone',text:'Which of the following joints is a saddle joint?',options:["Interosseous radioulnar", "Inferior tibiofibular", "Epiphysis of long bone", "Carpometacarpal of thumb"],answer:3,explanation:'الـ Carpometacarpal joint للإبهام = Saddle joint. يسمح بحركة الإبهام المميزة.'},
+    {id:'anb13',starred:false,lec:'bone',text:'Select the joint that is classified as a polyaxial (ball and socket) joint:',options:["Elbow", "Shoulder", "Knee", "Teeth"],answer:1,explanation:'Shoulder = Ball & socket joint (Polyaxial). أكثر المفاصل حركة في الجسم.'},
     {id:'anb14',starred:false,lec:'bone',text:'Bones act as a reservoir for which minerals?',options:["Sodium and potassium", "Iron and zinc", "Calcium and phosphorus", "Magnesium and chloride"],answer:2,explanation:'العظام خزان للكالسيوم والفوسفور في الجسم. هذا أحد وظائفها الأساسية السبعة.'},
     {id:'anb15',starred:false,lec:'bone',text:'Which of the following is NOT a function of bones?',options:["Support the body", "Protect internal organs", "Produce hormones", "Form blood cells"],answer:2,explanation:'إنتاج الهرمونات ليس من وظائف العظام. وظائفها: دعم + حمل الوزن + ارتكاز العضلات + حماية + تكوين المفاصل + خزان معادن + تكوين الدم.'},
     {id:'anb16',starred:false,lec:'bone',text:'The axial skeleton consists of all of the following EXCEPT:',options:["Skull", "Vertebral column", "Ribs and sternum", "Femur and tibia"],answer:3,explanation:'الهيكل المحوري (Axial): الجمجمة + العمود الفقري + الأضلاع + القص. الفخذ والقصبة = هيكل طرفي (Appendicular).'},
@@ -4829,10 +4829,10 @@ const QS = {
     {id:'anb27',starred:false,lec:'bone',text:'Membranous ossification occurs in which of the following bones?',options:["Femur", "Humerus", "Bones of the vault of the skull", "Vertebrae"],answer:2,explanation:'التعظم الغشائي (Membranous ossification) = يحدث في عظام قبة الجمجمة. العظام الطويلة = Cartilaginous ossification.'},
     {id:'anb28',starred:false,lec:'bone',text:'The periosteum is defined as:',options:["The inner lining of the medullary cavity", "A fibrous membrane covering the outer surface of bones", "The cartilage at the ends of long bones", "The growth plate between epiphysis and diaphysis"],answer:1,explanation:'السمحاق (Periosteum) = غشاء ليفي يغطي السطح الخارجي للعظام. يحتوي على أوعية دموية وأعصاب وخلايا عظمية.'},
     {id:'anb29',starred:false,lec:'bone',text:'The blood supply of bones is derived from all of the following EXCEPT:',options:["Nutrient artery entering the shaft", "Anastomosis around the bone ends", "Vessels to the periosteum", "Lymphatic vessels"],answer:3,explanation:'إمداد الدم للعظام: 1- الشريان المغذي (Nutrient artery) في الجدل. 2- Anastomosis حول الأطراف. 3- أوعية السمحاق. الأوعية اللمفاوية ليست مصدراً رئيسياً.'},
-    {id:'ant38',starred:false,lec:'terminology',text:'Deep fascia is present in the anterior abdominal wall.',options:["True", "False", "Partially true", "Not applicable"],answer:1,explanation:'FALSE - الجدار الأمامي للبطن يفتقر للفافة العميقة (deep fascia). الـ Superficial fascia موجودة لكن مش Deep fascia.'},
-    {id:'ant39',starred:false,lec:'terminology',text:'Supination turns the palm posteriorly in the anatomical position.',options:["True", "False", "Only in prone", "Only when arm elevated"],answer:1,explanation:'FALSE - Supination تجعل الراحة تتجه للأمام (Anteriorly). Pronation تجعلها تتجه للخلف.'},
-    {id:'ant40',starred:false,lec:'terminology',text:'Retraction is forward movement of the shoulder girdle.',options:["True", "False", "Depends on position", "True only in supine"],answer:1,explanation:'FALSE - Retraction = حركة للخلف. Protraction = حركة للأمام.'},
-    {id:'ant41',starred:false,lec:'terminology',text:'The investing fascia in the neck limits the spread of infection.',options:["True", "False", "Only in anterior neck", "Only superficially"],answer:0,explanation:'TRUE - اللفافة الاستثمارية في الرقبة تلف العضلات وتحد من انتشار الالتهابات.'},
+    {id:'anj1',starred:false,lec:'joints',text:'Deep fascia is present in the anterior abdominal wall.',options:["True", "False", "Partially true", "Not applicable"],answer:1,explanation:'FALSE - الجدار الأمامي للبطن يفتقر للفافة العميقة (deep fascia). الـ Superficial fascia موجودة لكن مش Deep fascia.'},
+    {id:'anj2',starred:false,lec:'joints',text:'Supination turns the palm posteriorly in the anatomical position.',options:["True", "False", "Only in prone", "Only when arm elevated"],answer:1,explanation:'FALSE - Supination تجعل الراحة تتجه للأمام (Anteriorly). Pronation تجعلها تتجه للخلف.'},
+    {id:'anj3',starred:false,lec:'joints',text:'Retraction is forward movement of the shoulder girdle.',options:["True", "False", "Depends on position", "True only in supine"],answer:1,explanation:'FALSE - Retraction = حركة للخلف. Protraction = حركة للأمام.'},
+    {id:'anj4',starred:false,lec:'joints',text:'The investing fascia in the neck limits the spread of infection.',options:["True", "False", "Only in anterior neck", "Only superficially"],answer:0,explanation:'TRUE - اللفافة الاستثمارية في الرقبة تلف العضلات وتحد من انتشار الالتهابات.'},
     {id:'anj5',starred:false,lec:'joints',text:'Which of the following best describes a hinge joint?',options:["Allows movement in all planes", "Allows rotation only", "Allows movement in one plane (flexion/extension)", "Connects bones with fibrocartilage"],answer:2,explanation:'Hinge joint = يسمح بالحركة في مستوى واحد فقط (Flexion + Extension). مثال: المرفق والركبة.'},
     {id:'anj6',starred:false,lec:'joints',text:'Which type of joint has the most restricted movement?',options:["Synovial", "Fibrous (sutures)", "Secondary cartilaginous", "Primary cartilaginous"],answer:1,explanation:'Fibrous joints (Sutures) = أقل المفاصل حركة. السماح بالحركة فيها شبه معدوم.'},
     {id:'anj7',starred:false,lec:'joints',text:'The pubic symphysis is an example of which type of joint?',options:["Synchondrosis", "Gomphosis", "Secondary cartilaginous (Symphysis)", "Synovial"],answer:2,explanation:'ارتفاق العانة (Pubic symphysis) = Secondary cartilaginous joint. يحتوي على غضروف ليفي.'},
@@ -11615,11 +11615,7 @@ function renderBank(){
     renderMatching();
     return;
   }
-  let anatomyPdfBtn = '';
-  if(CS.id==='anatomy' && !CS_CHAPTER){
-    anatomyPdfBtn = `<a href="Anatomy_Written_Questions-1.pdf" target="_blank" class="qf" style="background:rgba(0,180,216,.1);color:var(--teal);border:1px solid rgba(0,180,216,.25);text-decoration:none;display:inline-flex;align-items:center;gap:5px">📄 Anatomy PDF</a>`;
-  }
-  el.innerHTML=`<div class="qhead"><h3>❓ ${label}</h3><div class="qfilts"><button class="qf${af==='all'?' on':''}" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf${af==='starred'?' on':''}" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button><button class="qf${af==='wrong'?' on':''}" onclick="fQ('wrong',this)" style="background:rgba(230,57,70,.08);color:var(--danger);border:1px solid rgba(230,57,70,.25)">🏷️ غلط قبل كده (${wrongCount})</button>${essayBtn}${matchingBtn}${anatomyPdfBtn}${shuffleBtn}</div><button class="qf-reset-btn" onclick="confirmReset('${CS_CHAPTER?'chapter':'subject'}')">↺ Reset ${resetScope}</button></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك${CS_CHAPTER?' في الـ Chapter':' في المادة'}</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="essay-pdf-slot"></div><div id="ql">${displayQs.map((q,i)=>buildQ(q,i,af==='wrong'||af==='essay'?undefined:slv[CS.id+'_'+q.id])).join('')}</div>`;
+  el.innerHTML=`<div class="qhead"><h3>❓ ${label}</h3><div class="qfilts"><button class="qf${af==='all'?' on':''}" onclick="fQ('all',this)">الكل (${qs.length})</button><button class="qf${af==='starred'?' on':''}" onclick="fQ('starred',this)">⭐ مميزة (${qs.filter(q=>q.starred).length})</button><button class="qf${af==='wrong'?' on':''}" onclick="fQ('wrong',this)" style="background:rgba(230,57,70,.08);color:var(--danger);border:1px solid rgba(230,57,70,.25)">🏷️ غلط قبل كده (${wrongCount})</button>${essayBtn}${matchingBtn}${shuffleBtn}</div><button class="qf-reset-btn" onclick="confirmReset('${CS_CHAPTER?'chapter':'subject'}')">↺ Reset ${resetScope}</button></div><div class="score-box"><div class="sring"><div class="sn">${done}</div><div class="st">/ ${qs.length}</div></div><div class="stxt"><div class="sm">تقدمك${CS_CHAPTER?' في الـ Chapter':' في المادة'}</div><div class="sl">أجبت ${done} من ${qs.length}</div></div></div><div id="essay-pdf-slot"></div><div id="ql">${displayQs.map((q,i)=>buildQ(q,i,af==='wrong'||af==='essay'?undefined:slv[CS.id+'_'+q.id])).join('')}</div>`;
   // Inject PDF via DOM (keeps base64 out of template literal)
   if(af==='essay' && CS.id==='anatomy'){
     const slot=document.getElementById('essay-pdf-slot');
@@ -14272,100 +14268,6 @@ function renderMatching(){
   el.innerHTML=html;
   qs.forEach(q=>{
     if(_mState[q.id]) q.colA.forEach(it=>{const inp=document.getElementById(`minp_${q.id}_${it.key}`);if(inp&&_mState[q.id].answers[it.key])inp.value=_mState[q.id].answers[it.key];});
-  });
-}
-
-function _mBuildFeedback(q){
-  const saved=_mState[q.id];
-  const pairsHtml=q.colA.map(it=>{const given=(saved.answers[it.key]||'').toUpperCase();const correct=q.answers[it.key];const ok=given===correct;return `<div class="fb-pair ${ok?'correct':'wrong'}">${it.key}→${given||'—'} ${ok?'✓':'✗ ('+correct+')'}</div>`;}).join('');
-  return `<div class="feedback-pairs">${pairsHtml}</div><div style="font-family:'Cairo',sans-serif;direction:rtl;font-size:12px;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;line-height:1.7;margin-top:6px"><div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;direction:ltr;font-family:monospace">Explanation</div>${q.explanation}</div>`;
-}
-
-function _mHandleInput(e,qId,key){
-  if(!_mState[qId]) _mState[qId]={answers:{},checked:false};
-  _mState[qId].answers[key]=e.target.value.toUpperCase();
-}
-
-function _mKeyNav(e,qId,currentKey){
-  if(e.key==='Enter'){
-    const q=ANATOMY_MATCHING_QS.find(x=>x.id===qId);
-    const keys=q.colA.map(it=>it.key);
-    const idx=keys.indexOf(currentKey);
-    if(idx<keys.length-1){document.getElementById(`minp_${qId}_${keys[idx+1]}`)?.focus();}
-    else{_mCheck(qId);}
-    e.preventDefault();
-  }
-}
-
-function _mCheck(qId){
-  const q=ANATOMY_MATCHING_QS.find(x=>x.id===qId);
-  if(!q) return;
-  if(!_mState[qId]) _mState[qId]={answers:{},checked:false};
-  q.colA.forEach(it=>{const inp=document.getElementById(`minp_${qId}_${it.key}`);if(inp)_mState[qId].answers[it.key]=(inp.value||'').toUpperCase();});
-  let correct=0;
-  q.colA.forEach(it=>{if((_mState[qId].answers[it.key]||'')===q.answers[it.key])correct++;});
-  _mState[qId].checked=true;
-  _mState[qId].score={correct,total:q.colA.length};
-  const fbDiv=document.getElementById(`mfb_${qId}`);
-  if(fbDiv){fbDiv.innerHTML=_mBuildFeedback(q);fbDiv.classList.add('show');}
-  q.colA.forEach(it=>{const inp=document.getElementById(`minp_${qId}_${it.key}`);if(inp)inp.disabled=true;});
-  const btn=document.querySelector(`#mcard_${qId} .check-btn`);
-  if(btn){btn.textContent='Checked ✓';btn.disabled=true;btn.style.opacity='.5';btn.style.cursor='default';}
-  renderMatching();
-}
-
-function resetMatching(){
-  const qs=CS_CHAPTER?ANATOMY_MATCHING_QS.filter(q=>q.chapId===CS_CHAPTER.id):ANATOMY_MATCHING_QS;
-  qs.forEach(q=>{delete _mState[q.id];});
-  renderMatching();
-}
-</script>
-
-<!-- ══ PRINT SELECT MODAL ══ -->
-<div class="psel-overlay" id="psel-overlay">
-  <div class="psel-box">
-    <div class="psel-title">🖨️ Choose what to print</div>
-    <div class="psel-sub">Content will be formatted for printing or saving as PDF</div>
-    <div class="psel-opts">
-      <div class="psel-opt" onclick="doPrint('sharh')">
-        <span class="po-ico">📖</span>
-        <div class="po-txt">
-          <strong>Notes Only</strong>
-          <span>Detailed notes organized by chapters</span>
-        </div>
-      </div>
-      <div class="psel-opt" onclick="doPrint('mlakhs')">
-        <span class="po-ico">📋</span>
-        <div class="po-txt">
-          <strong>Summary Only</strong>
-          <span>Key points and tables</span>
-        </div>
-      </div>
-      <div class="psel-opt" onclick="doPrint('bank')">
-        <span class="po-ico">📝</span>
-        <div class="po-txt">
-          <strong>Questions Only</strong>
-          <span>Exam booklet — no answers + answer key</span>
-        </div>
-      </div>
-      <div class="psel-opt" onclick="doPrint('all')">
-        <span class="po-ico">📚</span>
-        <div class="po-txt">
-          <strong>Everything</strong>
-          <span>Notes + Summary + Questions</span>
-        </div>
-      </div>
-    </div>
-    <button class="psel-cancel" onclick="document.getElementById('psel-overlay').classList.remove('open')">Cancel</button>
-  </div>
-</div>
-
-<!-- ══ PRINT BOOK (hidden, shown only during @media print) ══ -->
-<div id="print-book"></div>
-
-</body>
-</html>
-p&&_mState[q.id].answers[it.key])inp.value=_mState[q.id].answers[it.key];});
   });
 }
 
